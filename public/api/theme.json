@@ -1,0 +1,51 @@
+{
+  "theme": {
+    "accent": { "cursor": { "x": 0.26, "y": 1 }, "intensity": 22, "rgb": [255, 255, 255] },
+    "highlight": { "cursor": { "x": 0.77, "y": 0 }, "intensity": 55, "rgb": [162, 0, 255] },
+    "background": { "cursor": { "x": 0.62, "y": 1 }, "intensity": 10, "rgb": [255, 255, 255] },
+    "backgroundEffect": { "apexGlow": 55, "falloffPower": 125, "hueSpread": 100, "peakIntensity": 60, "warpAmplitude": 120 },
+    "border": {
+      "color": { "cursor": { "x": 0.7, "y": 1 }, "intensity": 100, "rgb": [255, 255, 255] },
+      "enabled": true,
+      "opacity": 19
+    },
+    "map": {
+      "base": { "cursor": { "x": 0.75, "y": 1 }, "intensity": 10, "rgb": [255, 255, 255] },
+      "water": { "cursor": { "x": 0.76, "y": 0 }, "intensity": 100, "rgb": [140, 0, 255] },
+      "land": { "cursor": { "x": 0.55, "y": 0.94 }, "intensity": 14, "rgb": [217, 229, 229] },
+      "buildingLow": { "cursor": { "x": 0.74, "y": 0 }, "intensity": 63, "rgb": [115, 0, 255] },
+      "buildingHigh": { "cursor": { "x": 0.74, "y": 0 }, "intensity": 100, "rgb": [115, 0, 255] },
+      "roads": { "cursor": { "x": 0.72, "y": 0.48 }, "intensity": 100, "rgb": [177, 154, 223] },
+      "labels": { "cursor": { "x": 0.73, "y": 1 }, "intensity": 68, "rgb": [255, 255, 255] },
+      "radarLow": { "cursor": { "x": 0.16, "y": 0 }, "intensity": 100, "rgb": [255, 242, 0] },
+      "radarHigh": { "cursor": { "x": 0.26, "y": 0 }, "intensity": 100, "rgb": [106, 255, 0] }
+    },
+    "mapBuildingOpacity": 66,
+    "mapLabelSize": 150,
+    "mapSatellite": false,
+    "mapWater": { "enabled": true, "opacity": 10 },
+    "radarOpacity": 60,
+    "radarPaletteMode": "custom",
+    "taskGlowIntensity": 100,
+    "titleColors": {
+      "dark": { "cursor": { "x": 0.78, "y": 0 }, "intensity": 24, "rgb": [174, 0, 255] },
+      "light": { "cursor": { "x": 0.73, "y": 1 }, "intensity": 68, "rgb": [255, 255, 255] }
+    },
+    "titleTone": "auto",
+    "avatar": {
+      "gradientCenter": { "cursor": { "x": 0.78, "y": 0 }, "intensity": 28, "rgb": [216, 0, 255] },
+      "gradientOuter": { "cursor": { "x": 0.78, "y": 0 }, "intensity": 0, "rgb": [216, 0, 255] },
+      "gradientAlert": { "cursor": { "x": 0, "y": 0 }, "intensity": 100, "rgb": [255, 0, 0] },
+      "gymNumberColor": { "cursor": { "x": 0, "y": 1 }, "intensity": 100, "rgb": [255, 255, 255] },
+      "gymNumberOpacity": 50,
+      "gymAlertThresholdHours": 72,
+      "lineColors": [
+        { "cursor": { "x": 0.63, "y": 0 }, "intensity": 100, "rgb": [80, 130, 255] },
+        { "cursor": { "x": 0.79, "y": 0 }, "intensity": 100, "rgb": [180, 95, 240] },
+        { "cursor": { "x": 0.53, "y": 0 }, "intensity": 100, "rgb": [60, 220, 240] }
+      ],
+      "lineOpacities": [100, 100, 100]
+    }
+  },
+  "updatedAt": "2026-06-04T00:00:00.000Z"
+}

@@ -1,0 +1,8 @@
+{
+  "watchface": {
+    "gymLastResetAt": "2026-06-01T07:30:00.000+12:00",
+    "daysSinceGym": 3,
+    "idleTimeoutMs": 600000,
+    "updatedAt": "2026-06-04T00:00:00.000Z"
+  }
+}

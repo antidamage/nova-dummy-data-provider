@@ -1,0 +1,22 @@
+{
+  "summary": {
+    "generatedAt": "2026-06-04T00:00:00.000Z",
+    "periodLabel": "Demo month",
+    "totalKwh": 302.4,
+    "totalCostNzd": 104.62,
+    "dailyCostNzd": 3.48,
+    "projectedCostNzd": 108.1,
+    "currency": "NZD"
+  },
+  "devices": [
+    { "id": "desktop", "name": "Desktop", "watts": 286, "kwh": 42.2, "costNzd": 14.2 },
+    { "id": "nova", "name": "Nova AIO", "watts": 42, "kwh": 15.1, "costNzd": 5.1 },
+    { "id": "climate", "name": "Climate", "watts": 690, "kwh": 80.4, "costNzd": 27.6 }
+  ],
+  "points": [
+    { "label": "Mon", "kwh": 9.8, "costNzd": 3.31 },
+    { "label": "Tue", "kwh": 10.4, "costNzd": 3.48 },
+    { "label": "Wed", "kwh": 8.7, "costNzd": 2.94 },
+    { "label": "Thu", "kwh": 11.2, "costNzd": 3.76 }
+  ]
+}

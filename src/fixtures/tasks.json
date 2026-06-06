@@ -1,0 +1,31 @@
+{
+  "tasks": [
+    {
+      "id": "demo-water-plants",
+      "name": "Water the balcony plants",
+      "start": "2026-06-04T09:00:00.000+12:00",
+      "createdAt": "2026-06-04T00:00:00.000Z",
+      "repeat": { "kind": "days", "intervalDays": 2 },
+      "source": "local"
+    },
+    {
+      "id": "demo-standup",
+      "name": "Team standup",
+      "start": "2026-06-04T10:30:00.000+12:00",
+      "end": "2026-06-04T10:45:00.000+12:00",
+      "createdAt": "2026-06-04T00:00:00.000Z",
+      "source": "icloud-calendar",
+      "sourceCalendar": "Work",
+      "readOnly": true
+    },
+    {
+      "id": "demo-bin-night",
+      "name": "Put bins out",
+      "start": "2026-06-05T19:00:00.000+12:00",
+      "createdAt": "2026-06-04T00:00:00.000Z",
+      "source": "icloud-reminders",
+      "sourceCalendar": "Home",
+      "readOnly": true
+    }
+  ]
+}
