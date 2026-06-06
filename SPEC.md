@@ -98,7 +98,9 @@ Unsupported routes return a realistic JSON error response.
 
 The default state includes:
 
-- Zones: Everything, Lounge, Bedroom, Office, Kitchen, Network, Power, Tasks.
+- Zones: Everything, Lounge, Bedroom, Office, Kitchen, Climate, Network, Tasks.
+- The top-level dashboard Grid entry handles power; the dummy state does not include a Power sub-zone.
+- Nova load defaults to a low demo value near 15%.
 - Lights with brightness and RGB support.
 - Illumination switches.
 - Air conditioner with heat, fan, cool, fan modes, and target temperature.

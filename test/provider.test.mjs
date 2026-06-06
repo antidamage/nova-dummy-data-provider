@@ -98,6 +98,32 @@ test("zone and entity writes update the dashboard state", async () => {
   assert.equal(state.entities.find((entity) => entity.entity_id === "climate.lounge_aircon").attributes.temperature, 19);
 });
 
+test("does not generate a duplicate power sub-zone", async () => {
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
+  const state = await (await provider.handleRequest("/api/state")).json();
+  const zoneNames = state.zones.map((zone) => zone.name);
+
+  assert.ok(zoneNames.includes("Network"));
+  assert.ok(!state.zones.some((zone) => zone.id === "power" || zone.name === "Power"));
+});
+
+test("uses a low default Nova load", async () => {
+  const originalDateNow = Date.now;
+  Date.now = () => 0;
+
+  try {
+    const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
+    const body = await (await provider.handleRequest("/api/nova-load")).json();
+
+    assert.equal(body.load, 0.15);
+    assert.equal(body.cpu, 0.15);
+    assert.equal(body.net, 0.078);
+    assert.equal(body.gpu, 0.108);
+  } finally {
+    Date.now = originalDateNow;
+  }
+});
+
 test("panel heater timer persists in dashboard preferences", async () => {
   const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
   const offTimerEndsAt = "2026-06-04T09:30:00.000Z";
