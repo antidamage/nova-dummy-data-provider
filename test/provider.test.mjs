@@ -112,3 +112,20 @@ test("panel heater timer persists in dashboard preferences", async () => {
   const state = await (await provider.handleRequest("/api/state")).json();
   assert.equal(state.preferences.panelHeater.offTimerEndsAt, offTimerEndsAt);
 });
+
+test("uses the current time for demo gym attendance", async () => {
+  const now = new Date("2026-06-06T01:23:45.000Z");
+  const provider = createNovaDummyProvider({
+    fixtures: await fixtures(),
+    now: () => now,
+    storage: storage(),
+  });
+
+  const watchface = await (await provider.handleRequest("/api/watchface")).json();
+  assert.equal(watchface.watchface.gymLastResetAt, now.toISOString());
+  assert.equal(watchface.watchface.daysSinceGym, 0);
+
+  const state = await (await provider.handleRequest("/api/state")).json();
+  assert.equal(state.preferences.watchface.gymLastResetAt, now.toISOString());
+  assert.equal(state.preferences.watchface.daysSinceGym, 0);
+});
