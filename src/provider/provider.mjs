@@ -133,7 +133,6 @@ function recomputeState(state) {
     zone("kitchen", "Kitchen", byArea("kitchen")),
     zone("climate", "Climate", entities.filter((entity) => ["climate", "heating"].includes(entity.area_id) || entity.entity_id.includes("aircon"))),
     zone("network", "Network", [], "power"),
-    zone("power", "Power", [], "power"),
     zone("tasks", "Tasks", [], "tasks"),
   ];
   return {
@@ -368,7 +367,7 @@ export function createNovaDummyProvider(options = {}) {
     if (method === "GET" && pathname === "/api/router") return jsonResponse(envelope.router);
     if (method === "GET" && pathname === "/api/nova-load") {
       const t = Date.now() / 1000;
-      const load = Math.max(0.08, Math.min(0.92, 0.42 + Math.sin(t / 3) * 0.18));
+      const load = Math.max(0.08, Math.min(0.28, 0.15 + Math.sin(t / 3) * 0.03));
       return jsonResponse({ ...envelope.novaLoad, cpu: load, net: load * 0.52, gpu: load * 0.72, load });
     }
     if (method === "GET" && pathname === "/api/version") return jsonResponse(envelope.version);
