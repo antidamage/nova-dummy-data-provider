@@ -159,6 +159,16 @@ function mergePreferences(current, next) {
   return merged;
 }
 
+function withCurrentGymAttendance(watchface, now = new Date()) {
+  const timestamp = now.toISOString();
+  return {
+    ...(watchface ?? {}),
+    gymLastResetAt: timestamp,
+    daysSinceGym: 0,
+    updatedAt: timestamp,
+  };
+}
+
 function updateEntityForService(entity, service, data = {}) {
   let state = entity.state;
   let attributes = { ...(entity.attributes ?? {}) };
@@ -186,15 +196,22 @@ function updateEntityForService(entity, service, data = {}) {
   return { ...entity, state, attributes };
 }
 
-function makeEnvelope(defaults, resetKey) {
+function makeEnvelope(defaults, resetKey, now = new Date()) {
+  const watchface = withCurrentGymAttendance(defaults.watchface.watchface ?? {}, now);
+  const state = recomputeState(clone(defaults.state));
+  state.preferences = {
+    ...(state.preferences ?? {}),
+    watchface,
+  };
+
   return {
     schemaVersion: SCHEMA_VERSION,
     resetKey,
-    state: recomputeState(clone(defaults.state)),
+    state,
     theme: clone(defaults.theme),
     tasks: clone(defaults.tasks.tasks ?? []),
     config: clone(defaults.configClient),
-    watchface: clone(defaults.watchface.watchface ?? {}),
+    watchface,
     power: clone(defaults.power),
     router: clone(defaults.router),
     novaLoad: clone(defaults.novaLoad),
@@ -228,22 +245,32 @@ export function createNovaDummyProvider(options = {}) {
   let defaultsPromise = loadDefaultFixtures(baseUrl, options.fixtures);
   let envelopePromise = null;
   const listeners = new Set();
+  const now = () => options.now?.() ?? new Date();
+
+  function syncCurrentGymAttendance(envelope) {
+    envelope.watchface = withCurrentGymAttendance(envelope.watchface, now());
+    envelope.state.preferences = {
+      ...(envelope.state.preferences ?? {}),
+      watchface: envelope.watchface,
+    };
+    return envelope;
+  }
 
   async function loadEnvelope() {
     const defaults = await defaultsPromise;
-    const today = nzResetKey(options.now?.() ?? new Date());
+    const today = nzResetKey(now());
     const raw = storage.getItem(storageKey);
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
         if (parsed.schemaVersion === SCHEMA_VERSION && parsed.resetKey === today) {
-          return parsed;
+          return syncCurrentGymAttendance(parsed);
         }
       } catch {
         // discard malformed demo state
       }
     }
-    const next = makeEnvelope(defaults, today);
+    const next = makeEnvelope(defaults, today, now());
     storage.setItem(storageKey, JSON.stringify(next));
     return next;
   }
@@ -259,6 +286,7 @@ export function createNovaDummyProvider(options = {}) {
   }
 
   async function stateResponse(envelope) {
+    syncCurrentGymAttendance(envelope);
     envelope.state = recomputeState(envelope.state);
     save(envelope);
     return jsonResponse(envelope.state);
@@ -325,7 +353,11 @@ export function createNovaDummyProvider(options = {}) {
         return jsonResponse(envelope.tasks[index]);
       }
     }
-    if (method === "GET" && pathname === "/api/watchface") return jsonResponse({ watchface: envelope.watchface });
+    if (method === "GET" && pathname === "/api/watchface") {
+      syncCurrentGymAttendance(envelope);
+      save(envelope);
+      return jsonResponse({ watchface: envelope.watchface });
+    }
     if (method === "POST" && pathname === "/api/watchface") {
       envelope.watchface = { ...envelope.watchface, ...(await bodyJson(init)), updatedAt: new Date().toISOString() };
       envelope.state.preferences = mergePreferences(envelope.state.preferences, { watchface: envelope.watchface });
@@ -382,7 +414,7 @@ export function createNovaDummyProvider(options = {}) {
     },
     async reset() {
       const defaults = await defaultsPromise;
-      const next = makeEnvelope(defaults, nzResetKey(options.now?.() ?? new Date()));
+      const next = makeEnvelope(defaults, nzResetKey(now()), now());
       envelopePromise = Promise.resolve(next);
       save(next);
       return clone(next);
@@ -393,4 +425,4 @@ export function createNovaDummyProvider(options = {}) {
   };
 }
 
-export const __test = { nzResetKey, recomputeState };
+export const __test = { nzResetKey, recomputeState, withCurrentGymAttendance };

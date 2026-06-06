@@ -109,6 +109,13 @@ The default state includes:
 - Weather and sun data.
 - Demo local and mirrored tasks.
 
+## Demo Gym Timestamp
+
+The provider replaces fixture `watchface.gymLastResetAt` with the current
+provider time when it creates or reads demo state. `/api/state` and
+`/api/watchface` both report that timestamp with `daysSinceGym: 0`, so the
+dashboard demo does not show stale gym-attendance age.
+
 ## Compatibility Target
 
 The compatibility target is the current `nova-ha-dashboard` browser demo mode. Production Nova behavior must remain unchanged.
