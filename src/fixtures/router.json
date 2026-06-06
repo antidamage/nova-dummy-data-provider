@@ -1,0 +1,8 @@
+{
+  "name": "Demo NX620v",
+  "download": { "entity_id": "sensor.demo_download_speed", "value": 12.4, "unit": "MB/s", "display": "12 MB/s" },
+  "upload": { "entity_id": "sensor.demo_upload_speed", "value": 3.2, "unit": "MB/s", "display": "3.2 MB/s" },
+  "externalIp": "203.0.113.42",
+  "wanConnected": true,
+  "wanState": "Connected"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "nova-dummy-data-provider",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "validate": "node test/provider.test.mjs",
+    "preview": "npx http-server public -p 4174"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

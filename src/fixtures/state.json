@@ -1,0 +1,220 @@
+{
+  "generatedAt": "2026-06-04T00:00:00.000Z",
+  "entities": [
+    {
+      "entity_id": "light.lounge_lamp",
+      "domain": "light",
+      "state": "on",
+      "name": "Lounge Lamp",
+      "area_id": "lounge",
+      "attributes": {
+        "brightness": 196,
+        "rgb_color": [180, 95, 240],
+        "supported_color_modes": ["brightness", "rgb"],
+        "friendly_name": "Lounge Lamp"
+      }
+    },
+    {
+      "entity_id": "light.lounge_strip",
+      "domain": "light",
+      "state": "on",
+      "name": "Lounge Strip",
+      "area_id": "lounge",
+      "attributes": {
+        "brightness": 128,
+        "rgb_color": [60, 220, 240],
+        "supported_color_modes": ["brightness", "rgb"],
+        "friendly_name": "Lounge Strip"
+      }
+    },
+    {
+      "entity_id": "switch.lounge_neon",
+      "domain": "switch",
+      "state": "on",
+      "name": "Lounge Neon",
+      "area_id": "lounge",
+      "isIllumination": true,
+      "attributes": { "friendly_name": "Lounge Neon" }
+    },
+    {
+      "entity_id": "climate.lounge_aircon",
+      "domain": "climate",
+      "state": "cool",
+      "name": "Lounge Air Conditioner",
+      "area_id": "climate",
+      "attributes": {
+        "current_temperature": 22.4,
+        "temperature": 21,
+        "hvac_modes": ["off", "heat", "cool", "fan_only", "auto"],
+        "fan_modes": ["quiet", "low", "medium", "high", "turbo"],
+        "fan_mode": "medium",
+        "swing_modes": ["off", "both"],
+        "swing_mode": "off",
+        "friendly_name": "Lounge Air Conditioner"
+      }
+    },
+    {
+      "entity_id": "switch.aircon_fresh_air",
+      "domain": "switch",
+      "state": "off",
+      "name": "Aircon Fresh Air",
+      "area_id": "climate",
+      "attributes": { "friendly_name": "Aircon Fresh Air" }
+    },
+    {
+      "entity_id": "switch.aircon_quiet",
+      "domain": "switch",
+      "state": "off",
+      "name": "Aircon Quiet",
+      "area_id": "climate",
+      "attributes": { "friendly_name": "Aircon Quiet" }
+    },
+    {
+      "entity_id": "switch.aircon_turbo",
+      "domain": "switch",
+      "state": "off",
+      "name": "Aircon Turbo",
+      "area_id": "climate",
+      "attributes": { "friendly_name": "Aircon Turbo" }
+    },
+    {
+      "entity_id": "climate.panel_heater",
+      "domain": "climate",
+      "state": "off",
+      "name": "Panel Heater",
+      "area_id": "heating",
+      "attributes": {
+        "current_temperature": 21.8,
+        "temperature": 20,
+        "hvac_modes": ["off", "heat"],
+        "friendly_name": "Panel Heater"
+      }
+    },
+    {
+      "entity_id": "sensor.lounge_temperature",
+      "domain": "sensor",
+      "state": "22.4",
+      "name": "Lounge Temperature",
+      "area_id": "lounge",
+      "attributes": {
+        "device_class": "temperature",
+        "unit_of_measurement": "°C",
+        "friendly_name": "Lounge Temperature"
+      }
+    },
+    {
+      "entity_id": "sensor.lounge_humidity",
+      "domain": "sensor",
+      "state": "54",
+      "name": "Lounge Humidity",
+      "area_id": "lounge",
+      "attributes": {
+        "device_class": "humidity",
+        "unit_of_measurement": "%",
+        "friendly_name": "Lounge Humidity"
+      }
+    },
+    {
+      "entity_id": "light.bedroom_lamp",
+      "domain": "light",
+      "state": "off",
+      "name": "Bedroom Lamp",
+      "area_id": "bedroom",
+      "attributes": {
+        "brightness": 0,
+        "supported_color_modes": ["brightness", "rgb"],
+        "friendly_name": "Bedroom Lamp"
+      }
+    },
+    {
+      "entity_id": "light.office_key_light",
+      "domain": "light",
+      "state": "on",
+      "name": "Office Key Light",
+      "area_id": "office",
+      "attributes": {
+        "brightness": 220,
+        "rgb_color": [255, 214, 170],
+        "supported_color_modes": ["brightness", "rgb"],
+        "friendly_name": "Office Key Light"
+      }
+    },
+    {
+      "entity_id": "switch.office_sign",
+      "domain": "switch",
+      "state": "on",
+      "name": "Office Sign",
+      "area_id": "office",
+      "isIllumination": true,
+      "attributes": { "friendly_name": "Office Sign" }
+    },
+    {
+      "entity_id": "switch.kitchen_coffee_machine",
+      "domain": "switch",
+      "state": "off",
+      "name": "Coffee Machine",
+      "area_id": "kitchen",
+      "attributes": { "friendly_name": "Coffee Machine" }
+    }
+  ],
+  "zones": [],
+  "totals": { "light": 4, "switch": 5, "climate": 2, "fan": 0, "cover": 0, "humidifier": 0, "sensor": 2 },
+  "lighting": {
+    "intensityThresholds": [
+      { "name": "Neon accent switches", "thresholdPct": 45, "entityIds": ["switch.lounge_neon", "switch.office_sign"] }
+    ]
+  },
+  "router": {
+    "name": "Demo NX620v",
+    "download": { "entity_id": "sensor.demo_download_speed", "value": 12.4, "unit": "MB/s", "display": "12 MB/s" },
+    "upload": { "entity_id": "sensor.demo_upload_speed", "value": 3.2, "unit": "MB/s", "display": "3.2 MB/s" },
+    "externalIp": "203.0.113.42",
+    "wanConnected": true,
+    "wanState": "Connected"
+  },
+  "sun": {
+    "entity_id": "sun.sun",
+    "state": "above_horizon",
+    "nextRising": "2026-06-04T19:21:00.000Z",
+    "nextSetting": "2026-06-04T05:12:00.000Z"
+  },
+  "weather": {
+    "entity_id": "weather.demo_home",
+    "condition": "partlycloudy",
+    "temperature": 17.8,
+    "high": 19.2,
+    "low": 11.4,
+    "humidity": 72,
+    "windSpeed": 14,
+    "windUnit": "km/h",
+    "precipitation": 0.4,
+    "precipitationUnit": "mm",
+    "rainChancePct": 28,
+    "uvIndex": 2,
+    "maxUvIndex": 3,
+    "feelsLike": 16.9
+  },
+  "preferences": {
+    "aircon": {
+      "autoMode": false,
+      "hvacMode": "cool",
+      "temperature": 21,
+      "fanMode": "medium",
+      "quietMode": false,
+      "turboMode": false,
+      "offTimerEndsAt": null,
+      "updatedAt": "2026-06-04T00:00:00.000Z"
+    },
+    "lighting": {
+      "adaptiveCandlelightZones": {},
+      "updatedAt": "2026-06-04T00:00:00.000Z"
+    },
+    "watchface": {
+      "gymLastResetAt": "2026-06-01T07:30:00.000+12:00",
+      "daysSinceGym": 3,
+      "idleTimeoutMs": 600000,
+      "updatedAt": "2026-06-04T00:00:00.000Z"
+    }
+  },
+  "warnings": ["Demo mode: data is simulated and resets every morning NZ time."]
+}
