@@ -11,9 +11,7 @@ async function fixture(name) {
 async function fixtures() {
   return {
     state: await fixture("state.json"),
-    configClient: await fixture("config-client.json"),
     tasks: await fixture("tasks.json"),
-    theme: await fixture("theme.json"),
     watchface: await fixture("watchface.json"),
     power: await fixture("power.json"),
     router: await fixture("router.json"),
@@ -35,34 +33,24 @@ test("computes reset keys in Pacific/Auckland", () => {
   assert.equal(__test.nzResetKey(new Date("2026-06-03T12:00:00.000Z")), "2026-06-04");
 });
 
-test("reads and saves editable theme for the same NZ day", async () => {
-  const provider = createNovaDummyProvider({
-    fixtures: await fixtures(),
-    now: () => new Date("2026-06-03T12:00:00.000Z"),
-    storage: storage(),
-  });
+test("does not serve config or theme (Nova owns those in the demo)", async () => {
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
 
-  const write = await provider.handleRequest("/api/theme", {
-    method: "POST",
-    body: JSON.stringify({ theme: { accent: { cursor: { x: 0.1, y: 0.2 }, intensity: 77, rgb: [1, 2, 3] } } }),
-  });
-  assert.equal(write.status, 200);
-
-  const read = await provider.handleRequest("/api/theme");
-  const body = await read.json();
-  assert.deepEqual(body.theme.accent.rgb, [1, 2, 3]);
+  assert.equal((await provider.handleRequest("/api/theme")).status, 404);
+  assert.equal((await provider.handleRequest("/api/config")).status, 404);
+  assert.equal((await provider.handleRequest("/api/config/client")).status, 404);
 });
 
-test("resets stale persisted state on the next NZ day", async () => {
+test("persists a visitor's demo state across NZ days (no daily reset)", async () => {
   const sharedStorage = storage();
   const first = createNovaDummyProvider({
     fixtures: await fixtures(),
     now: () => new Date("2026-06-03T12:00:00.000Z"),
     storage: sharedStorage,
   });
-  await first.handleRequest("/api/theme", {
+  await first.handleRequest("/api/zone", {
     method: "POST",
-    body: JSON.stringify({ theme: { accent: { cursor: { x: 0.1, y: 0.2 }, intensity: 77, rgb: [1, 2, 3] } } }),
+    body: JSON.stringify({ zoneId: "bedroom", action: "on", brightnessPct: 50 }),
   });
 
   const second = createNovaDummyProvider({
@@ -70,8 +58,8 @@ test("resets stale persisted state on the next NZ day", async () => {
     now: () => new Date("2026-06-04T12:00:00.000Z"),
     storage: sharedStorage,
   });
-  const body = await (await second.handleRequest("/api/theme")).json();
-  assert.notDeepEqual(body.theme.accent.rgb, [1, 2, 3]);
+  const state = await (await second.handleRequest("/api/state")).json();
+  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_lamp").state, "on");
 });
 
 test("zone and entity writes update the dashboard state", async () => {

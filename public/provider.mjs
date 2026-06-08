@@ -4,9 +4,7 @@ const NZ_TIME_ZONE = "Pacific/Auckland";
 
 const FIXTURES = {
   state: "state.json",
-  configClient: "config-client.json",
   tasks: "tasks.json",
-  theme: "theme.json",
   watchface: "watchface.json",
   power: "power.json",
   router: "router.json",
@@ -207,9 +205,7 @@ function makeEnvelope(defaults, resetKey, now = new Date()) {
     schemaVersion: SCHEMA_VERSION,
     resetKey,
     state,
-    theme: clone(defaults.theme),
     tasks: clone(defaults.tasks.tasks ?? []),
-    config: clone(defaults.configClient),
     watchface,
     power: clone(defaults.power),
     router: clone(defaults.router),
@@ -257,19 +253,20 @@ export function createNovaDummyProvider(options = {}) {
 
   async function loadEnvelope() {
     const defaults = await defaultsPromise;
-    const today = nzResetKey(now());
     const raw = storage.getItem(storageKey);
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
-        if (parsed.schemaVersion === SCHEMA_VERSION && parsed.resetKey === today) {
+        // Persist a visitor's demo state indefinitely; only rebuild when the
+        // stored shape predates the current schema. (No daily reset.)
+        if (parsed.schemaVersion === SCHEMA_VERSION) {
           return syncCurrentGymAttendance(parsed);
         }
       } catch {
         // discard malformed demo state
       }
     }
-    const next = makeEnvelope(defaults, today, now());
+    const next = makeEnvelope(defaults, nzResetKey(now()), now());
     storage.setItem(storageKey, JSON.stringify(next));
     return next;
   }
@@ -297,21 +294,8 @@ export function createNovaDummyProvider(options = {}) {
     const envelope = await current();
 
     if (method === "GET" && pathname === "/api/state") return stateResponse(envelope);
-    if (method === "GET" && pathname === "/api/config/client") return jsonResponse(envelope.config);
-    if (method === "GET" && pathname === "/api/config") return jsonResponse({ config: envelope.config, secrets: {} });
-    if (method === "PUT" && pathname === "/api/config") {
-      const body = await bodyJson(init);
-      envelope.config = body.config ?? body;
-      save(envelope);
-      return jsonResponse({ ok: true, applied: true, config: envelope.config, errors: [] });
-    }
-    if (method === "GET" && pathname === "/api/theme") return jsonResponse(envelope.theme);
-    if (method === "POST" && pathname === "/api/theme") {
-      const body = await bodyJson(init);
-      envelope.theme = { theme: { ...(envelope.theme.theme ?? {}), ...(body.theme ?? {}) }, updatedAt: new Date().toISOString() };
-      save(envelope);
-      return jsonResponse(envelope.theme);
-    }
+    // Config and theme defaults are served by the Nova demo bootstrap from the
+    // browser's local storage; the dummy provider only emulates Home Assistant.
     if (method === "GET" && pathname === "/api/tasks") return jsonResponse({ tasks: envelope.tasks });
     if (method === "POST" && pathname === "/api/tasks" && (searchParams.get("command") === "add" || !searchParams.has("command"))) {
       const task = taskFromBody(await bodyJson(init));
