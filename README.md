@@ -6,7 +6,12 @@ Static dummy data and a browser-side fake Home Automation service for the public
 
 - GitHub Pages friendly JSON fixtures under `public/api`.
 - `public/provider.mjs`, which simulates dashboard API reads and writes in the browser.
-- Per-visitor demo persistence with a daily reset keyed to `Pacific/Auckland`.
+- Per-visitor demo persistence in browser storage.
+- Rich Home Assistant, power, computer, camera, voice, agent, training, and
+  household-person fixtures for exploring the current dashboard.
+
+Voice and agent routes are simulated UI data only. The public demo has no
+microphone, models, training host, household memory, or acting agent.
 
 ## Local Commands
 
