@@ -16,6 +16,7 @@ async function fixtures() {
     power: await fixture("power.json"),
     router: await fixture("router.json"),
     novaLoad: await fixture("nova-load.json"),
+    system: await fixture("system.json"),
     version: await fixture("version.json"),
   };
 }
@@ -59,7 +60,7 @@ test("persists a visitor's demo state across NZ days (no daily reset)", async ()
     storage: sharedStorage,
   });
   const state = await (await second.handleRequest("/api/state")).json();
-  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_lamp").state, "on");
+  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_light").state, "on");
 });
 
 test("zone and entity writes update the dashboard state", async () => {
@@ -71,28 +72,85 @@ test("zone and entity writes update the dashboard state", async () => {
   });
   assert.equal(zoneWrite.status, 200);
   let state = await zoneWrite.json();
-  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_lamp").state, "on");
+  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_light").state, "on");
 
   const entityWrite = await provider.handleRequest("/api/entity", {
     method: "POST",
     body: JSON.stringify({
-      entityId: "climate.lounge_aircon",
+      entityId: "climate.c6780cad",
       domain: "climate",
       service: "set_temperature",
       data: { temperature: 19 },
     }),
   });
   state = await entityWrite.json();
-  assert.equal(state.entities.find((entity) => entity.entity_id === "climate.lounge_aircon").attributes.temperature, 19);
+  assert.equal(state.entities.find((entity) => entity.entity_id === "climate.c6780cad").attributes.temperature, 19);
 });
 
-test("does not generate a duplicate power sub-zone", async () => {
+test("uses Home for the aggregate and does not generate duplicate special zones", async () => {
   const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
   const state = await (await provider.handleRequest("/api/state")).json();
   const zoneNames = state.zones.map((zone) => zone.name);
 
+  assert.equal(state.zones[0].id, "everything");
+  assert.equal(state.zones[0].name, "Home");
+  assert.ok(zoneNames.includes("Office"));
   assert.ok(zoneNames.includes("Network"));
   assert.ok(!state.zones.some((zone) => zone.id === "power" || zone.name === "Power"));
+  assert.ok(!state.zones.some((zone) => zone.id === "tasks" || zone.name === "Tasks"));
+});
+
+test("covers every dashboard entity domain with rich fixture data", async () => {
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
+  const state = await (await provider.handleRequest("/api/state")).json();
+
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(state.totals).filter(([, count]) => count > 0)),
+    {
+      light: 16,
+      switch: 8,
+      climate: 2,
+      fan: 1,
+      cover: 1,
+      humidifier: 1,
+      sensor: 5,
+    },
+  );
+  assert.equal(state.zones.find((zone) => zone.id === "lounge").environment.temperatureEntityId,
+    "sensor.tuya_mobile_lounge_sensor_temperature");
+});
+
+test("serves simulated voice, agent, computer, camera, layout, and update surfaces", async () => {
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
+
+  const voice = await (await provider.handleRequest("/api/voice")).json();
+  assert.equal(voice.voice.agentName, "[◯_◯]");
+  const options = await (await provider.handleRequest("/api/voice/options")).json();
+  assert.equal(options.engine, "trained");
+  assert.equal(options.engines.length, 3);
+  const satellites = await (await provider.handleRequest("/api/voice/satellites")).json();
+  assert.equal(satellites.satellites.length, 2);
+  const profiles = await (await provider.handleRequest("/api/voice/speaker-profiles")).json();
+  assert.equal(profiles.profiles[0].displayName, "Household Owner");
+  const training = await (await provider.handleRequest("/api/voice/training")).json();
+  assert.equal(training.sets[0].state.status, "ready");
+  const transcript = await (await provider.handleRequest("/api/voice/transcript")).json();
+  assert.ok(transcript.transcripts.every((entry) => entry.id && entry.at && entry.role && entry.text));
+  const computers = await (await provider.handleRequest("/api/desktop/computers")).json();
+  assert.equal(computers.computers.length, 3);
+  assert.equal((await provider.handleRequest("/api/camera/outside/settings")).status, 200);
+  assert.equal((await provider.handleRequest("/api/layout")).status, 200);
+  assert.equal((await provider.handleRequest("/api/update")).status, 200);
+});
+
+test("returns a current complete power dashboard", async () => {
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
+  const power = await (await provider.handleRequest("/api/power")).json();
+
+  assert.equal(power.currentWatts, 844.3);
+  assert.equal(power.devices.length, 8);
+  assert.equal(power.accountUsageGraph.length, 12);
+  assert.equal(power.backgroundEstimateGraph.length, 12);
 });
 
 test("uses a low default Nova load", async () => {

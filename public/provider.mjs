@@ -1,4 +1,4 @@
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 const DEFAULT_STORAGE_KEY = "nova.demo.provider.v1";
 const NZ_TIME_ZONE = "Pacific/Auckland";
 
@@ -9,6 +9,7 @@ const FIXTURES = {
   power: "power.json",
   router: "router.json",
   novaLoad: "nova-load.json",
+  system: "system.json",
   version: "version.json",
 };
 
@@ -107,6 +108,16 @@ function countsFor(entities) {
   return Object.fromEntries(domains.map((domain) => [domain, entities.filter((entity) => entity.domain === domain).length]));
 }
 
+function environmentFor(entities) {
+  const temperature = entities.find((entity) => entity.attributes?.device_class === "temperature");
+  const humidity = entities.find((entity) => entity.attributes?.device_class === "humidity");
+  if (!temperature && !humidity) return undefined;
+  return {
+    temperatureEntityId: temperature?.entity_id ?? null,
+    humidityEntityId: humidity?.entity_id ?? null,
+  };
+}
+
 function zone(id, name, entities, special) {
   return {
     id,
@@ -116,22 +127,33 @@ function zone(id, name, entities, special) {
     isOn: entities.some(entityIsOn),
     brightnessPct: zoneBrightnessPct(entities),
     ...(special ? { special } : {}),
+    ...(environmentFor(entities) ? { environment: environmentFor(entities) } : {}),
   };
 }
 
 function recomputeState(state) {
   const entities = state.entities;
   const byArea = (area) => entities.filter((entity) => entity.area_id === area);
-  const visible = entities.filter((entity) => !["sensor"].includes(entity.domain));
+  const areaNames = {
+    bedroom: "Bedroom",
+    conservatory: "Conservatory",
+    kitchen: "Kitchen",
+    lounge: "Lounge",
+    office: "Office",
+  };
+  const climateEntities = entities.filter(
+    (entity) => ["climate", "heating"].includes(entity.area_id) || entity.entity_id.includes("aircon"),
+  );
+  const homeEntities = entities.filter(
+    (entity) => !["climate", "heating", "network", "outside"].includes(entity.area_id),
+  );
+  const indoorAreas = Object.keys(areaNames).filter((area) => byArea(area).length > 0);
   const zones = [
-    zone("everything", "Everything", visible),
-    zone("lounge", "Lounge", byArea("lounge")),
-    zone("bedroom", "Bedroom", byArea("bedroom")),
-    zone("office", "Office", byArea("office")),
-    zone("kitchen", "Kitchen", byArea("kitchen")),
-    zone("climate", "Climate", entities.filter((entity) => ["climate", "heating"].includes(entity.area_id) || entity.entity_id.includes("aircon"))),
-    zone("network", "Network", [], "power"),
-    zone("tasks", "Tasks", [], "tasks"),
+    zone("everything", "Home", homeEntities),
+    ...indoorAreas.map((area) => zone(area, areaNames[area], byArea(area))),
+    ...(climateEntities.length ? [zone("climate", "Climate", climateEntities)] : []),
+    ...(byArea("outside").length ? [zone("outside", "Outside", byArea("outside"))] : []),
+    zone("network", "Network", []),
   ];
   return {
     ...state,
@@ -164,6 +186,22 @@ function withCurrentGymAttendance(watchface, now = new Date()) {
     daysSinceGym: 0,
     updatedAt: timestamp,
   };
+}
+
+function withCurrentTasks(tasks, now = new Date()) {
+  const offsets = [-5, 120, 210, 300, 24 * 60 + 30, 48 * 60];
+  return (tasks ?? []).map((task, index) => {
+    const start = new Date(now.getTime() + (offsets[index] ?? (index + 1) * 60) * 60_000);
+    const originalDuration = task.end
+      ? Math.max(5 * 60_000, new Date(task.end).getTime() - new Date(task.start).getTime())
+      : null;
+    return {
+      ...task,
+      start: start.toISOString(),
+      ...(originalDuration ? { end: new Date(start.getTime() + originalDuration).toISOString() } : {}),
+      createdAt: now.toISOString(),
+    };
+  });
 }
 
 function updateEntityForService(entity, service, data = {}) {
@@ -205,11 +243,12 @@ function makeEnvelope(defaults, resetKey, now = new Date()) {
     schemaVersion: SCHEMA_VERSION,
     resetKey,
     state,
-    tasks: clone(defaults.tasks.tasks ?? []),
+    tasks: withCurrentTasks(clone(defaults.tasks.tasks ?? []), now),
     watchface,
     power: clone(defaults.power),
     router: clone(defaults.router),
     novaLoad: clone(defaults.novaLoad),
+    system: clone(defaults.system),
     version: clone(defaults.version),
   };
 }
@@ -281,6 +320,22 @@ export function createNovaDummyProvider(options = {}) {
     for (const listener of listeners) listener(envelope);
   }
 
+  function refreshTasksIfStale(envelope) {
+    const latestStart = Math.max(
+      ...envelope.tasks.map((task) => new Date(task.start).getTime()).filter(Number.isFinite),
+      0,
+    );
+    if (latestStart >= now().getTime() - 24 * 60 * 60_000) return;
+    envelope.tasks = withCurrentTasks(envelope.tasks, now()).map((task) => {
+      const next = { ...task };
+      delete next.dismissedAt;
+      delete next.alertDismissedAt;
+      delete next.alertDismissedFor;
+      return next;
+    });
+    save(envelope);
+  }
+
   async function stateResponse(envelope) {
     syncCurrentGymAttendance(envelope);
     envelope.state = recomputeState(envelope.state);
@@ -296,7 +351,189 @@ export function createNovaDummyProvider(options = {}) {
     if (method === "GET" && pathname === "/api/state") return stateResponse(envelope);
     // Config and theme defaults are served by the Nova demo bootstrap from the
     // browser's local storage; the dummy provider only emulates Home Assistant.
-    if (method === "GET" && pathname === "/api/tasks") return jsonResponse({ tasks: envelope.tasks });
+    if (pathname === "/api/agent") {
+      if (method === "GET") return jsonResponse({ agent: envelope.system.agent });
+      if (method === "POST") {
+        envelope.system.agent = { ...envelope.system.agent, ...(await bodyJson(init)) };
+        save(envelope);
+        return jsonResponse({ agent: envelope.system.agent, demo: true });
+      }
+    }
+    if (pathname === "/api/layout") {
+      if (method === "GET") return jsonResponse({ layout: envelope.system.layout });
+      if (method === "POST") {
+        const body = await bodyJson(init);
+        envelope.system.layout = {
+          ...envelope.system.layout,
+          ...body,
+          swipe: { ...(envelope.system.layout?.swipe ?? {}), ...(body.swipe ?? body) },
+        };
+        save(envelope);
+        return jsonResponse({ layout: envelope.system.layout, demo: true });
+      }
+    }
+    if (pathname === "/api/update" && method === "GET") {
+      return jsonResponse(envelope.system.update);
+    }
+    if (pathname === "/api/update/settings" && method === "POST") {
+      const body = await bodyJson(init);
+      envelope.system.update = {
+        ...envelope.system.update,
+        ...(typeof body.autoUpdate === "boolean" ? { autoUpdate: body.autoUpdate } : {}),
+      };
+      save(envelope);
+      return jsonResponse(envelope.system.update);
+    }
+    if (pathname.startsWith("/api/update/") && method === "POST") {
+      return jsonResponse({
+        ...envelope.system.update,
+        demo: true,
+        phaseMessage: "Updates are disabled in the static demo.",
+      });
+    }
+    if (pathname === "/api/camera/outside/settings") {
+      if (method === "GET") return jsonResponse(envelope.system.camera);
+      if (method === "PUT" || method === "POST") {
+        envelope.system.camera = { ...envelope.system.camera, ...(await bodyJson(init)) };
+        save(envelope);
+        return jsonResponse({ ...envelope.system.camera, demo: true });
+      }
+    }
+    if (pathname === "/api/desktop/computers" && method === "GET") {
+      return jsonResponse({ computers: envelope.system.computers });
+    }
+    if (pathname === "/api/desktop/sync" && method === "POST") {
+      return jsonResponse({ ok: true, demo: true, synced: 0 });
+    }
+    if (pathname === "/api/events" && method === "POST") {
+      return jsonResponse({ ok: true, demo: true });
+    }
+    if (pathname === "/api/orb-modules" && method === "GET") {
+      return jsonResponse({ modules: [], errors: [] });
+    }
+    if (pathname === "/api/voice-personality-library") {
+      if (method === "GET") {
+        return jsonResponse({ library: envelope.system.personalityLibrary, updatedAt: null });
+      }
+      if (method === "POST") {
+        const body = await bodyJson(init);
+        envelope.system.personalityLibrary = clone(body.library ?? body);
+        save(envelope);
+        return jsonResponse({ library: envelope.system.personalityLibrary, updatedAt: new Date().toISOString() });
+      }
+    }
+    if (pathname === "/api/voice") {
+      if (method === "GET") {
+        return jsonResponse({ agent: envelope.system.agent, voice: envelope.system.voice });
+      }
+      if (method === "POST") {
+        envelope.system.voice = { ...envelope.system.voice, ...(await bodyJson(init)) };
+        save(envelope);
+        return jsonResponse({ agent: envelope.system.agent, voice: envelope.system.voice, demo: true });
+      }
+    }
+    if (pathname === "/api/voice/options" && method === "GET") {
+      const active = envelope.system.activeEngine;
+      return jsonResponse({
+        ...envelope.system.voiceOptions,
+        voices: (envelope.system.engineVoices[active] ?? []).map((voice) => ({
+          value: voice.id,
+          label: voice.name,
+          detail: `${active} voices${voice.language ? ` · ${voice.language}` : ""}`,
+        })),
+        current: envelope.system.voice,
+        engine: active,
+        engines: envelope.system.engines,
+        engineVoices: envelope.system.engineVoices[active] ?? [],
+      });
+    }
+    if (pathname === "/api/voice/engine") {
+      if (method === "POST") {
+        const body = await bodyJson(init);
+        if (envelope.system.engines.some((engine) => engine.id === body.engine)) {
+          envelope.system.activeEngine = body.engine;
+          save(envelope);
+        }
+        return jsonResponse({ changed: false, engine: envelope.system.activeEngine, demo: true });
+      }
+      if (method === "GET") {
+        return jsonResponse({
+          reachable: true,
+          engine: envelope.system.activeEngine,
+          engines: envelope.system.engines,
+          switch: { target: envelope.system.activeEngine, phase: "ready", updatedAt: new Date().toISOString() },
+          tts: {
+            ok: true,
+            ready: true,
+            engine: envelope.system.activeEngine,
+            speaker: envelope.system.voice.trainedSpeaker,
+            language: envelope.system.voice.language,
+            streaming: true,
+            sampleRate: 32000,
+            voices: (envelope.system.engineVoices[envelope.system.activeEngine] ?? []).map((voice) => voice.id),
+          },
+        });
+      }
+    }
+    if (pathname === "/api/voice/satellites") {
+      if (method === "GET") return jsonResponse(envelope.system.satellites);
+      if (method === "POST") {
+        const body = await bodyJson(init);
+        const satellite = envelope.system.satellites.satellites.find((row) => row.id === body.id);
+        if (!satellite) return errorResponse("Satellite not found", 404);
+        if (typeof body.voiceEnabled === "boolean") satellite.voiceEnabled = body.voiceEnabled;
+        if (typeof body.roomId === "string") {
+          satellite.configuredRoomId = body.roomId;
+          satellite.status = { ...satellite.status, roomId: body.roomId };
+        }
+        save(envelope);
+        return jsonResponse({ ok: true, demo: true, pushed: false, pushError: "Static demo only" });
+      }
+    }
+    if (pathname === "/api/voice/satellites/reconnect" && method === "POST") {
+      return jsonResponse({ ok: true, demo: true });
+    }
+    const voiceCatalogueMatch = pathname.match(/^\/api\/voice\/voices\/([^/]+)(?:\/([^/]+))?$/);
+    if (voiceCatalogueMatch && method === "GET") {
+      const engine = decodeURIComponent(voiceCatalogueMatch[1]);
+      return jsonResponse({ voices: envelope.system.engineVoices[engine] ?? [] });
+    }
+    if (pathname === "/api/voice/speaker-profiles" && method === "GET") {
+      return jsonResponse(envelope.system.speakerProfiles);
+    }
+    if (pathname === "/api/voice/administration" && method === "GET") {
+      return jsonResponse(envelope.system.administration);
+    }
+    if (pathname === "/api/voice/memories" && method === "GET") {
+      return jsonResponse({ memories: envelope.system.memories });
+    }
+    if (pathname === "/api/voice/automations" && method === "GET") {
+      return jsonResponse({
+        automations: envelope.system.automations,
+        interventions: envelope.system.interventions,
+      });
+    }
+    if (pathname === "/api/voice/training" && method === "GET") {
+      return jsonResponse(envelope.system.training);
+    }
+    if (pathname === "/api/voice/transcript") {
+      if (method === "GET") return jsonResponse({ transcripts: envelope.system.transcripts });
+      if (method === "DELETE") {
+        envelope.system.transcripts = [];
+        save(envelope);
+        return jsonResponse({ ok: true, demo: true, clearedAt: new Date().toISOString() });
+      }
+    }
+    if (pathname === "/api/voice/preview" && method === "POST") {
+      return errorResponse("Voice playback is not available in the static demo.", 501);
+    }
+    if (pathname.startsWith("/api/voice/") && method !== "GET") {
+      return errorResponse("This voice action is not available in the static demo.", 501);
+    }
+    if (method === "GET" && pathname === "/api/tasks") {
+      refreshTasksIfStale(envelope);
+      return jsonResponse({ tasks: envelope.tasks });
+    }
     if (method === "POST" && pathname === "/api/tasks" && (searchParams.get("command") === "add" || !searchParams.has("command"))) {
       const task = taskFromBody(await bodyJson(init));
       envelope.tasks = [...envelope.tasks, task];
@@ -382,7 +619,9 @@ export function createNovaDummyProvider(options = {}) {
       save(envelope);
       return jsonResponse({ panelHeater: envelope.state.preferences.panelHeater ?? {} });
     }
-    if (method === "POST" && pathname === "/api/desktop/sleep") return jsonResponse({ ok: true, demo: true });
+    if (method === "POST" && (pathname === "/api/desktop/sleep" || pathname === "/api/desktop/wake")) {
+      return jsonResponse({ ok: true, demo: true });
+    }
     if (method === "GET" && (pathname.startsWith("/api/radar/") || pathname.startsWith("/api/satellite/"))) {
       return new Response(new Uint8Array(), { status: 204, headers: { "X-Nova-Demo": "true" } });
     }

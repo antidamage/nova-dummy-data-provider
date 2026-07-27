@@ -1,22 +1,271 @@
 {
-  "summary": {
-    "generatedAt": "2026-06-04T00:00:00.000Z",
-    "periodLabel": "Demo month",
-    "totalKwh": 302.4,
-    "totalCostNzd": 104.62,
-    "dailyCostNzd": 3.48,
-    "projectedCostNzd": 108.1,
-    "currency": "NZD"
+  "baseLoad": {
+    "costPerDayNzd": 7.55,
+    "currentWatts": 734.9,
+    "devices": [
+      {
+        "costPerDayNzd": 0.34,
+        "currentWatts": 47.9,
+        "elapsedCostNzd": 0.29,
+        "elapsedKwh": 0.998,
+        "id": "fridges",
+        "kwhPerDay": 1.15,
+        "name": "Fridges",
+        "notes": "Continuous compressor model with seasonal temperature weighting."
+      },
+      {
+        "costPerDayNzd": 2.55,
+        "currentWatts": 360,
+        "elapsedCostNzd": 2.21,
+        "elapsedKwh": 7.498,
+        "id": "water_heater",
+        "kwhPerDay": 8.64,
+        "name": "Water heater",
+        "notes": "Always-on thermal model."
+      },
+      {
+        "costPerDayNzd": 1.23,
+        "currentWatts": 285,
+        "elapsedCostNzd": 1.09,
+        "elapsedKwh": 3.704,
+        "id": "desktop_pc",
+        "kwhPerDay": 4.19,
+        "name": "Desktop PC",
+        "notes": "Daytime active use and overnight standby."
+      },
+      {
+        "costPerDayNzd": 0.3,
+        "currentWatts": 42,
+        "elapsedCostNzd": 0.26,
+        "elapsedKwh": 0.875,
+        "id": "nova_aio",
+        "kwhPerDay": 1.008,
+        "name": "Nova",
+        "notes": "Always-on dashboard and home-automation host."
+      }
+    ],
+    "elapsedCostNzd": 6.57,
+    "elapsedKwh": 13.074,
+    "fixedCostPerDayNzd": 3.13,
+    "kwhPerDay": 14.988,
+    "usageCostPerDayNzd": 4.42
   },
+  "billingCycle": {
+    "day": 9,
+    "days": 31,
+    "endDate": "2026-08-18",
+    "label": "Aug 2026",
+    "startDate": "2026-07-19"
+  },
+  "currentCostPerHourNzd": 0.379,
+  "currentRate": {
+    "cPerKwh": 29.46,
+    "dailyCents": 313.03,
+    "displayName": "Auckland standard anytime",
+    "period": "peak",
+    "sourceUrl": "https://www.powershop.co.nz/our-rates/"
+  },
+  "currentWatts": 844.3,
   "devices": [
-    { "id": "desktop", "name": "Desktop", "watts": 286, "kwh": 42.2, "costNzd": 14.2 },
-    { "id": "nova", "name": "Nova AIO", "watts": 42, "kwh": 15.1, "costNzd": 5.1 },
-    { "id": "climate", "name": "Climate", "watts": 690, "kwh": 80.4, "costNzd": 27.6 }
+    {
+      "confidence": "high",
+      "entityId": "climate.c6780cad",
+      "id": "aircon",
+      "kwhTotal": 399.234,
+      "name": "Air Conditioner",
+      "notes": "Estimated compressor input.",
+      "ratedWatts": 1520,
+      "source": "Unit specification",
+      "state": "cool",
+      "watts": 690,
+      "zone": "Climate"
+    },
+    {
+      "confidence": "high",
+      "entityId": "light.conservatory_light",
+      "id": "conservatory_light",
+      "kwhTotal": 10.715,
+      "name": "Conservatory Light",
+      "ratedWatts": 15.5,
+      "source": "Manufacturer specification",
+      "state": "on",
+      "watts": 15.5,
+      "zone": "Conservatory"
+    },
+    {
+      "confidence": "high",
+      "entityId": "light.lounge_light",
+      "id": "lounge_light",
+      "kwhTotal": 8.988,
+      "name": "Lounge Light",
+      "ratedWatts": 15.5,
+      "source": "Manufacturer specification",
+      "state": "on",
+      "watts": 11.9,
+      "zone": "Lounge"
+    },
+    {
+      "confidence": "manual",
+      "entityId": "light.tuya_mobile_neon_lights",
+      "id": "neon_lights",
+      "kwhTotal": 22.48,
+      "name": "Neon Lights",
+      "ratedWatts": 30,
+      "source": "Measured",
+      "state": "on",
+      "watts": 18.3,
+      "zone": "Lounge"
+    },
+    {
+      "confidence": "high",
+      "entityId": "climate.tuya_mobile_panel_heater",
+      "id": "panel_heater",
+      "kwhTotal": 182.36,
+      "name": "Panel Heater",
+      "ratedWatts": 2000,
+      "source": "Unit label",
+      "state": "heat",
+      "watts": 95,
+      "zone": "Climate"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "light.kitchen_light_1",
+      "id": "kitchen_light",
+      "kwhTotal": 9.81,
+      "name": "Kitchen Main",
+      "ratedWatts": 12,
+      "source": "Bulb class estimate",
+      "state": "on",
+      "watts": 9.6,
+      "zone": "Kitchen"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "fan.office_ceiling_fan",
+      "id": "office_fan",
+      "kwhTotal": 31.44,
+      "name": "Office Fan",
+      "ratedWatts": 55,
+      "source": "Fan class estimate",
+      "state": "on",
+      "watts": 19,
+      "zone": "Office"
+    },
+    {
+      "confidence": "manual",
+      "entityId": "switch.kitchen_coffee_machine",
+      "id": "coffee_machine",
+      "kwhTotal": 16.2,
+      "name": "Coffee Machine",
+      "ratedWatts": 1450,
+      "source": "Unit label",
+      "state": "off",
+      "watts": 0,
+      "zone": "Kitchen"
+    }
   ],
-  "points": [
-    { "label": "Mon", "kwh": 9.8, "costNzd": 3.31 },
-    { "label": "Tue", "kwh": 10.4, "costNzd": 3.48 },
-    { "label": "Wed", "kwh": 8.7, "costNzd": 2.94 },
-    { "label": "Thu", "kwh": 11.2, "costNzd": 3.76 }
-  ]
+  "generatedAt": "2026-07-27T08:45:00.000Z",
+  "graph": [
+    { "label": "00:00", "kwh": 0.72, "costNzd": 0.21 },
+    { "label": "02:00", "kwh": 0.61, "costNzd": 0.18 },
+    { "label": "04:00", "kwh": 0.58, "costNzd": 0.17 },
+    { "label": "06:00", "kwh": 0.83, "costNzd": 0.24 },
+    { "label": "08:00", "kwh": 1.12, "costNzd": 0.33 },
+    { "label": "10:00", "kwh": 0.96, "costNzd": 0.28 },
+    { "label": "12:00", "kwh": 1.08, "costNzd": 0.32 },
+    { "label": "14:00", "kwh": 0.91, "costNzd": 0.27 },
+    { "label": "16:00", "kwh": 1.18, "costNzd": 0.35 },
+    { "label": "18:00", "kwh": 1.42, "costNzd": 0.42 },
+    { "label": "20:00", "kwh": 1.24, "costNzd": 0.37 },
+    { "label": "22:00", "kwh": 0.87, "costNzd": 0.26 }
+  ],
+  "accountUsageGraph": [
+    { "label": "Aug 2025", "days": 31, "kwh": 1112, "kwhPerDay": 35.9, "costNzd": 368.91, "costPerDayNzd": 11.9, "avgUnitCents": 33.18, "source": "Demo account" },
+    { "label": "Sep 2025", "days": 30, "kwh": 940, "kwhPerDay": 31.3, "costNzd": 338.43, "costPerDayNzd": 11.28, "avgUnitCents": 36, "source": "Demo account" },
+    { "label": "Oct 2025", "days": 31, "kwh": 845, "kwhPerDay": 27.3, "costNzd": 264.25, "costPerDayNzd": 8.52, "avgUnitCents": 31.27, "source": "Demo account" },
+    { "label": "Nov 2025", "days": 30, "kwh": 765, "kwhPerDay": 25.5, "costNzd": 232.29, "costPerDayNzd": 7.74, "avgUnitCents": 30.36, "source": "Demo account" },
+    { "label": "Dec 2025", "days": 31, "kwh": 756, "kwhPerDay": 24.4, "costNzd": 225.37, "costPerDayNzd": 7.27, "avgUnitCents": 29.81, "source": "Demo account" },
+    { "label": "Jan 2026", "days": 31, "kwh": 777, "kwhPerDay": 25.1, "costNzd": 248.7, "costPerDayNzd": 8.02, "avgUnitCents": 32.01, "source": "Demo account" },
+    { "label": "Feb 2026", "days": 28, "kwh": 800, "kwhPerDay": 28.6, "costNzd": 238.31, "costPerDayNzd": 8.51, "avgUnitCents": 29.79, "source": "Demo account" },
+    { "label": "Mar 2026", "days": 31, "kwh": 708, "kwhPerDay": 22.8, "costNzd": 215.35, "costPerDayNzd": 6.95, "avgUnitCents": 30.42, "source": "Demo account" },
+    { "label": "Apr 2026", "days": 30, "kwh": 708, "kwhPerDay": 23.6, "costNzd": 256.24, "costPerDayNzd": 8.54, "avgUnitCents": 36.19, "source": "Demo account" },
+    { "label": "May 2026", "days": 31, "kwh": 824, "kwhPerDay": 26.6, "costNzd": 286.17, "costPerDayNzd": 9.23, "avgUnitCents": 34.73, "source": "Demo account" },
+    { "label": "Jun 2026", "days": 30, "kwh": 912, "kwhPerDay": 30.4, "costNzd": 311.22, "costPerDayNzd": 10.37, "avgUnitCents": 34.13, "source": "Demo account" },
+    { "label": "Jul 2026", "days": 27, "kwh": 824, "kwhPerDay": 30.5, "costNzd": 218.65, "costPerDayNzd": 8.1, "avgUnitCents": 26.53, "source": "Demo account" }
+  ],
+  "accountRateGraph": [
+    { "label": "Aug 2025", "cPerKwh": 33.18 },
+    { "label": "Sep 2025", "cPerKwh": 36 },
+    { "label": "Oct 2025", "cPerKwh": 31.27 },
+    { "label": "Nov 2025", "cPerKwh": 30.36 },
+    { "label": "Dec 2025", "cPerKwh": 29.81 },
+    { "label": "Jan 2026", "cPerKwh": 32.01 },
+    { "label": "Feb 2026", "cPerKwh": 29.79 },
+    { "label": "Mar 2026", "cPerKwh": 30.42 },
+    { "label": "Apr 2026", "cPerKwh": 36.19 },
+    { "label": "May 2026", "cPerKwh": 34.73 },
+    { "label": "Jun 2026", "cPerKwh": 34.13 },
+    { "label": "Jul 2026", "cPerKwh": 26.53 }
+  ],
+  "backgroundEstimateGraph": [
+    { "label": "Aug", "computerKwh": 130, "fridgeKwh": 36, "novaKwh": 31, "waterHeaterKwh": 258, "otherKwh": 657, "totalKwh": 1112 },
+    { "label": "Sep", "computerKwh": 126, "fridgeKwh": 38, "novaKwh": 30, "waterHeaterKwh": 237, "otherKwh": 509, "totalKwh": 940 },
+    { "label": "Oct", "computerKwh": 130, "fridgeKwh": 38, "novaKwh": 31, "waterHeaterKwh": 207, "otherKwh": 439, "totalKwh": 845 },
+    { "label": "Nov", "computerKwh": 126, "fridgeKwh": 42, "novaKwh": 30, "waterHeaterKwh": 195, "otherKwh": 372, "totalKwh": 765 },
+    { "label": "Dec", "computerKwh": 130, "fridgeKwh": 42, "novaKwh": 31, "waterHeaterKwh": 189, "otherKwh": 364, "totalKwh": 756 },
+    { "label": "Jan", "computerKwh": 130, "fridgeKwh": 46, "novaKwh": 31, "waterHeaterKwh": 202, "otherKwh": 368, "totalKwh": 777 },
+    { "label": "Feb", "computerKwh": 117, "fridgeKwh": 44, "novaKwh": 28, "waterHeaterKwh": 189, "otherKwh": 422, "totalKwh": 800 },
+    { "label": "Mar", "computerKwh": 130, "fridgeKwh": 40, "novaKwh": 31, "waterHeaterKwh": 176, "otherKwh": 331, "totalKwh": 708 },
+    { "label": "Apr", "computerKwh": 126, "fridgeKwh": 37, "novaKwh": 30, "waterHeaterKwh": 176, "otherKwh": 339, "totalKwh": 708 },
+    { "label": "May", "computerKwh": 130, "fridgeKwh": 36, "novaKwh": 31, "waterHeaterKwh": 214, "otherKwh": 413, "totalKwh": 824 },
+    { "label": "Jun", "computerKwh": 126, "fridgeKwh": 35, "novaKwh": 30, "waterHeaterKwh": 230, "otherKwh": 491, "totalKwh": 912 },
+    { "label": "Jul", "computerKwh": 113, "fridgeKwh": 33, "novaKwh": 27, "waterHeaterKwh": 208, "otherKwh": 443, "totalKwh": 824 }
+  ],
+  "lastRateCheckAt": "2026-07-27T00:19:26.318Z",
+  "lastSampleAt": "2026-07-27T08:45:00.000Z",
+  "rateGraph": [
+    { "label": "2026-01", "cPerKwh": 25.88 },
+    { "label": "2026-02", "cPerKwh": 26.42 },
+    { "label": "2026-03", "cPerKwh": 28.08 },
+    { "label": "2026-04", "cPerKwh": 29.46 },
+    { "label": "2026-05", "cPerKwh": 29.46 },
+    { "label": "2026-06", "cPerKwh": 29.46 },
+    { "label": "2026-07", "cPerKwh": 29.46 },
+    { "label": "2026-08", "cPerKwh": 28.95 },
+    { "label": "2026-09", "cPerKwh": 27.62 },
+    { "label": "2026-10", "cPerKwh": 26.75 },
+    { "label": "2026-11", "cPerKwh": 26.2 },
+    { "label": "2026-12", "cPerKwh": 25.88 }
+  ],
+  "summaries": {
+    "day": {
+      "costNzd": 7.53,
+      "kwh": 17.751,
+      "projectedCostNzd": 8.65,
+      "projectedKwh": 20.377
+    },
+    "week": {
+      "costNzd": 34.5,
+      "kwh": 81.683,
+      "projectedCostNzd": 60.53,
+      "projectedKwh": 142.637
+    },
+    "month": {
+      "costNzd": 87.46,
+      "kwh": 213.839,
+      "projectedCostNzd": 302.8,
+      "projectedKwh": 742.18
+    },
+    "yearToDate": {
+      "costNzd": 1667.46,
+      "kwh": 3638.11,
+      "projectedCostNzd": 2901.13,
+      "projectedKwh": 6379.515
+    }
+  },
+  "totals": {
+    "costNzd": 218.65,
+    "kwh": 824.051
+  }
 }

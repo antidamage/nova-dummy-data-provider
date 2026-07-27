@@ -1,0 +1,608 @@
+{
+  "agent": {
+    "ralphLoopEnabled": true,
+    "ralphLoopMaxIterations": 10,
+    "ralphLoopSleepMs": 500,
+    "ralphLoopFailureSeconds": 5,
+    "ralphLoopThinkingThresholdMs": 2500,
+    "ralphLoopLlmVerifyEnabled": true,
+    "ralphLoopLlmVerifyMinIntervalMs": 1500,
+    "ralphLoopLlmConfirmTimeoutSeconds": 3
+  },
+  "voice": {
+    "agentName": "[◯_◯]",
+    "agentNamePronunciation": "Silverhand",
+    "systemVoiceEnabled": true,
+    "speakerRecognitionEnabled": true,
+    "disabledSatellites": [],
+    "satelliteNoiseGateEnabled": true,
+    "speaker": "Serena",
+    "customSpeaker": "johnny_multi",
+    "trainedSpeaker": "johnny-silverhand",
+    "language": "English",
+    "accent": "voice-native",
+    "speechRate": 100,
+    "pitch": -2,
+    "emotion": "natural",
+    "emotionMirroring": 0,
+    "temperature": 5,
+    "longResponseProbability": 0.5,
+    "commandReplyMinWords": 1,
+    "commandReplyMaxWords": 3,
+    "webAccessEnabled": true,
+    "webBackend": "brave",
+    "webAnswerMaxSentences": 3,
+    "wakeWords": ["agent", "johnny", "silverhand"],
+    "wakePrefixes": "yo hey ok okay hello",
+    "volumeDay": 100,
+    "volumeNight": 30,
+    "personality": "You are a dry, sarcastic cyberpunk home assistant who is direct, useful, and never sycophantic.",
+    "conversationIdleSeconds": 30,
+    "ttsPrerollMs": 200,
+    "ttsFrameMs": 60,
+    "dotsNumSteps": 6,
+    "speakerMatchThreshold": 0.45,
+    "speakerMatchMargin": 0.01,
+    "speakerClusterThreshold": 0.45,
+    "speakerConversationMatchThreshold": 0.15,
+    "transcriptTemplate": "╭─[ ⭐ %u%%a% ➤ %m% ➤ %t% ]",
+    "pronouns": {
+      "subjective": "he",
+      "objective": "him",
+      "possessive": "his"
+    },
+    "affectations": { "pronounDrop": false },
+    "satelliteRooms": {
+      "indium": "lounge",
+      "nocturnium": "lounge"
+    }
+  },
+  "layout": {
+    "tvHeightFraction": 0.6,
+    "swipe": {
+      "hierarchyCharge": 2,
+      "componentGroupCharge": 2,
+      "resetMs": 500,
+      "moveIntervalMs": 100,
+      "detachMs": 100,
+      "nudgePx": 10
+    }
+  },
+  "update": {
+    "channel": {
+      "repo": "antidamage/nova-ha-dashboard",
+      "branch": "main"
+    },
+    "currentSha": "demo",
+    "currentShortSha": "demo",
+    "deployedAt": "2026-07-27T00:00:00.000Z",
+    "latestSha": "demo",
+    "latestShortSha": "demo",
+    "latestMessage": "GitHub Pages demo",
+    "updateAvailable": false,
+    "autoUpdate": false,
+    "canRollback": false,
+    "previousSha": null,
+    "phase": "success",
+    "phaseMessage": "Demo build is current",
+    "phaseAt": "2026-07-27T00:00:00.000Z",
+    "lastCheckedAt": "2026-07-27T00:00:00.000Z",
+    "checkOk": true,
+    "checkError": null,
+    "busy": false
+  },
+  "camera": {
+    "brightness": 0,
+    "contrast": 1,
+    "sharpness": 0,
+    "ingestionEnabled": true,
+    "videoHostUrl": ""
+  },
+  "computers": [
+    {
+      "address": "demo-desktop.local",
+      "capabilities": {
+        "sleep": true,
+        "wake": true,
+        "wallpaper": true,
+        "voiceSatellite": false
+      },
+      "commandTimeoutMs": 15000,
+      "enabled": true,
+      "hostKey": "",
+      "id": "desktop",
+      "macAddress": "02:00:00:00:00:01",
+      "name": "Desktop",
+      "orientation": "landscape",
+      "platform": "windows",
+      "roomId": "office",
+      "sshKeyPath": "",
+      "updatedAt": "2026-07-27T00:00:00.000Z",
+      "username": "demo",
+      "sshKeyConfigured": true,
+      "sshPublicKey": null
+    },
+    {
+      "address": "indium.demo",
+      "capabilities": {
+        "sleep": false,
+        "wake": true,
+        "wallpaper": true,
+        "voiceSatellite": true
+      },
+      "commandTimeoutMs": 15000,
+      "enabled": true,
+      "hostKey": "",
+      "id": "indium",
+      "macAddress": "02:00:00:00:00:02",
+      "name": "Indium",
+      "orientation": "landscape",
+      "platform": "macos",
+      "roomId": "lounge",
+      "sshKeyPath": "",
+      "updatedAt": "2026-07-27T00:00:00.000Z",
+      "username": "demo",
+      "sshKeyConfigured": true,
+      "sshPublicKey": null
+    },
+    {
+      "address": "nocturnium.demo",
+      "capabilities": {
+        "sleep": false,
+        "wake": false,
+        "wallpaper": false,
+        "voiceSatellite": true
+      },
+      "commandTimeoutMs": 15000,
+      "enabled": true,
+      "hostKey": "",
+      "id": "nocturnium",
+      "macAddress": "",
+      "name": "Nocturnium",
+      "orientation": "landscape",
+      "platform": "kde-linux",
+      "roomId": "lounge",
+      "sshKeyPath": "",
+      "updatedAt": "2026-07-27T00:00:00.000Z",
+      "username": "demo",
+      "sshKeyConfigured": true,
+      "sshPublicKey": null
+    }
+  ],
+  "engines": [
+    {
+      "id": "classic",
+      "label": "Classic presets",
+      "capabilities": {
+        "usesPresetSpeaker": true,
+        "usesAccentMood": true,
+        "usesCustomVoiceDropdown": false,
+        "usesNumSteps": false,
+        "voiceCatalogue": "none"
+      }
+    },
+    {
+      "id": "custom",
+      "label": "Custom voices",
+      "capabilities": {
+        "usesPresetSpeaker": false,
+        "usesAccentMood": false,
+        "usesCustomVoiceDropdown": true,
+        "usesNumSteps": true,
+        "voiceCatalogue": "clips"
+      }
+    },
+    {
+      "id": "trained",
+      "label": "Trained voices",
+      "capabilities": {
+        "usesPresetSpeaker": false,
+        "usesAccentMood": false,
+        "usesCustomVoiceDropdown": true,
+        "usesNumSteps": false,
+        "voiceCatalogue": "bundle"
+      }
+    }
+  ],
+  "activeEngine": "trained",
+  "engineVoices": {
+    "classic": [],
+    "custom": [
+      {
+        "id": "johnny_multi",
+        "name": "Johnny Multi",
+        "language": "en",
+        "sampleCount": 42
+      }
+    ],
+    "trained": [
+      {
+        "id": "johnny-silverhand",
+        "name": "Johnny Silverhand",
+        "language": "en"
+      }
+    ]
+  },
+  "voiceOptions": {
+    "source": "demo",
+    "languages": [
+      "Auto",
+      "English",
+      "Chinese",
+      "Japanese",
+      "Korean",
+      "German",
+      "French",
+      "Russian",
+      "Portuguese",
+      "Spanish",
+      "Italian"
+    ],
+    "accents": [
+      "voice-native",
+      "new-zealand",
+      "australian",
+      "british",
+      "american",
+      "irish",
+      "scottish"
+    ],
+    "emotions": [
+      "natural",
+      "calm",
+      "cheerful",
+      "empathetic",
+      "serious",
+      "dry",
+      "energetic"
+    ],
+    "ranges": {
+      "speechRate": { "min": 70, "max": 130, "step": 5, "default": 100 },
+      "pitch": { "min": -20, "max": 20, "step": 2, "default": 0 },
+      "emotionMirroring": { "min": 0, "max": 200, "step": 10, "default": 100 },
+      "temperature": { "min": 0, "max": 5, "step": 0.1, "default": 0 },
+      "volumeDay": { "min": 0, "max": 100, "step": 5, "default": 100 },
+      "volumeNight": { "min": 0, "max": 100, "step": 5, "default": 100 },
+      "conversationIdleSeconds": { "min": 10, "max": 300, "step": 5, "default": 60 },
+      "longResponseProbability": { "min": 0, "max": 1, "step": 0.05, "default": 0 },
+      "webAnswerMaxSentences": { "min": 1, "max": 5, "step": 1, "default": 2 },
+      "ttsPrerollMs": { "min": 20, "max": 2000, "step": 10, "default": 700 },
+      "ttsFrameMs": { "min": 20, "max": 200, "step": 10, "default": 100 },
+      "speakerMatchThreshold": { "min": 0.3, "max": 0.95, "step": 0.01, "default": 0.65 },
+      "speakerMatchMargin": { "min": 0, "max": 0.3, "step": 0.01, "default": 0.03 },
+      "speakerClusterThreshold": { "min": 0.3, "max": 0.95, "step": 0.01, "default": 0.6 },
+      "speakerConversationMatchThreshold": { "min": 0.1, "max": 0.9, "step": 0.01, "default": 0.35 }
+    },
+    "wake": {
+      "wordPattern": "^[A-Za-z]{2,24}$",
+      "defaultWords": ["beemo", "bimo", "bemo", "beamo", "bmo"],
+      "defaultPrefixes": "hey ok okay hi hello yo oi",
+      "note": "Wake words are matched transcript-first."
+    }
+  },
+  "satellites": {
+    "iridium": { "ok": true },
+    "rooms": [
+      { "id": "bedroom", "name": "Bedroom" },
+      { "id": "conservatory", "name": "Conservatory" },
+      { "id": "kitchen", "name": "Kitchen" },
+      { "id": "lounge", "name": "Lounge" },
+      { "id": "office", "name": "Office" }
+    ],
+    "satellites": [
+      {
+        "configuredRoomId": "lounge",
+        "enabled": true,
+        "voiceEnabled": true,
+        "id": "indium",
+        "name": "Indium",
+        "platform": "macos",
+        "status": {
+          "satelliteId": "indium",
+          "roomId": "lounge",
+          "connected": true,
+          "connectedAt": "2026-07-27T00:00:00.000Z",
+          "lastEventAt": "2026-07-27T00:00:00.000Z",
+          "capabilities": {
+            "microphone": true,
+            "speaker": true,
+            "echoCancellation": false,
+            "noiseSuppression": false,
+            "automaticGainControl": false,
+            "playbackEvents": false,
+            "localVad": false
+          }
+        }
+      },
+      {
+        "configuredRoomId": "lounge",
+        "enabled": true,
+        "voiceEnabled": true,
+        "id": "nocturnium",
+        "name": "Nocturnium",
+        "platform": "kde-linux",
+        "status": {
+          "satelliteId": "nocturnium",
+          "roomId": "lounge",
+          "connected": true,
+          "connectedAt": "2026-07-27T00:00:00.000Z",
+          "lastEventAt": "2026-07-27T00:00:00.000Z",
+          "capabilities": {
+            "microphone": true,
+            "speaker": true,
+            "echoCancellation": true,
+            "noiseSuppression": true,
+            "automaticGainControl": true,
+            "playbackEvents": true,
+            "localVad": true
+          }
+        }
+      }
+    ]
+  },
+  "speakerProfiles": {
+    "enabled": true,
+    "profiles": [
+      {
+        "id": "demo-owner",
+        "displayName": "Household Owner",
+        "pronouns": "they/them",
+        "speechPreferences": {
+          "language": "English",
+          "speech_rate": 100,
+          "delivery_mode": "auto",
+          "accessibility_pacing": false,
+          "pronunciations": {}
+        },
+        "createdAt": "2026-07-20T00:00:00.000Z",
+        "updatedAt": "2026-07-27T00:00:00.000Z",
+        "templates": [
+          {
+            "id": "demo-owner-voice",
+            "state": "active",
+            "sampleCount": 36,
+            "claimedName": "Household Owner",
+            "claimedPronouns": "they/them",
+            "createdAt": "2026-07-20T00:00:00.000Z",
+            "lastSeenAt": "2026-07-27T00:00:00.000Z",
+            "expiresAt": null
+          }
+        ]
+      }
+    ],
+    "provisionalTemplates": [
+      {
+        "id": "demo-guest-voice",
+        "state": "provisional",
+        "sampleCount": 2,
+        "claimedName": null,
+        "claimedPronouns": null,
+        "createdAt": "2026-07-26T00:00:00.000Z",
+        "lastSeenAt": "2026-07-27T00:00:00.000Z",
+        "expiresAt": "2026-08-26T00:00:00.000Z"
+      }
+    ]
+  },
+  "administration": {
+    "goals": [
+      {
+        "id": "demo-goal-energy",
+        "status": "active",
+        "summary": "Keep evening energy use below the household target"
+      }
+    ],
+    "plans": [],
+    "executions": [],
+    "grants": [
+      {
+        "id": "demo-grant-lighting",
+        "grantee_id": "demo-owner",
+        "capability": "home.control",
+        "active": true,
+        "target_scope": ["light.*"],
+        "expires_at": null
+      }
+    ],
+    "identities": [
+      { "person_id": "demo-owner", "role": "owner" }
+    ],
+    "research": [
+      {
+        "id": "demo-research-weather",
+        "owner_id": "demo-owner",
+        "query": "Will it rain before the washing is dry?",
+        "status": "completed",
+        "spoken_summary": "A brief shower is possible late afternoon.",
+        "detail": {},
+        "citations": ["Demo weather provider"],
+        "uncertainty": "medium",
+        "backend": "demo",
+        "error": null,
+        "created_at": "2026-07-27T00:00:00.000Z",
+        "completed_at": "2026-07-27T00:00:03.000Z"
+      }
+    ],
+    "briefingSchedules": [
+      {
+        "id": "demo-morning-briefing",
+        "owner_id": "demo-owner",
+        "period": "morning",
+        "local_time": "07:30",
+        "timezone": "Pacific/Auckland",
+        "enabled": true,
+        "last_local_date": "2026-07-27"
+      }
+    ],
+    "briefings": [],
+    "subscriptions": [
+      {
+        "id": "demo-door-subscription",
+        "owner_id": "demo-owner",
+        "summary": "Tell me if the outside door stays open",
+        "event_kind": "device_health",
+        "match": { "area": "outside" },
+        "active": true,
+        "one_shot": false,
+        "trigger_count": 0,
+        "triggered_at": null
+      }
+    ],
+    "audit": [
+      {
+        "id": "demo-audit-1",
+        "actor_id": "demo-owner",
+        "action": "grant.created",
+        "object_type": "delegation_grant",
+        "object_id": "demo-grant-lighting",
+        "created_at": "2026-07-27T00:00:00.000Z"
+      }
+    ],
+    "auditTotal": 1
+  },
+  "memories": [
+    {
+      "id": "demo-memory-candlelight",
+      "text": "Use warm candlelight in shared rooms after sunset.",
+      "memory_type": "preference",
+      "owner_id": "demo-owner",
+      "pinned": true,
+      "needs_confirmation": false,
+      "created_at": "2026-07-20T00:00:00.000Z",
+      "expires_at": null
+    }
+  ],
+  "automations": [
+    {
+      "id": "demo-automation-welcome-home",
+      "owner_id": "demo-owner",
+      "summary": "Turn on the hallway when somebody arrives after dark",
+      "trigger": { "kind": "presence_arrival" },
+      "proposed_actions": [
+        { "service": "light.turn_on", "target": "light.tuya_mobile_hallway_light" }
+      ],
+      "simulation": { "matches": 3, "errors": [] },
+      "state": "active",
+      "monitor_failures": 0
+    }
+  ],
+  "interventions": [
+    {
+      "id": "demo-intervention-window",
+      "reason_code": "weather_change",
+      "reason_detail": "Rain is approaching and a window is open",
+      "channel": "dashboard",
+      "status": "proposed",
+      "feedback": null,
+      "created_at": "2026-07-27T00:00:00.000Z"
+    }
+  ],
+  "training": {
+    "trainingMode": false,
+    "installed": true,
+    "sets": [
+      {
+        "id": "johnny-silverhand",
+        "name": "Johnny Silverhand",
+        "language": "en",
+        "createdAt": "2026-07-20T00:00:00.000Z",
+        "sampleCount": 84,
+        "resumable": true,
+        "samplesChanged": false,
+        "state": {
+          "status": "ready",
+          "stage": "package",
+          "message": "Published",
+          "epoch": 8,
+          "totalEpochs": 8,
+          "error": "",
+          "hasBundle": true,
+          "complete": true,
+          "startedAt": "2026-07-20T00:00:00.000Z",
+          "finishedAt": "2026-07-20T02:15:00.000Z"
+        }
+      }
+    ]
+  },
+  "transcripts": [
+    {
+      "id": "demo-turn-1-user",
+      "role": "user",
+      "text": "Set the lounge to candlelight.",
+      "speakerName": "Household Owner",
+      "kind": "command",
+      "satelliteId": "indium",
+      "at": "2026-07-27T07:30:00.000Z"
+    },
+    {
+      "id": "demo-turn-1-agent",
+      "role": "assistant",
+      "text": "Done. Lounge is warm and dim.",
+      "kind": "command",
+      "at": "2026-07-27T07:30:01.000Z"
+    }
+  ],
+  "personalityLibrary": {
+    "version": 1,
+    "activeId": "demo-persona-johnny",
+    "entries": [
+      {
+        "id": "demo-persona-johnny",
+        "name": "Johnny Silverhand",
+        "createdAt": "2026-07-20T00:00:00.000Z",
+        "updatedAt": "2026-07-27T00:00:00.000Z",
+        "engine": "trained",
+        "personality": {
+          "speaker": "Serena",
+          "customSpeaker": "johnny_multi",
+          "trainedSpeaker": "johnny-silverhand",
+          "language": "English",
+          "accent": "voice-native",
+          "emotion": "natural",
+          "personality": "Dry, sarcastic, direct, cyberpunk, and useful.",
+          "speechRate": 100,
+          "pitch": -2,
+          "emotionMirroring": 0,
+          "temperature": 5,
+          "longResponseProbability": 0.5,
+          "commandReplyMinWords": 1,
+          "commandReplyMaxWords": 3,
+          "pronouns": {
+            "subjective": "he",
+            "objective": "him",
+            "possessive": "his"
+          },
+          "affectations": { "pronounDrop": false }
+        }
+      },
+      {
+        "id": "demo-persona-beemo",
+        "name": "Beemo",
+        "createdAt": "2026-07-20T00:00:00.000Z",
+        "updatedAt": "2026-07-27T00:00:00.000Z",
+        "engine": "classic",
+        "personality": {
+          "speaker": "Serena",
+          "customSpeaker": "johnny_multi",
+          "trainedSpeaker": "",
+          "language": "English",
+          "accent": "new-zealand",
+          "emotion": "cheerful",
+          "personality": "Bright, playful, concise, and fond of adventure-game observations.",
+          "speechRate": 105,
+          "pitch": 2,
+          "emotionMirroring": 80,
+          "temperature": 1.2,
+          "longResponseProbability": 0.35,
+          "commandReplyMinWords": 0,
+          "commandReplyMaxWords": 3,
+          "pronouns": {
+            "subjective": "she",
+            "objective": "her",
+            "possessive": "hers"
+          },
+          "affectations": { "pronounDrop": false }
+        }
+      }
+    ]
+  }
+}
