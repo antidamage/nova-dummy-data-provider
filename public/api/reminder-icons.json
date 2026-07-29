@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "key": "water the balcony plants",
+      "displayName": "Water the balcony plants",
+      "glyph": { "kind": "phosphor", "id": "plant" },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 0,
+      "lastSeenAt": "2026-07-27T00:00:00.000Z"
+    },
+    {
+      "key": "put bins out",
+      "displayName": "Put bins out",
+      "glyph": { "kind": "phosphor", "id": "trash" },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 1,
+      "lastSeenAt": "2026-07-27T00:00:00.000Z"
+    },
+    {
+      "key": "replace the air purifier filter",
+      "displayName": "Replace the air purifier filter",
+      "glyph": { "kind": "phosphor", "id": "wrench" },
+      "source": "llm",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 2,
+      "lastSeenAt": "2026-07-27T00:00:00.000Z"
+    },
+    {
+      "key": "pick up groceries",
+      "displayName": "Pick up groceries",
+      "glyph": { "kind": "phosphor", "id": "shopping-cart" },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": true,
+      "order": 3,
+      "lastSeenAt": "2026-07-27T00:00:00.000Z"
+    },
+    {
+      "key": "take estrogen",
+      "displayName": "Take estrogen",
+      "glyph": { "kind": "text", "value": "E" },
+      "source": "user",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 4,
+      "lastSeenAt": "2026-07-27T00:00:00.000Z"
+    },
+    {
+      "key": "project stand up",
+      "displayName": "Project stand-up",
+      "glyph": { "kind": "phosphor", "id": "briefcase" },
+      "source": "llm",
+      "showInBar": false,
+      "showInBarLocked": false,
+      "order": 5,
+      "lastSeenAt": "2026-07-27T00:00:00.000Z"
+    }
+  ]
+}

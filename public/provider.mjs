@@ -1,10 +1,11 @@
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 const DEFAULT_STORAGE_KEY = "nova.demo.provider.v1";
 const NZ_TIME_ZONE = "Pacific/Auckland";
 
 const FIXTURES = {
   state: "state.json",
   tasks: "tasks.json",
+  reminderIcons: "reminder-icons.json",
   watchface: "watchface.json",
   power: "power.json",
   router: "router.json",
@@ -244,6 +245,7 @@ function makeEnvelope(defaults, resetKey, now = new Date()) {
     resetKey,
     state,
     tasks: withCurrentTasks(clone(defaults.tasks.tasks ?? []), now),
+    reminderIcons: clone(defaults.reminderIcons.entries ?? []),
     watchface,
     power: clone(defaults.power),
     router: clone(defaults.router),
@@ -546,7 +548,43 @@ export function createNovaDummyProvider(options = {}) {
     if (method === "GET" && pathname === "/api/tasks/audio") return jsonResponse({ exists: false });
     if (method === "GET" && pathname === "/api/tasks/icloud-status") return jsonResponse({ enabled: true, calendars: ["Work"], reminders: ["Home"], lastSyncAt: new Date().toISOString(), errors: [] });
     if (method === "POST" && pathname === "/api/tasks/sync-icloud") return jsonResponse({ result: { added: 0, updated: 0, removed: 0 } });
-    const taskMatch = pathname.match(/^\/api\/tasks\/([^/]+)(?:\/(complete|dismiss))?$/);
+    // Sigil roster for the reminder icon bar. Keyed on the normalised reminder
+    // name, matching lib/reminder-icons.ts.
+    if (method === "GET" && pathname === "/api/reminders/icons") {
+      return jsonResponse({ entries: envelope.reminderIcons });
+    }
+    if (method === "PATCH" && pathname === "/api/reminders/icons") {
+      const body = await bodyJson(init);
+      if (Array.isArray(body.keys)) {
+        const position = new Map(body.keys.map((key, index) => [key, index]));
+        envelope.reminderIcons = envelope.reminderIcons
+          .map((entry) => (position.has(entry.key) ? { ...entry, order: position.get(entry.key) } : entry))
+          .sort((left, right) => left.order - right.order);
+        save(envelope);
+        return jsonResponse({ entries: envelope.reminderIcons });
+      }
+      const index = envelope.reminderIcons.findIndex((entry) => entry.key === body.key);
+      if (index < 0) return errorResponse("Reminder not found", 404);
+      const next = { ...envelope.reminderIcons[index] };
+      if (body.glyph !== undefined) {
+        next.glyph = body.glyph;
+        next.source = "user";
+      }
+      if (body.showInBar !== undefined) {
+        next.showInBar = Boolean(body.showInBar);
+        next.showInBarLocked = true;
+      }
+      envelope.reminderIcons[index] = next;
+      save(envelope);
+      return jsonResponse({ entry: next });
+    }
+    if (method === "DELETE" && pathname === "/api/reminders/icons") {
+      const key = searchParams.get("key");
+      envelope.reminderIcons = envelope.reminderIcons.filter((entry) => entry.key !== key);
+      save(envelope);
+      return jsonResponse({ entries: envelope.reminderIcons });
+    }
+    const taskMatch = pathname.match(/^\/api\/tasks\/([^/]+)(?:\/(complete|dismiss|uncomplete))?$/);
     if (taskMatch) {
       const id = decodeURIComponent(taskMatch[1]);
       const command = taskMatch[2];
@@ -571,6 +609,18 @@ export function createNovaDummyProvider(options = {}) {
         envelope.tasks[index] = { ...envelope.tasks[index], dismissedAt: new Date().toISOString() };
         save(envelope);
         return jsonResponse(envelope.tasks[index]);
+      }
+      // The real store replays a pre-completion snapshot (a repeating reminder
+      // also rolls forward on completion). The demo never rolls tasks forward,
+      // so clearing the completion is the faithful equivalent here.
+      if (method === "POST" && command === "uncomplete") {
+        const restored = { ...envelope.tasks[index] };
+        delete restored.dismissedAt;
+        delete restored.alertDismissedAt;
+        delete restored.alertDismissedFor;
+        envelope.tasks[index] = restored;
+        save(envelope);
+        return jsonResponse(restored);
       }
     }
     if (method === "GET" && pathname === "/api/watchface") {
