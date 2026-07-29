@@ -1,11 +1,25 @@
 {
   "tasks": [
     {
+      "id": "demo-estrogen",
+      "name": "Take estrogen",
+      "start": "2026-07-27T08:00:00.000Z",
+      "createdAt": "2026-07-27T00:00:00.000Z",
+      "repeat": {
+        "kind": "days",
+        "intervalDays": 1
+      },
+      "source": "local"
+    },
+    {
       "id": "demo-water-plants",
       "name": "Water the balcony plants",
       "start": "2026-07-27T09:00:00.000Z",
       "createdAt": "2026-07-27T00:00:00.000Z",
-      "repeat": { "kind": "days", "intervalDays": 2 },
+      "repeat": {
+        "kind": "days",
+        "intervalDays": 2
+      },
       "source": "local"
     },
     {
@@ -39,7 +53,10 @@
       "name": "Put bins out",
       "start": "2026-07-28T19:00:00.000Z",
       "createdAt": "2026-07-27T00:00:00.000Z",
-      "repeat": { "kind": "days", "intervalDays": 7 },
+      "repeat": {
+        "kind": "days",
+        "intervalDays": 7
+      },
       "source": "icloud-reminders",
       "sourceCalendar": "Home",
       "readOnly": true
@@ -49,7 +66,9 @@
       "name": "Review Nova morning briefing",
       "start": "2026-07-29T07:30:00.000Z",
       "createdAt": "2026-07-27T00:00:00.000Z",
-      "repeat": { "kind": "morning-night" },
+      "repeat": {
+        "kind": "morning-night"
+      },
       "source": "local"
     }
   ]
