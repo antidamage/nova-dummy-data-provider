@@ -6,23 +6,36 @@
     <title>Nova Dummy Data Provider</title>
     <style>
       body {
-        background: #111;
-        color: #f5f5f5;
+        background: #171207;
+        color: #ffdda6;
         font-family: system-ui, sans-serif;
         margin: 0;
-        padding: 32px;
+        padding: clamp(24px, 6vw, 80px);
+        max-width: 900px;
+        margin-inline: auto;
+        line-height: 1.6;
       }
-      a { color: #67e8f9; }
-      code { color: #f0abfc; }
+      a { color: #ffc568; text-underline-offset: 4px; }
+      a:hover { color: #fff2d3; }
+      code { color: #eab778; }
+      h1 { line-height: 1.1; font-size: clamp(32px, 6vw, 56px); }
+      .demo-link { display: inline-block; padding: 12px 20px; border: 1px solid #ffc568; margin: 16px 0; }
     </style>
   </head>
   <body>
-    <h1>Nova Dummy Data Provider</h1>
-    <p>Static fixtures and <code>provider.mjs</code> for the public Nova HA Dashboard demo.</p>
+    <p>NOVA / DEMO HOUSEHOLD</p>
+    <h1>A home you can explore.</h1>
+    <p>The fictional household behind Nova's interactive dashboard. Room lighting, climate, energy history, reminders, camera events and voice personalities, with changes saved in your browser.</p>
+    <a class="demo-link" href="https://antidamage.github.io/nova-ha-dashboard/">Open the interactive dashboard →</a>
+    <p>Try the colour dials, adjust the heating, review an event, or browse Johnny Silverhand's sample conversation. The default theme is Golden Brown. No real devices, cameras, microphones or external services are connected.</p>
+    <h2>Explore the data</h2>
     <ul>
       <li><a href="./api/state.json">State fixture</a></li>
-      <li><a href="./api/theme.json">Theme fixture</a></li>
+      <li><a href="./api/power.json">Energy history and device estimates</a></li>
+      <li><a href="./api/tasks.json">Reminders</a></li>
+      <li><a href="./api/system.json">Voice, conversation and camera fixtures</a></li>
       <li><a href="./provider.mjs">Provider module</a></li>
     </ul>
+    <p>These files seed the simulator. Runtime timestamps stay fresh; edits are isolated to each visitor. Use <strong>Reset demo</strong> in the dashboard's Config page to start again.</p>
   </body>
 </html>

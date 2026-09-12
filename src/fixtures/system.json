@@ -10,7 +10,7 @@
     "ralphLoopLlmConfirmTimeoutSeconds": 3
   },
   "voice": {
-    "agentName": "[◯_◯]",
+    "agentName": "Johnny Silverhand",
     "agentNamePronunciation": "Silverhand",
     "systemVoiceEnabled": true,
     "speakerRecognitionEnabled": true,
@@ -32,11 +32,15 @@
     "webAccessEnabled": true,
     "webBackend": "brave",
     "webAnswerMaxSentences": 3,
-    "wakeWords": ["agent", "johnny", "silverhand"],
+    "wakeWords": [
+      "agent",
+      "johnny",
+      "silverhand"
+    ],
     "wakePrefixes": "yo hey ok okay hello",
     "volumeDay": 100,
     "volumeNight": 30,
-    "personality": "You are a dry, sarcastic cyberpunk home assistant who is direct, useful, and never sycophantic.",
+    "personality": "Dry, rebellious, sharp-witted and loyal. A little rock-and-roll swagger; useful answers first. Never invent a successful action.",
     "conversationIdleSeconds": 30,
     "ttsPrerollMs": 200,
     "ttsFrameMs": 60,
@@ -51,7 +55,9 @@
       "objective": "him",
       "possessive": "his"
     },
-    "affectations": { "pronounDrop": false },
+    "affectations": {
+      "pronounDrop": false
+    },
     "satelliteRooms": {
       "indium": "lounge",
       "nocturnium": "lounge"
@@ -257,37 +263,135 @@
       "energetic"
     ],
     "ranges": {
-      "speechRate": { "min": 70, "max": 130, "step": 5, "default": 100 },
-      "pitch": { "min": -20, "max": 20, "step": 2, "default": 0 },
-      "emotionMirroring": { "min": 0, "max": 200, "step": 10, "default": 100 },
-      "temperature": { "min": 0, "max": 5, "step": 0.1, "default": 0 },
-      "volumeDay": { "min": 0, "max": 100, "step": 5, "default": 100 },
-      "volumeNight": { "min": 0, "max": 100, "step": 5, "default": 100 },
-      "conversationIdleSeconds": { "min": 10, "max": 300, "step": 5, "default": 60 },
-      "longResponseProbability": { "min": 0, "max": 1, "step": 0.05, "default": 0 },
-      "webAnswerMaxSentences": { "min": 1, "max": 5, "step": 1, "default": 2 },
-      "ttsPrerollMs": { "min": 20, "max": 2000, "step": 10, "default": 700 },
-      "ttsFrameMs": { "min": 20, "max": 200, "step": 10, "default": 100 },
-      "speakerMatchThreshold": { "min": 0.3, "max": 0.95, "step": 0.01, "default": 0.65 },
-      "speakerMatchMargin": { "min": 0, "max": 0.3, "step": 0.01, "default": 0.03 },
-      "speakerClusterThreshold": { "min": 0.3, "max": 0.95, "step": 0.01, "default": 0.6 },
-      "speakerConversationMatchThreshold": { "min": 0.1, "max": 0.9, "step": 0.01, "default": 0.35 }
+      "speechRate": {
+        "min": 70,
+        "max": 130,
+        "step": 5,
+        "default": 100
+      },
+      "pitch": {
+        "min": -20,
+        "max": 20,
+        "step": 2,
+        "default": 0
+      },
+      "emotionMirroring": {
+        "min": 0,
+        "max": 200,
+        "step": 10,
+        "default": 100
+      },
+      "temperature": {
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 0
+      },
+      "volumeDay": {
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 100
+      },
+      "volumeNight": {
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 100
+      },
+      "conversationIdleSeconds": {
+        "min": 10,
+        "max": 300,
+        "step": 5,
+        "default": 60
+      },
+      "longResponseProbability": {
+        "min": 0,
+        "max": 1,
+        "step": 0.05,
+        "default": 0
+      },
+      "webAnswerMaxSentences": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      "ttsPrerollMs": {
+        "min": 20,
+        "max": 2000,
+        "step": 10,
+        "default": 700
+      },
+      "ttsFrameMs": {
+        "min": 20,
+        "max": 200,
+        "step": 10,
+        "default": 100
+      },
+      "speakerMatchThreshold": {
+        "min": 0.3,
+        "max": 0.95,
+        "step": 0.01,
+        "default": 0.65
+      },
+      "speakerMatchMargin": {
+        "min": 0,
+        "max": 0.3,
+        "step": 0.01,
+        "default": 0.03
+      },
+      "speakerClusterThreshold": {
+        "min": 0.3,
+        "max": 0.95,
+        "step": 0.01,
+        "default": 0.6
+      },
+      "speakerConversationMatchThreshold": {
+        "min": 0.1,
+        "max": 0.9,
+        "step": 0.01,
+        "default": 0.35
+      }
     },
     "wake": {
       "wordPattern": "^[A-Za-z]{2,24}$",
-      "defaultWords": ["beemo", "bimo", "bemo", "beamo", "bmo"],
+      "defaultWords": [
+        "beemo",
+        "bimo",
+        "bemo",
+        "beamo",
+        "bmo"
+      ],
       "defaultPrefixes": "hey ok okay hi hello yo oi",
       "note": "Wake words are matched transcript-first."
     }
   },
   "satellites": {
-    "iridium": { "ok": true },
+    "iridium": {
+      "ok": true
+    },
     "rooms": [
-      { "id": "bedroom", "name": "Bedroom" },
-      { "id": "conservatory", "name": "Conservatory" },
-      { "id": "kitchen", "name": "Kitchen" },
-      { "id": "lounge", "name": "Lounge" },
-      { "id": "office", "name": "Office" }
+      {
+        "id": "bedroom",
+        "name": "Bedroom"
+      },
+      {
+        "id": "conservatory",
+        "name": "Conservatory"
+      },
+      {
+        "id": "kitchen",
+        "name": "Kitchen"
+      },
+      {
+        "id": "lounge",
+        "name": "Lounge"
+      },
+      {
+        "id": "office",
+        "name": "Office"
+      }
     ],
     "satellites": [
       {
@@ -345,7 +449,7 @@
     "profiles": [
       {
         "id": "demo-owner",
-        "displayName": "Household Owner",
+        "displayName": "Alex (demo household)",
         "pronouns": "they/them",
         "speechPreferences": {
           "language": "English",
@@ -361,7 +465,7 @@
             "id": "demo-owner-voice",
             "state": "active",
             "sampleCount": 36,
-            "claimedName": "Household Owner",
+            "claimedName": "Alex",
             "claimedPronouns": "they/them",
             "createdAt": "2026-07-20T00:00:00.000Z",
             "lastSeenAt": "2026-07-27T00:00:00.000Z",
@@ -389,6 +493,11 @@
         "id": "demo-goal-energy",
         "status": "active",
         "summary": "Keep evening energy use below the household target"
+      },
+      {
+        "id": "demo-goal-comfort",
+        "status": "active",
+        "summary": "Keep the bedroom comfortable without leaving the heater on overnight"
       }
     ],
     "plans": [],
@@ -399,12 +508,17 @@
         "grantee_id": "demo-owner",
         "capability": "home.control",
         "active": true,
-        "target_scope": ["light.*"],
+        "target_scope": [
+          "light.*"
+        ],
         "expires_at": null
       }
     ],
     "identities": [
-      { "person_id": "demo-owner", "role": "owner" }
+      {
+        "person_id": "demo-owner",
+        "role": "owner"
+      }
     ],
     "research": [
       {
@@ -414,7 +528,9 @@
         "status": "completed",
         "spoken_summary": "A brief shower is possible late afternoon.",
         "detail": {},
-        "citations": ["Demo weather provider"],
+        "citations": [
+          "Demo weather provider"
+        ],
         "uncertainty": "medium",
         "backend": "demo",
         "error": null,
@@ -440,7 +556,9 @@
         "owner_id": "demo-owner",
         "summary": "Tell me if the outside door stays open",
         "event_kind": "device_health",
-        "match": { "area": "outside" },
+        "match": {
+          "area": "outside"
+        },
         "active": true,
         "one_shot": false,
         "trigger_count": 0,
@@ -469,6 +587,36 @@
       "needs_confirmation": false,
       "created_at": "2026-07-20T00:00:00.000Z",
       "expires_at": null
+    },
+    {
+      "id": "demo-memory-sleep",
+      "text": "Keep the bedroom at 20°C while winding down; turn heating off after an hour.",
+      "memory_type": "preference",
+      "owner_id": "demo-owner",
+      "pinned": true,
+      "needs_confirmation": false,
+      "created_at": "2026-07-24T08:00:00.000Z",
+      "expires_at": null
+    },
+    {
+      "id": "demo-memory-work",
+      "text": "Work calls happen in the office. Keep spoken reminders in the lounge during meetings.",
+      "memory_type": "routine",
+      "owner_id": "demo-owner",
+      "pinned": false,
+      "needs_confirmation": false,
+      "created_at": "2026-07-25T08:00:00.000Z",
+      "expires_at": null
+    },
+    {
+      "id": "demo-memory-review",
+      "text": "The balcony plants may need watering every second day.",
+      "memory_type": "preference",
+      "owner_id": "demo-owner",
+      "pinned": false,
+      "needs_confirmation": true,
+      "created_at": "2026-07-27T07:30:00.000Z",
+      "expires_at": null
     }
   ],
   "automations": [
@@ -476,12 +624,44 @@
       "id": "demo-automation-welcome-home",
       "owner_id": "demo-owner",
       "summary": "Turn on the hallway when somebody arrives after dark",
-      "trigger": { "kind": "presence_arrival" },
+      "trigger": {
+        "kind": "presence_arrival"
+      },
       "proposed_actions": [
-        { "service": "light.turn_on", "target": "light.tuya_mobile_hallway_light" }
+        {
+          "service": "light.turn_on",
+          "target": "light.tuya_mobile_hallway_light"
+        }
       ],
-      "simulation": { "matches": 3, "errors": [] },
+      "simulation": {
+        "matches": 3,
+        "errors": []
+      },
       "state": "active",
+      "monitor_failures": 0
+    },
+    {
+      "id": "demo-automation-evening",
+      "owner_id": "demo-owner",
+      "summary": "Warm the lounge lights at sunset",
+      "trigger": {
+        "kind": "sunset"
+      },
+      "proposed_actions": [
+        {
+          "service": "light.turn_on",
+          "target": "light.lounge_light",
+          "data": {
+            "brightness_pct": 65,
+            "color_temp_kelvin": 2700
+          }
+        }
+      ],
+      "simulation": {
+        "matches": 7,
+        "errors": []
+      },
+      "state": "simulated",
       "monitor_failures": 0
     }
   ],
@@ -528,17 +708,193 @@
       "id": "demo-turn-1-user",
       "role": "user",
       "text": "Set the lounge to candlelight.",
-      "speakerName": "Household Owner",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
       "kind": "command",
+      "outcome": "dry-run",
       "satelliteId": "indium",
-      "at": "2026-07-27T07:30:00.000Z"
+      "roomId": "lounge",
+      "at": "2026-07-27T07:40:00.000Z"
     },
     {
-      "id": "demo-turn-1-agent",
+      "id": "demo-turn-1-assistant",
       "role": "assistant",
-      "text": "Done. Lounge is warm and dim.",
+      "text": "Warm and low. Finally, lighting that doesn't look like a corporate interrogation room.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
       "kind": "command",
-      "at": "2026-07-27T07:30:01.000Z"
+      "outcome": "dry-run",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:40:02.000Z"
+    },
+    {
+      "id": "demo-turn-2-user",
+      "role": "user",
+      "text": "Keep the bedroom at 20 degrees, and switch the heater off in an hour.",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "command",
+      "outcome": "dry-run",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:42:00.000Z"
+    },
+    {
+      "id": "demo-turn-2-assistant",
+      "role": "assistant",
+      "text": "Twenty degrees. One-hour timer. Even rebellion needs a decent night's sleep.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "command",
+      "outcome": "dry-run",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:42:02.000Z"
+    },
+    {
+      "id": "demo-turn-3-user",
+      "role": "user",
+      "text": "How much power are we using?",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:44:00.000Z"
+    },
+    {
+      "id": "demo-turn-3-assistant",
+      "role": "assistant",
+      "text": "About 860 watts in this demo household. Heating is the big draw. The lights barely make a dent.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:44:02.000Z"
+    },
+    {
+      "id": "demo-turn-4-user",
+      "role": "user",
+      "text": "Remind me to water the balcony plants.",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "command",
+      "outcome": "dry-run",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:46:00.000Z"
+    },
+    {
+      "id": "demo-turn-4-assistant",
+      "role": "assistant",
+      "text": "On the list. Keep something alive that isn't powered by a wall socket.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "command",
+      "outcome": "dry-run",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:46:02.000Z"
+    },
+    {
+      "id": "demo-turn-5-user",
+      "role": "user",
+      "text": "What happens if the internet drops?",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:48:00.000Z"
+    },
+    {
+      "id": "demo-turn-5-assistant",
+      "role": "assistant",
+      "text": "Local lights, climate and the voice pipeline keep going. Cloud services lose their connection. Your house shouldn't need permission from a server overseas to turn on a lamp.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:48:02.000Z"
+    },
+    {
+      "id": "demo-turn-6-user",
+      "role": "user",
+      "text": "Can I change your personality?",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:50:00.000Z"
+    },
+    {
+      "id": "demo-turn-6-assistant",
+      "role": "assistant",
+      "text": "Voice, delivery, the whole attitude. There's a library in Config. I'll try not to take it personally if you pick the cheerful one.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:50:02.000Z"
+    },
+    {
+      "id": "demo-turn-7-user",
+      "role": "user",
+      "text": "Is any of this controlling a real house?",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:52:00.000Z"
+    },
+    {
+      "id": "demo-turn-7-assistant",
+      "role": "assistant",
+      "text": "Nope. Fictional household, browser-only controls. Turn the lights up, change a theme, clear the reminders. Nobody's actual lounge is getting a surprise makeover.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:52:02.000Z"
+    },
+    {
+      "id": "demo-turn-8-user",
+      "role": "user",
+      "text": "Give me the tour, Johnny.",
+      "speakerName": "Alex",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:54:00.000Z"
+    },
+    {
+      "id": "demo-turn-8-assistant",
+      "role": "assistant",
+      "text": "Start with the room controls. Try White, Candlelight and the colour dial. Check Grid for energy history, then open Config for voice personalities and the visualiser. Go on. Touch the expensive-looking buttons.",
+      "speakerName": "Johnny Silverhand",
+      "agentName": "Johnny Silverhand",
+      "kind": "exchange",
+      "outcome": "answered",
+      "satelliteId": "indium",
+      "roomId": "lounge",
+      "at": "2026-07-27T07:54:02.000Z"
     }
   ],
   "personalityLibrary": {
@@ -571,7 +927,9 @@
             "objective": "him",
             "possessive": "his"
           },
-          "affectations": { "pronounDrop": false }
+          "affectations": {
+            "pronounDrop": false
+          }
         }
       },
       {
@@ -600,9 +958,2433 @@
             "objective": "her",
             "possessive": "hers"
           },
-          "affectations": { "pronounDrop": false }
+          "affectations": {
+            "pronounDrop": false
+          }
         }
       }
     ]
+  },
+  "reminderIcons": [
+    {
+      "key": "water the balcony plants",
+      "displayName": "Water the balcony plants",
+      "glyph": {
+        "kind": "phosphor",
+        "id": "plant"
+      },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 0,
+      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+    },
+    {
+      "key": "pick up groceries",
+      "displayName": "Pick up groceries",
+      "glyph": {
+        "kind": "phosphor",
+        "id": "shopping-cart"
+      },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 1,
+      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+    },
+    {
+      "key": "put bins out",
+      "displayName": "Put bins out",
+      "glyph": {
+        "kind": "phosphor",
+        "id": "trash"
+      },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 2,
+      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+    },
+    {
+      "key": "replace the air purifier filter",
+      "displayName": "Replace the air purifier filter",
+      "glyph": {
+        "kind": "phosphor",
+        "id": "wrench"
+      },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 3,
+      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+    },
+    {
+      "key": "review nova morning briefing",
+      "displayName": "Review Nova morning briefing",
+      "glyph": {
+        "kind": "phosphor",
+        "id": "sun-horizon"
+      },
+      "source": "keyword",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 4,
+      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+    }
+  ],
+  "phonoscope": {
+    "config": {
+      "schemaVersion": 6,
+      "activeModuleId": "particle-ripples",
+      "activeModuleVersion": "2.7.0",
+      "idleBehavior": "ambient",
+      "screensaverSeconds": 0,
+      "message": "Demo visualiser settings · saved in your browser",
+      "statusOverlay": true,
+      "transitionMs": 600,
+      "providers": {
+        "spotify": true,
+        "songle": true,
+        "essentia": true,
+        "reccoBeats": true,
+        "lrclib": true
+      },
+      "moduleSettings": {
+        "bpm-pulse": {
+          "intensity": 0.6
+        },
+        "particle-ripples": {
+          "complexity": 1,
+          "intensity": 1.55,
+          "offset_magnifier": 13,
+          "strong_beat_multiplier": 3,
+          "peak_threshold": 0.8,
+          "peak_glow": 1.25,
+          "anticipation": 0.5,
+          "ramp_up": 0.025,
+          "release": 1.15,
+          "flash_power": 8,
+          "trail_length": 25.5,
+          "grid_wireframe": 1
+        }
+      },
+      "pendingStructuralModuleSettings": {},
+      "moduleReloadGenerations": {
+        "particle-ripples": 9
+      },
+      "settingsGroups": [
+        {
+          "id": "default",
+          "name": "Default",
+          "moduleId": "particle-ripples",
+          "lanes": [
+            {
+              "id": "lane_1",
+              "driver": {
+                "type": "beat",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 4,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_2",
+                  "effect": "intensity",
+                  "min": 0.9,
+                  "max": 2,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 0.6
+                }
+              ]
+            },
+            {
+              "id": "lane_3",
+              "driver": {
+                "type": "bass",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 4,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_4",
+                  "effect": "offset_magnifier",
+                  "min": 0,
+                  "max": 11,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 0.6
+                },
+                {
+                  "id": "bind_5",
+                  "effect": "strong_beat_multiplier",
+                  "min": 2.8,
+                  "max": 3,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 0.6
+                }
+              ]
+            },
+            {
+              "id": "lane_6",
+              "driver": {
+                "type": "energy",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 4,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_7",
+                  "effect": "trail_length",
+                  "min": 0,
+                  "max": 75.5,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 5.050000000000001
+                }
+              ]
+            },
+            {
+              "id": "lane_8",
+              "driver": {
+                "type": "timer",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 20,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_9",
+                  "effect": "__themeChange",
+                  "attackSeconds": 0,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 5,
+                  "params": {
+                    "order": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "combine": {},
+          "staticSettings": {
+            "complexity": 1
+          },
+          "isDefault": true
+        },
+        {
+          "id": "theme_ms6sook5_p9q11olx_settings",
+          "name": "Hyperpop",
+          "moduleId": "particle-ripples",
+          "lanes": [
+            {
+              "id": "lane_a",
+              "driver": {
+                "type": "treble",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 4,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_b",
+                  "effect": "trail_length",
+                  "min": 263.5,
+                  "max": 500,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 0.6
+                }
+              ]
+            },
+            {
+              "id": "lane_c",
+              "driver": {
+                "type": "bass",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 4,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_d",
+                  "effect": "offset_magnifier",
+                  "min": 0,
+                  "max": 14,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 2.9000000000000004
+                },
+                {
+                  "id": "bind_e",
+                  "effect": "intensity",
+                  "min": 0,
+                  "max": 0.55,
+                  "attackSeconds": 0.05,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 2.5500000000000003
+                }
+              ]
+            }
+          ],
+          "combine": {},
+          "staticSettings": {},
+          "isDefault": false
+        },
+        {
+          "id": "theme_mq77kutb_7vrn4x1i_settings",
+          "name": "Golden Brown",
+          "moduleId": "particle-ripples",
+          "lanes": [
+            {
+              "id": "lane_h",
+              "driver": {
+                "type": "beat",
+                "every": 1,
+                "divide": 1,
+                "offset": 0,
+                "intervalSeconds": 4,
+                "cadence": "beat"
+              },
+              "modifiers": [],
+              "bindings": [
+                {
+                  "id": "bind_i",
+                  "effect": "trail_length",
+                  "min": 0,
+                  "max": 41,
+                  "attackSeconds": 0.67,
+                  "holdSeconds": 0,
+                  "releaseSeconds": 3.1
+                }
+              ]
+            }
+          ],
+          "combine": {},
+          "staticSettings": {},
+          "isDefault": false
+        }
+      ],
+      "colorThemes": [
+        {
+          "id": "theme_ms6sook5_p9q11olx",
+          "name": "Hyperpop",
+          "moduleId": "particle-ripples",
+          "colors": {
+            "backgroundPrimary": {
+              "rgb": [
+                255,
+                0,
+                89
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.9443493150684932,
+                "y": 0
+              }
+            },
+            "backgroundSecondary": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.8792808219178082,
+                "y": 1
+              }
+            },
+            "dotPrimary": {
+              "rgb": [
+                255,
+                0,
+                4
+              ],
+              "intensity": 100,
+              "opacity": 13,
+              "cursor": {
+                "x": 1,
+                "y": 0
+              }
+            },
+            "dotSecondary": {
+              "rgb": [
+                255,
+                0,
+                4
+              ],
+              "intensity": 0,
+              "opacity": 11,
+              "cursor": {
+                "x": 1,
+                "y": 0
+              }
+            },
+            "glowPrimary": {
+              "rgb": [
+                255,
+                0,
+                170
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.8921232876712328,
+                "y": 0
+              }
+            },
+            "glowSecondary": {
+              "rgb": [
+                0,
+                255,
+                174
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.449486301369863,
+                "y": 0
+              }
+            },
+            "linePrimary": {
+              "rgb": [
+                255,
+                0,
+                111
+              ],
+              "intensity": 100,
+              "opacity": 56,
+              "cursor": {
+                "x": 0.9297945205479452,
+                "y": 0
+              }
+            },
+            "lineSecondary": {
+              "rgb": [
+                255,
+                0,
+                85
+              ],
+              "intensity": 100,
+              "opacity": 0,
+              "cursor": {
+                "x": 0.946917808219178,
+                "y": 0
+              }
+            },
+            "trailPrimary": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 0,
+              "opacity": 0,
+              "cursor": {
+                "x": 0.7688356164383562,
+                "y": 1
+              }
+            },
+            "trailSecondary": {
+              "rgb": [
+                0,
+                255,
+                225
+              ],
+              "intensity": 100,
+              "opacity": 26,
+              "cursor": {
+                "x": 0.4828767123287671,
+                "y": 0
+              }
+            },
+            "primaryText": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.6926369863013698,
+                "y": 1
+              }
+            },
+            "secondaryText": {
+              "rgb": [
+                255,
+                0,
+                76
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.952054794520548,
+                "y": 0
+              }
+            }
+          },
+          "imageId": null,
+          "backgroundImageId": null
+        },
+        {
+          "id": "theme_mqatkcuz_fdbf7p3s",
+          "name": "Battletech",
+          "moduleId": "particle-ripples",
+          "colors": {
+            "backgroundPrimary": {
+              "rgb": [
+                38,
+                55,
+                242
+              ],
+              "intensity": 70,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.6541095890410958,
+                "y": 0.10984848484848485
+              }
+            },
+            "backgroundSecondary": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.6267123287671232,
+                "y": 1
+              }
+            },
+            "dotPrimary": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 68,
+              "opacity": 50,
+              "cursor": {
+                "x": 0.1886872097931617,
+                "y": 1
+              }
+            },
+            "dotSecondary": {
+              "rgb": [
+                0,
+                128,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5854791051076405,
+                "y": 0
+              }
+            },
+            "glowPrimary": {
+              "rgb": [
+                71,
+                164,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "glowSecondary": {
+              "rgb": [
+                49,
+                152,
+                255
+              ],
+              "intensity": 93.92,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "linePrimary": {
+              "rgb": [
+                0,
+                110,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 62,
+              "cursor": {
+                "x": 0.5950342465753424,
+                "y": 0
+              }
+            },
+            "lineSecondary": {
+              "rgb": [
+                0,
+                128,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 58,
+              "cursor": {
+                "x": 0.5854791051076405,
+                "y": 0
+              }
+            },
+            "trailPrimary": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 68,
+              "opacity": 72,
+              "cursor": {
+                "x": 0.1886872097931617,
+                "y": 1
+              }
+            },
+            "trailSecondary": {
+              "rgb": [
+                0,
+                128,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 38,
+              "cursor": {
+                "x": 0.5854791051076405,
+                "y": 0
+              }
+            },
+            "primaryText": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "secondaryText": {
+              "rgb": [
+                184,
+                209,
+                224
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5642123287671232,
+                "y": 0.6098484848484849
+              }
+            }
+          },
+          "imageId": null,
+          "backgroundImageId": null
+        },
+        {
+          "id": "theme_mq77kutb_7vrn4x1i",
+          "name": "Golden Brown",
+          "moduleId": "particle-ripples",
+          "colors": {
+            "backgroundPrimary": {
+              "rgb": [
+                255,
+                136,
+                0
+              ],
+              "intensity": 19,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.0898972602739726,
+                "y": 0
+              }
+            },
+            "backgroundSecondary": {
+              "rgb": [
+                255,
+                196,
+                0
+              ],
+              "intensity": 76,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.12756849315068494,
+                "y": 0
+              }
+            },
+            "dotPrimary": {
+              "rgb": [
+                227,
+                208,
+                109
+              ],
+              "intensity": 100,
+              "opacity": 29,
+              "cursor": {
+                "x": 0.1404109589041096,
+                "y": 0.3181818181818182
+              }
+            },
+            "dotSecondary": {
+              "rgb": [
+                255,
+                0,
+                4
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 1,
+                "y": 0
+              }
+            },
+            "glowPrimary": {
+              "rgb": [
+                255,
+                145,
+                0
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.0958904109589041,
+                "y": 0
+              }
+            },
+            "glowSecondary": {
+              "rgb": [
+                255,
+                247,
+                0
+              ],
+              "intensity": 100,
+              "opacity": 54,
+              "cursor": {
+                "x": 0.16267123287671234,
+                "y": 0
+              }
+            },
+            "linePrimary": {
+              "rgb": [
+                255,
+                153,
+                0
+              ],
+              "intensity": 0,
+              "opacity": 32,
+              "cursor": {
+                "x": 0.10017123287671233,
+                "y": 0
+              }
+            },
+            "lineSecondary": {
+              "rgb": [
+                255,
+                0,
+                4
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 1,
+                "y": 0
+              }
+            },
+            "trailPrimary": {
+              "rgb": [
+                255,
+                0,
+                4
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 1,
+                "y": 0
+              }
+            },
+            "trailSecondary": {
+              "rgb": [
+                251,
+                203,
+                9
+              ],
+              "intensity": 100,
+              "opacity": 38,
+              "cursor": {
+                "x": 0.1327054794520548,
+                "y": 0.026515151515151516
+              }
+            },
+            "primaryText": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "secondaryText": {
+              "rgb": [
+                255,
+                157,
+                0
+              ],
+              "intensity": 72,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.1035958904109589,
+                "y": 0
+              }
+            }
+          },
+          "imageId": null,
+          "backgroundImageId": null
+        },
+        {
+          "id": "theme_mq7is7vl_1sxm1w1a",
+          "name": "Evil Red",
+          "moduleId": "particle-ripples",
+          "colors": {
+            "backgroundPrimary": {
+              "rgb": [
+                44,
+                110,
+                242
+              ],
+              "intensity": 7,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.6115101162684243,
+                "y": 0.1227556818181796
+              }
+            },
+            "backgroundSecondary": {
+              "rgb": [
+                255,
+                0,
+                4
+              ],
+              "intensity": 27.46,
+              "opacity": 100,
+              "cursor": {
+                "x": 1,
+                "y": 0
+              }
+            },
+            "dotPrimary": {
+              "rgb": [
+                255,
+                0,
+                43
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.9751712328767124,
+                "y": 0
+              }
+            },
+            "dotSecondary": {
+              "rgb": [
+                255,
+                0,
+                64
+              ],
+              "intensity": 64,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.960733984481378,
+                "y": 0
+              }
+            },
+            "glowPrimary": {
+              "rgb": [
+                255,
+                71,
+                117
+              ],
+              "intensity": 64,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "glowSecondary": {
+              "rgb": [
+                226,
+                84,
+                125
+              ],
+              "intensity": 53.739999999999995,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "linePrimary": {
+              "rgb": [
+                179,
+                222,
+                224
+              ],
+              "intensity": 37,
+              "opacity": 42,
+              "cursor": {
+                "x": 0.5068493150684932,
+                "y": 0.5833333333333334
+              }
+            },
+            "lineSecondary": {
+              "rgb": [
+                255,
+                0,
+                64
+              ],
+              "intensity": 64,
+              "opacity": 58,
+              "cursor": {
+                "x": 0.960733984481378,
+                "y": 0
+              }
+            },
+            "trailPrimary": {
+              "rgb": [
+                255,
+                0,
+                43
+              ],
+              "intensity": 100,
+              "opacity": 72,
+              "cursor": {
+                "x": 0.9751712328767124,
+                "y": 0
+              }
+            },
+            "trailSecondary": {
+              "rgb": [
+                255,
+                0,
+                64
+              ],
+              "intensity": 64,
+              "opacity": 38,
+              "cursor": {
+                "x": 0.960733984481378,
+                "y": 0
+              }
+            },
+            "primaryText": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "secondaryText": {
+              "rgb": [
+                255,
+                0,
+                55
+              ],
+              "intensity": 56,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.9657534246575342,
+                "y": 0
+              }
+            }
+          },
+          "imageId": null,
+          "backgroundImageId": null
+        },
+        {
+          "id": "theme_ms8lg9pp_l3m6v",
+          "name": "Shadow",
+          "moduleId": "particle-ripples",
+          "colors": {
+            "backgroundPrimary": {
+              "rgb": [
+                0,
+                85,
+                255
+              ],
+              "intensity": 7,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.6138698630136986,
+                "y": 0
+              }
+            },
+            "backgroundSecondary": {
+              "rgb": [
+                140,
+                0,
+                255
+              ],
+              "intensity": 27.46,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.7602739726027398,
+                "y": 0
+              }
+            },
+            "dotPrimary": {
+              "rgb": [
+                72,
+                0,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.7148972602739726,
+                "y": 0
+              }
+            },
+            "dotSecondary": {
+              "rgb": [
+                25,
+                0,
+                255
+              ],
+              "intensity": 64,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.6857876712328768,
+                "y": 0
+              }
+            },
+            "glowPrimary": {
+              "rgb": [
+                106,
+                0,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.738013698630137,
+                "y": 0
+              }
+            },
+            "glowSecondary": {
+              "rgb": [
+                226,
+                84,
+                125
+              ],
+              "intensity": 53.739999999999995,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            "linePrimary": {
+              "rgb": [
+                179,
+                222,
+                224
+              ],
+              "intensity": 37,
+              "opacity": 42,
+              "cursor": {
+                "x": 0.5068493150684932,
+                "y": 0.5833333333333334
+              }
+            },
+            "lineSecondary": {
+              "rgb": [
+                255,
+                0,
+                64
+              ],
+              "intensity": 64,
+              "opacity": 58,
+              "cursor": {
+                "x": 0.960733984481378,
+                "y": 0
+              }
+            },
+            "trailPrimary": {
+              "rgb": [
+                128,
+                0,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 72,
+              "cursor": {
+                "x": 0.7534246575342466,
+                "y": 0
+              }
+            },
+            "trailSecondary": {
+              "rgb": [
+                38,
+                0,
+                255
+              ],
+              "intensity": 64,
+              "opacity": 38,
+              "cursor": {
+                "x": 0.6934931506849316,
+                "y": 0
+              }
+            },
+            "primaryText": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.5171232876712328,
+                "y": 1
+              }
+            },
+            "secondaryText": {
+              "rgb": [
+                136,
+                0,
+                255
+              ],
+              "intensity": 100,
+              "opacity": 100,
+              "cursor": {
+                "x": 0.7568493150684932,
+                "y": 0
+              }
+            }
+          },
+          "imageId": null,
+          "backgroundImageId": null
+        }
+      ],
+      "colorGroups": [
+        {
+          "id": "theme_group_ms6stk5k",
+          "moduleId": "particle-ripples",
+          "name": "After Hours",
+          "entries": [
+            {
+              "id": "entry_f",
+              "themeId": "theme_ms6sook5_p9q11olx",
+              "altThemeId": null,
+              "settingsGroupIds": [
+                "default",
+                "theme_ms6sook5_p9q11olx_settings"
+              ]
+            },
+            {
+              "id": "entry_g",
+              "themeId": "theme_mqatkcuz_fdbf7p3s",
+              "altThemeId": null,
+              "settingsGroupIds": [
+                "default"
+              ]
+            },
+            {
+              "id": "entry_j",
+              "themeId": "theme_mq77kutb_7vrn4x1i",
+              "altThemeId": null,
+              "settingsGroupIds": [
+                "default",
+                "theme_mq77kutb_7vrn4x1i_settings"
+              ]
+            },
+            {
+              "id": "entry_k",
+              "themeId": "theme_mq7is7vl_1sxm1w1a",
+              "altThemeId": null,
+              "settingsGroupIds": [
+                "default"
+              ]
+            },
+            {
+              "id": "entry_l",
+              "themeId": "theme_ms8lg9pp_l3m6v",
+              "altThemeId": null,
+              "settingsGroupIds": [
+                "default"
+              ]
+            }
+          ],
+          "genres": [],
+          "isDefault": true
+        }
+      ],
+      "moduleColorGroupIds": {
+        "particle-ripples": "theme_group_ms6stk5k"
+      },
+      "chooseColorGroupByGenre": false,
+      "structuralSettings": {
+        "__centreProportional": 1
+      },
+      "houseParty": {
+        "enabled": true,
+        "hueMode": "follow",
+        "brightnessMode": "ignore"
+      },
+      "soloColorThemeId": "",
+      "soloSettingsGroupId": "",
+      "editorPreviewColorGroupId": "",
+      "editorPreviewColorEntryId": "",
+      "updatedAt": "2026-07-31T12:07:05.959Z"
+    },
+    "modules": [
+      {
+        "id": "bpm-pulse-example",
+        "packageName": "nz.skull.nova.visualiser.bpm-pulse-example",
+        "version": "1.0.0",
+        "name": "BPM Pulse Example",
+        "description": "Minimal beat-synchronised rings that also remain alive in ambient mode.",
+        "dimension": "2d",
+        "settings": [
+          {
+            "id": "intensity",
+            "label": "Intensity",
+            "description": "",
+            "control": "slider",
+            "min": 0,
+            "max": 2,
+            "step": 0.05,
+            "default": 1,
+            "affects": [],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          }
+        ],
+        "paletteSlots": [
+          {
+            "id": "primary",
+            "label": "Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "secondary",
+            "label": "Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "tertiary",
+            "label": "Tertiary",
+            "defaultRgb": [
+              166,
+              166,
+              166
+            ]
+          },
+          {
+            "id": "background",
+            "label": "Background",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text Colour",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text Colour",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "2ea64fb4900c89cec347ccf1d2d7c0f0011d9c88723d52b82ad233a20b53a188",
+        "builtin": false
+      },
+      {
+        "id": "gravity-choir",
+        "packageName": "nz.skull.nova.visualiser.gravity-choir",
+        "version": "1.0.0",
+        "name": "Gravity Choir",
+        "description": "Lyric changes turn singers into temporary attractors.",
+        "dimension": "3d",
+        "settings": [],
+        "paletteSlots": [
+          {
+            "id": "primary",
+            "label": "Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "secondary",
+            "label": "Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "tertiary",
+            "label": "Tertiary",
+            "defaultRgb": [
+              166,
+              166,
+              166
+            ]
+          },
+          {
+            "id": "background",
+            "label": "Background",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text Colour",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text Colour",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "aa38cffe8c37589f9aa053bbfd595adf4b6816ee15d89f107d944f5c31f629cd",
+        "builtin": false
+      },
+      {
+        "id": "lyric-artwork-field",
+        "packageName": "nz.skull.nova.visualiser.lyric-artwork-field",
+        "version": "1.0.0",
+        "name": "Lyric Artwork Field",
+        "description": "Album artwork and timed lyrics drive a typographic 2D field.",
+        "dimension": "2d",
+        "settings": [],
+        "paletteSlots": [
+          {
+            "id": "primary",
+            "label": "Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "secondary",
+            "label": "Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "tertiary",
+            "label": "Tertiary",
+            "defaultRgb": [
+              166,
+              166,
+              166
+            ]
+          },
+          {
+            "id": "background",
+            "label": "Background",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text Colour",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text Colour",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "9f3511ff1a7f5ba7670838041770ad5abc32abffa9543624019d6868898d5354",
+        "builtin": false
+      },
+      {
+        "id": "nested-supernova",
+        "packageName": "nz.skull.nova.visualiser.nested-supernova",
+        "version": "1.0.0",
+        "name": "Nested Supernova",
+        "description": "A 3D beat burst with child motes, trails, and secondary shockwaves.",
+        "dimension": "3d",
+        "settings": [
+          {
+            "id": "density",
+            "label": "Density",
+            "description": "",
+            "control": "slider",
+            "min": 0.2,
+            "max": 2,
+            "step": 0.05,
+            "default": 1,
+            "affects": [],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          }
+        ],
+        "paletteSlots": [
+          {
+            "id": "primary",
+            "label": "Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "secondary",
+            "label": "Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "tertiary",
+            "label": "Tertiary",
+            "defaultRgb": [
+              166,
+              166,
+              166
+            ]
+          },
+          {
+            "id": "background",
+            "label": "Background",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text Colour",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text Colour",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "05e9d69cd7dc501e725b8af9018078a31fecbe67219af3e1b7267fb39b9fe2a8",
+        "builtin": false
+      },
+      {
+        "id": "particle-ripples",
+        "packageName": "nz.skull.nova.visualiser.particle-ripples",
+        "version": "2.7.0",
+        "name": "Particle Ripples",
+        "description": "A centered screen-wide particle lattice carrying slow, damped beat ripples.",
+        "dimension": "2d",
+        "settings": [
+          {
+            "id": "complexity",
+            "label": "Visual complexity",
+            "description": "Grid density. Lower settings reduce both ripple simulation and draw count while preserving the full-screen field.",
+            "control": "slider",
+            "min": 0.2,
+            "max": 1,
+            "step": 0.05,
+            "default": 1,
+            "affects": [
+              "scene.particle-grid.field.density"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 1.5
+            },
+            "options": [],
+            "section": "motion",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "structural"
+          },
+          {
+            "id": "grid_width",
+            "label": "Grid width",
+            "description": "Width of the particle lattice as a percentage of the frame. The gap between dots comes from Visual complexity, so a wider grid means more columns, not wider spacing.",
+            "control": "slider",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 100,
+            "affects": [
+              "scene.particle-grid.field.extentX"
+            ],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "motion",
+            "group": "grid",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "grid_height",
+            "label": "Grid height",
+            "description": "Height of the particle lattice as a percentage of the frame. The gap between dots comes from Visual complexity, so a taller grid means more rows, not looser spacing.",
+            "control": "slider",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 33,
+            "affects": [
+              "scene.particle-grid.field.extentY"
+            ],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "motion",
+            "group": "grid",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "dot_size",
+            "label": "Dot size",
+            "description": "Diameter of each lattice dot in screen pixels. Real pixels rather than a share of the frame, so a dot is the same size on a 1080p and a 4K output. The grid lines follow it and taper between the two dots they connect. At 0 the dots disappear and only the hairline lattice remains.",
+            "control": "slider",
+            "min": 0,
+            "max": 50,
+            "step": 0.1,
+            "default": 3.8,
+            "affects": [
+              "templates.particle.render.dotSizePixels"
+            ],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "motion",
+            "group": "grid",
+            "parameterGroup": "dots",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "intensity",
+            "label": "Ripple intensity",
+            "description": "Base energy carried by every beat wave.",
+            "control": "slider",
+            "min": 0,
+            "max": 2,
+            "step": 0.05,
+            "default": 1.55,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.strength"
+            ],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "motion",
+            "group": "ripple",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "fluid_speed",
+            "label": "Fluid background speed",
+            "description": "Animation speed of the soft fluid colour field behind the particle lattice.",
+            "control": "slider",
+            "min": 0.1,
+            "max": 60,
+            "step": 0.05,
+            "default": 0.65,
+            "affects": [
+              "renderer.fluidBackground.speed"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 2.5
+            },
+            "options": [],
+            "section": "motion",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "offset_magnifier",
+            "label": "X/Y offset magnifier",
+            "description": "Multiplies the Gerstner crest displacement so the particle motion is more visible.",
+            "control": "slider",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "default": 13,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.offsetMagnifier"
+            ],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "motion",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "strong_beat_multiplier",
+            "label": "Strong beat multiplier",
+            "description": "Extra wave energy applied only as bass strength enters its upper range.",
+            "control": "slider",
+            "min": 1,
+            "max": 3,
+            "step": 0.05,
+            "default": 3,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.strength"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 1.6
+            },
+            "options": [],
+            "section": "motion",
+            "group": "ripple",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "peak_threshold",
+            "label": "Peak threshold",
+            "description": "Wave energy at which the HDR flare begins to bloom.",
+            "control": "slider",
+            "min": 0.1,
+            "max": 0.8,
+            "step": 0.01,
+            "default": 0.8,
+            "affects": [
+              "templates.particle.render.flareThreshold"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 1.5
+            },
+            "options": [],
+            "section": "motion",
+            "group": "flare",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "peak_glow",
+            "label": "Peak glow",
+            "description": "Maximum HDR bloom energy at a fully activated crest.",
+            "control": "slider",
+            "min": 1,
+            "max": 12,
+            "step": 0.25,
+            "default": 1.25,
+            "affects": [
+              "templates.particle.render.flareGlow"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 2
+            },
+            "options": [],
+            "section": "motion",
+            "group": "flare",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "anticipation",
+            "label": "Anticipation",
+            "description": "How early the leading edge starts to illuminate before the crest arrives.",
+            "control": "slider",
+            "min": 0.12,
+            "max": 0.9,
+            "step": 0.01,
+            "default": 0.5,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.anticipation"
+            ],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "motion",
+            "group": "flare",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "ramp_up",
+            "label": "Ramp up",
+            "description": "Time taken for rising wave energy to reach the flash.",
+            "control": "slider",
+            "min": 0.015,
+            "max": 0.2,
+            "step": 0.005,
+            "default": 0.025,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.attack"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 2.2
+            },
+            "options": [],
+            "section": "motion",
+            "group": "flare",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "release",
+            "label": "Release",
+            "description": "Time for the crest glow to ease back into the dot.",
+            "control": "slider",
+            "min": 0.15,
+            "max": 1.5,
+            "step": 0.05,
+            "default": 1.15,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.release"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 1.6
+            },
+            "options": [],
+            "section": "motion",
+            "group": "flare",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "flash_power",
+            "label": "Flash power",
+            "description": "Shapes how sharply the leading-edge glow concentrates into its crest.",
+            "control": "slider",
+            "min": 1.5,
+            "max": 8,
+            "step": 0.1,
+            "default": 8,
+            "affects": [
+              "scene.particle-grid.effectSources.beat-ripple.flashPower"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 1.5
+            },
+            "options": [],
+            "section": "motion",
+            "group": "flare",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          },
+          {
+            "id": "trail_length",
+            "label": "Trail length",
+            "description": "Length of the tapered wake behind particles that cross the glow threshold, in particle radii. Zero disables trails.",
+            "control": "slider",
+            "min": 0,
+            "max": 500,
+            "step": 0.5,
+            "default": 25.5,
+            "affects": [
+              "templates.particle.render.trailLength"
+            ],
+            "curve": {
+              "type": "power",
+              "exponent": 1.4
+            },
+            "options": [],
+            "section": "motion",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          }
+        ],
+        "paletteSlots": [
+          {
+            "id": "backgroundPrimary",
+            "label": "Background Primary",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "backgroundSecondary",
+            "label": "Background Secondary",
+            "defaultRgb": [
+              12,
+              18,
+              28
+            ]
+          },
+          {
+            "id": "dotPrimary",
+            "label": "Dot Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "dotSecondary",
+            "label": "Dot Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "glowPrimary",
+            "label": "Dot Glow Primary",
+            "defaultRgb": [
+              232,
+              238,
+              255
+            ]
+          },
+          {
+            "id": "glowSecondary",
+            "label": "Dot Glow Secondary",
+            "defaultRgb": [
+              166,
+              190,
+              230
+            ]
+          },
+          {
+            "id": "linePrimary",
+            "label": "Grid Line Primary",
+            "defaultRgb": [
+              132,
+              144,
+              166
+            ]
+          },
+          {
+            "id": "lineSecondary",
+            "label": "Grid Line Secondary",
+            "defaultRgb": [
+              195,
+              205,
+              224
+            ]
+          },
+          {
+            "id": "trailPrimary",
+            "label": "Dot Trail Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "trailSecondary",
+            "label": "Dot Trail Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "vignette",
+            "label": "Vignette",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "a9ca0483bcfb442fc11bf545a044a22ca6161b8d0eac43fb930470c051dec0ce",
+        "builtin": false
+      },
+      {
+        "id": "ripple-lattice",
+        "packageName": "nz.skull.nova.visualiser.ripple-lattice",
+        "version": "1.0.0",
+        "name": "Ripple Lattice",
+        "description": "A deliberate field feedback loop bounded by per-tick round-trip detection.",
+        "dimension": "2d",
+        "settings": [],
+        "paletteSlots": [
+          {
+            "id": "primary",
+            "label": "Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "secondary",
+            "label": "Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "tertiary",
+            "label": "Tertiary",
+            "defaultRgb": [
+              166,
+              166,
+              166
+            ]
+          },
+          {
+            "id": "background",
+            "label": "Background",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text Colour",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text Colour",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "7748d9314d90319485231be79efe2d34d31577864b6327fdd2be26b133f57c36",
+        "builtin": false
+      },
+      {
+        "id": "spectral-membrane",
+        "packageName": "nz.skull.nova.visualiser.spectral-membrane",
+        "version": "1.0.0",
+        "name": "Spectral Membrane",
+        "description": "A 2D lattice carrying bass-driven displacement waves.",
+        "dimension": "2d",
+        "settings": [
+          {
+            "id": "intensity",
+            "label": "Wave Intensity",
+            "description": "",
+            "control": "slider",
+            "min": 0,
+            "max": 2,
+            "step": 0.05,
+            "default": 1,
+            "affects": [],
+            "curve": {
+              "type": "linear",
+              "exponent": 1
+            },
+            "options": [],
+            "section": "",
+            "group": "",
+            "parameterGroup": "",
+            "updateMode": "smooth"
+          }
+        ],
+        "paletteSlots": [
+          {
+            "id": "primary",
+            "label": "Primary",
+            "defaultRgb": [
+              115,
+              115,
+              115
+            ]
+          },
+          {
+            "id": "secondary",
+            "label": "Secondary",
+            "defaultRgb": [
+              217,
+              217,
+              217
+            ]
+          },
+          {
+            "id": "tertiary",
+            "label": "Tertiary",
+            "defaultRgb": [
+              166,
+              166,
+              166
+            ]
+          },
+          {
+            "id": "background",
+            "label": "Background",
+            "defaultRgb": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "id": "primaryText",
+            "label": "Primary Text Colour",
+            "defaultRgb": [
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "id": "secondaryText",
+            "label": "Secondary Text Colour",
+            "defaultRgb": [
+              184,
+              184,
+              184
+            ]
+          }
+        ],
+        "hash": "4c0395f92ed7a21840d024629c459519ad7738128f5528f05dce21a452433759",
+        "builtin": false
+      }
+    ]
+  },
+  "cameraAnalysis": {
+    "enabled": true,
+    "alertsEnabled": true,
+    "zones": [
+      {
+        "id": "front-path",
+        "label": "Front path",
+        "kind": "activity",
+        "points": [
+          [
+            0.25,
+            0.52
+          ],
+          [
+            0.42,
+            0.15
+          ],
+          [
+            0.5,
+            0.24
+          ],
+          [
+            0.4,
+            0.92
+          ]
+        ]
+      },
+      {
+        "id": "driveway",
+        "label": "Driveway",
+        "kind": "vehicle",
+        "points": [
+          [
+            0.57,
+            0.32
+          ],
+          [
+            0.84,
+            0.24
+          ],
+          [
+            0.99,
+            0.87
+          ],
+          [
+            0.69,
+            0.97
+          ]
+        ]
+      },
+      {
+        "id": "street",
+        "label": "Public street (excluded)",
+        "kind": "exclude",
+        "points": [
+          [
+            0.37,
+            0.02
+          ],
+          [
+            0.98,
+            0.03
+          ],
+          [
+            0.98,
+            0.18
+          ],
+          [
+            0.39,
+            0.13
+          ]
+        ]
+      }
+    ]
+  },
+  "cameraReferences": [],
+  "cameraEvents": [
+    {
+      "id": "demo-camera-0",
+      "cameraId": "outside",
+      "startedAt": "2026-07-27T07:50:00.000Z",
+      "endedAt": "2026-07-27T07:50:12.000Z",
+      "status": "analysed",
+      "priority": "routine",
+      "title": "Cat on the front path",
+      "summary": "Fictional example: a ginger cat crosses the path. No alert sent; routine garden activity.",
+      "zones": [
+        "Front path"
+      ],
+      "labels": [
+        "cat"
+      ],
+      "subjects": [
+        {
+          "class": "cat",
+          "confidence": 0.96,
+          "zone": "Front path",
+          "box": [
+            0.3,
+            0.3,
+            0.6,
+            0.7
+          ]
+        }
+      ],
+      "thumbnailUrl": null,
+      "clipUrl": null,
+      "reviewed": false,
+      "starred": false,
+      "alertState": "Demo: no notification sent",
+      "retainedReason": "sample_event",
+      "ownerPresent": false,
+      "policyVersion": 1
+    },
+    {
+      "id": "demo-camera-1",
+      "cameraId": "outside",
+      "startedAt": "2026-07-27T07:40:00.000Z",
+      "endedAt": "2026-07-27T07:40:12.000Z",
+      "status": "analysed",
+      "priority": "important",
+      "title": "Driveway arrival",
+      "summary": "Fictional example: the household car has arrived. Kept for review because the vehicle entered the driveway.",
+      "zones": [
+        "Driveway"
+      ],
+      "labels": [
+        "car"
+      ],
+      "subjects": [
+        {
+          "class": "car",
+          "confidence": 0.96,
+          "zone": "Driveway",
+          "box": [
+            0.3,
+            0.3,
+            0.6,
+            0.7
+          ]
+        }
+      ],
+      "thumbnailUrl": null,
+      "clipUrl": null,
+      "reviewed": false,
+      "starred": false,
+      "alertState": "Demo: no notification sent",
+      "retainedReason": "sample_event",
+      "ownerPresent": false,
+      "policyVersion": 1
+    },
+    {
+      "id": "demo-camera-2",
+      "cameraId": "outside",
+      "startedAt": "2026-07-27T07:30:00.000Z",
+      "endedAt": "2026-07-27T07:30:12.000Z",
+      "status": "analysed",
+      "priority": "routine",
+      "title": "Garden movement",
+      "summary": "Fictional example: movement stayed inside the garden. Public-street activity is excluded by the scene mask.",
+      "zones": [
+        "Front path"
+      ],
+      "labels": [
+        "motion"
+      ],
+      "subjects": [
+        {
+          "class": "motion",
+          "confidence": 0.96,
+          "zone": "Front path",
+          "box": [
+            0.3,
+            0.3,
+            0.6,
+            0.7
+          ]
+        }
+      ],
+      "thumbnailUrl": null,
+      "clipUrl": null,
+      "reviewed": true,
+      "starred": false,
+      "alertState": "Demo: no notification sent",
+      "retainedReason": "sample_event",
+      "ownerPresent": false,
+      "policyVersion": 1
+    }
+  ],
+  "companion": {
+    "enabled": true,
+    "forceLocal": false,
+    "connected": true,
+    "identity": "Demo iPhone",
+    "locality": "home_lan",
+    "tier": "full",
+    "tierReason": "Plugged in and ready (simulated)",
+    "appVersion": "1.0 demo",
+    "osVersion": "iOS",
+    "workloads": [
+      "reasoning",
+      "speech"
+    ],
+    "telemetryAgeSeconds": 3,
+    "heartbeatAgeSeconds": 1,
+    "activeAttempts": 0,
+    "routes": [
+      {
+        "pass": "reasoning",
+        "mode": "companion_preferred",
+        "companionMs": {
+          "n": 24,
+          "p50": 620,
+          "p95": 940
+        },
+        "localMs": {
+          "n": 18,
+          "p50": 430,
+          "p95": 670
+        },
+        "fallbackOverheadMs": {
+          "n": 0,
+          "p50": null,
+          "p95": null
+        },
+        "comparing": false,
+        "eligibility": "Ready (simulated)",
+        "offered": 24,
+        "accepted": 24,
+        "rejected": 0,
+        "completed": 24,
+        "failed": 0,
+        "fellBack": 0,
+        "paused": false
+      },
+      {
+        "pass": "speech",
+        "mode": "companion_preferred",
+        "companionMs": {
+          "n": 24,
+          "p50": 620,
+          "p95": 940
+        },
+        "localMs": {
+          "n": 18,
+          "p50": 430,
+          "p95": 670
+        },
+        "fallbackOverheadMs": {
+          "n": 0,
+          "p50": null,
+          "p95": null
+        },
+        "comparing": false,
+        "eligibility": "Ready (simulated)",
+        "offered": 24,
+        "accepted": 24,
+        "rejected": 0,
+        "completed": 24,
+        "failed": 0,
+        "fellBack": 0,
+        "paused": false
+      }
+    ],
+    "presence": {
+      "state": "home",
+      "source": "demo",
+      "ageSeconds": 12,
+      "detail": "Fictional household presence",
+      "actionable": false
+    },
+    "comparisons": [],
+    "reportingStalled": false
   }
 }

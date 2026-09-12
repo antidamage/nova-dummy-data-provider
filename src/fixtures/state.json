@@ -11,8 +11,15 @@
         "brightness": 196,
         "color_mode": "hs",
         "color_temp_kelvin": 3000,
-        "rgb_color": [255, 154, 72],
-        "supported_color_modes": ["color_temp", "hs"],
+        "rgb_color": [
+          255,
+          154,
+          72
+        ],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Lounge Light"
       }
     },
@@ -24,8 +31,15 @@
       "area_id": "lounge",
       "attributes": {
         "brightness": 128,
-        "rgb_color": [255, 174, 0],
-        "supported_color_modes": ["brightness", "rgb"],
+        "rgb_color": [
+          255,
+          174,
+          0
+        ],
+        "supported_color_modes": [
+          "brightness",
+          "rgb"
+        ],
         "friendly_name": "TV Backlight"
       }
     },
@@ -37,7 +51,9 @@
       "area_id": "lounge",
       "attributes": {
         "brightness": 170,
-        "supported_color_modes": ["brightness"],
+        "supported_color_modes": [
+          "brightness"
+        ],
         "friendly_name": "Mirror Light"
       }
     },
@@ -49,7 +65,9 @@
       "area_id": "lounge",
       "attributes": {
         "brightness": 0,
-        "supported_color_modes": ["brightness"],
+        "supported_color_modes": [
+          "brightness"
+        ],
         "friendly_name": "Hallway Light"
       }
     },
@@ -62,8 +80,15 @@
       "isIllumination": true,
       "attributes": {
         "brightness": 96,
-        "rgb_color": [255, 196, 0],
-        "supported_color_modes": ["brightness", "rgb"],
+        "rgb_color": [
+          255,
+          196,
+          0
+        ],
+        "supported_color_modes": [
+          "brightness",
+          "rgb"
+        ],
         "friendly_name": "Neon Lights"
       }
     },
@@ -75,7 +100,9 @@
       "area_id": "lounge",
       "isIllumination": true,
       "attributes": {
-        "supported_color_modes": ["onoff"],
+        "supported_color_modes": [
+          "onoff"
+        ],
         "friendly_name": "Neon Sign"
       }
     },
@@ -88,7 +115,10 @@
       "attributes": {
         "brightness": 220,
         "color_temp_kelvin": 4200,
-        "supported_color_modes": ["color_temp", "hs"],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Desk Light"
       }
     },
@@ -100,7 +130,10 @@
       "area_id": "bedroom",
       "attributes": {
         "brightness": 0,
-        "supported_color_modes": ["color_temp", "hs"],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Bedroom Light"
       }
     },
@@ -113,7 +146,10 @@
       "attributes": {
         "brightness": 112,
         "color_temp_kelvin": 2700,
-        "supported_color_modes": ["color_temp", "hs"],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Wardrobe"
       }
     },
@@ -126,7 +162,10 @@
       "attributes": {
         "brightness": 255,
         "color_temp_kelvin": 3000,
-        "supported_color_modes": ["color_temp", "hs"],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Conservatory Light"
       }
     },
@@ -138,8 +177,15 @@
       "area_id": "conservatory",
       "attributes": {
         "brightness": 150,
-        "rgb_color": [255, 191, 0],
-        "supported_color_modes": ["color_temp", "hs"],
+        "rgb_color": [
+          255,
+          191,
+          0
+        ],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Hallway Accent"
       }
     },
@@ -152,7 +198,10 @@
       "attributes": {
         "brightness": 205,
         "color_temp_kelvin": 3500,
-        "supported_color_modes": ["color_temp", "hs"],
+        "supported_color_modes": [
+          "color_temp",
+          "hs"
+        ],
         "friendly_name": "Kitchen Main"
       }
     },
@@ -164,7 +213,9 @@
       "area_id": "kitchen",
       "attributes": {
         "brightness": 0,
-        "supported_color_modes": ["brightness"],
+        "supported_color_modes": [
+          "brightness"
+        ],
         "friendly_name": "Kitchen Bench"
       }
     },
@@ -176,7 +227,9 @@
       "area_id": "kitchen",
       "attributes": {
         "brightness": 145,
-        "supported_color_modes": ["brightness"],
+        "supported_color_modes": [
+          "brightness"
+        ],
         "friendly_name": "Kitchen Cabinets"
       }
     },
@@ -188,7 +241,9 @@
       "area_id": "kitchen",
       "attributes": {
         "brightness": 180,
-        "supported_color_modes": ["brightness"],
+        "supported_color_modes": [
+          "brightness"
+        ],
         "friendly_name": "Breakfast Nook"
       }
     },
@@ -200,7 +255,9 @@
       "area_id": "outside",
       "attributes": {
         "brightness": 0,
-        "supported_color_modes": ["brightness"],
+        "supported_color_modes": [
+          "brightness"
+        ],
         "friendly_name": "Outside Light"
       }
     },
@@ -222,7 +279,9 @@
       "name": "Office Sign",
       "area_id": "office",
       "isIllumination": true,
-      "attributes": { "friendly_name": "Office Sign" }
+      "attributes": {
+        "friendly_name": "Office Sign"
+      }
     },
     {
       "entity_id": "switch.iridium_mute",
@@ -255,10 +314,25 @@
       "attributes": {
         "current_temperature": 22.4,
         "temperature": 21,
-        "hvac_modes": ["off", "heat", "cool", "fan_only", "auto"],
-        "fan_modes": ["quiet", "low", "medium", "high", "turbo"],
+        "hvac_modes": [
+          "off",
+          "heat",
+          "cool",
+          "fan_only",
+          "auto"
+        ],
+        "fan_modes": [
+          "quiet",
+          "low",
+          "medium",
+          "high",
+          "turbo"
+        ],
         "fan_mode": "medium",
-        "swing_modes": ["off", "both"],
+        "swing_modes": [
+          "off",
+          "both"
+        ],
         "swing_mode": "off",
         "friendly_name": "Air Conditioner"
       }
@@ -270,7 +344,9 @@
       "name": "Panel Light",
       "area_id": "climate",
       "isIllumination": true,
-      "attributes": { "friendly_name": "Panel Light" }
+      "attributes": {
+        "friendly_name": "Panel Light"
+      }
     },
     {
       "entity_id": "switch.c6780cad_fresh_air",
@@ -278,7 +354,9 @@
       "state": "on",
       "name": "Fresh Air",
       "area_id": "climate",
-      "attributes": { "friendly_name": "Fresh Air" }
+      "attributes": {
+        "friendly_name": "Fresh Air"
+      }
     },
     {
       "entity_id": "switch.c6780cad_quiet_mode",
@@ -286,7 +364,9 @@
       "state": "off",
       "name": "Quiet Mode",
       "area_id": "climate",
-      "attributes": { "friendly_name": "Quiet Mode" }
+      "attributes": {
+        "friendly_name": "Quiet Mode"
+      }
     },
     {
       "entity_id": "switch.c6780cad_xtra_fan",
@@ -294,7 +374,9 @@
       "state": "off",
       "name": "Turbo",
       "area_id": "climate",
-      "attributes": { "friendly_name": "Turbo" }
+      "attributes": {
+        "friendly_name": "Turbo"
+      }
     },
     {
       "entity_id": "climate.tuya_mobile_panel_heater",
@@ -305,7 +387,10 @@
       "attributes": {
         "current_temperature": 21.8,
         "temperature": 20,
-        "hvac_modes": ["off", "heat"],
+        "hvac_modes": [
+          "off",
+          "heat"
+        ],
         "friendly_name": "Panel Heater"
       }
     },
@@ -404,6 +489,16 @@
         "unit_of_measurement": "ppm",
         "friendly_name": "Office Carbon Dioxide"
       }
+    },
+    {
+      "entity_id": "switch.bedroom_heater",
+      "domain": "switch",
+      "state": "off",
+      "name": "Bedroom Heater",
+      "area_id": "bedroom",
+      "attributes": {
+        "friendly_name": "Bedroom Heater"
+      }
     }
   ],
   "zones": [],
@@ -421,15 +516,24 @@
       {
         "name": "Neon Lights",
         "thresholdPct": 61,
-        "entityIds": ["light.cupboard_socket_1", "light.tuya_mobile_neon_lights"]
+        "entityIds": [
+          "light.cupboard_socket_1",
+          "light.tuya_mobile_neon_lights"
+        ]
       }
     ],
     "entityPresets": [
       {
         "entityId": "light.conservatory_light",
         "pinned": true,
-        "targetBrightnessPct": { "daytime": 100, "evening": 100 },
-        "colorTemperatureOverrideKelvin": { "candlelight": 3000, "daylight": 3000 }
+        "targetBrightnessPct": {
+          "daytime": 100,
+          "evening": 100
+        },
+        "colorTemperatureOverrideKelvin": {
+          "candlelight": 3000,
+          "daylight": 3000
+        }
       }
     ]
   },
@@ -487,10 +591,21 @@
     },
     "lighting": {
       "adaptiveCandlelightZones": {
-        "everything": { "enabled": true, "lastSunState": "above_horizon" },
-        "lounge": { "enabled": true, "lastSunState": "above_horizon" },
-        "bedroom": { "enabled": true, "lastSunState": "above_horizon" },
-        "conservatory": { "enabled": false }
+        "everything": {
+          "enabled": true,
+          "lastSunState": "above_horizon"
+        },
+        "lounge": {
+          "enabled": true,
+          "lastSunState": "above_horizon"
+        },
+        "bedroom": {
+          "enabled": true,
+          "lastSunState": "above_horizon"
+        },
+        "conservatory": {
+          "enabled": false
+        }
       },
       "updatedAt": "2026-07-27T00:00:00.000Z"
     },
@@ -504,15 +619,26 @@
     "panelHeater": {
       "offTimerEndsAt": null,
       "updatedAt": "2026-07-27T00:00:00.000Z"
+    },
+    "bedroomHeater": {
+      "mode": "off",
+      "temperature": 20,
+      "offTimerEndsAt": null
+    },
+    "orbInfo": {
+      "moduleId": "gym",
+      "modules": {}
     }
   },
   "warnings": [
-    "Demo mode: Home Assistant and household data are simulated.",
-    "Voice and agent settings are a visual preview; the public demo does not run the voice stack."
+    "Interactive demo · fictional household. Changes stay in your browser; no real devices are affected."
   ],
   "haHealth": {
     "status": "ok",
     "degradedSince": null,
     "heldEntityCount": 0
-  }
+  },
+  "activeModuleIds": [
+    "power"
+  ]
 }

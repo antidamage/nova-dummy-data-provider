@@ -5,7 +5,7 @@ stands in for the dashboard's server APIs, so
 [Nova HA Dashboard](https://github.com/antidamage/nova-ha-dashboard) can run on
 static hosting with no Home Assistant behind it.
 
-**[Live demo](https://antidamage.github.io/nova-ha-dashboard/config/)**
+**[Live demo](https://antidamage.github.io/nova-ha-dashboard/)**
 
 ## Where it fits
 
@@ -27,9 +27,17 @@ theme take effect and persist.
 **Isolates visitors.** Demo state persists per-visitor in browser storage rather
 than server-side.
 
-Voice and agent routes are simulated UI data only. The demo has no microphone,
-models, training host, household memory or acting agent, so those panels are
-preview-only.
+The default dashboard theme is Golden Brown. The fictional household includes
+a Johnny Silverhand conversation, seven visualiser module definitions, camera
+events with an AI-generated scene, memories, automations, and companion-device
+status. Lights, climate, timers, reminders, image libraries, camera review and
+agent administration can be edited locally. Energy estimates respond to the
+simulated device states. **Reset demo** in Config restores the sample household.
+
+The demo has no connected microphones, cameras, models or acting agent.
+Voice synthesis, model training, module installation and external services
+explain that a real Nova installation is required. Camera imagery and event
+analysis are fictional; reviewing or deleting an event only changes the demo.
 
 ## Install
 
@@ -39,6 +47,11 @@ npm test
 npm run build
 npm run preview
 ```
+
+After changing fixtures or the provider, run both `npm test` and `npm run build`.
+Commit the generated `public/` files with their sources. The dashboard and provider
+have separate GitHub Pages workflows; publish both to update the public demo.
+Neither workflow deploys the household's live Home Assistant stack.
 
 ## Public contract
 
