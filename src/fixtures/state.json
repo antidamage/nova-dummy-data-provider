@@ -507,8 +507,7 @@
     }
   },
   "warnings": [
-    "Demo mode: Home Assistant and household data are simulated.",
-    "Voice and agent settings are a visual preview; the public demo does not run the voice stack."
+    "Demo mode: Home Assistant and household data are simulated."
   ],
   "haHealth": {
     "status": "ok",
