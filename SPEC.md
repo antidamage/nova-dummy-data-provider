@@ -20,17 +20,18 @@ GitHub Pages can serve files, but it cannot run server-side API routes or accept
 The Pages site exposes these static files:
 
 - `/api/state.json`
-- `/api/config-client.json`
 - `/api/tasks.json`
-- `/api/theme.json`
 - `/api/watchface.json`
 - `/api/power.json`
 - `/api/router.json`
 - `/api/nova-load.json`
 - `/api/system.json`
 - `/api/version.json`
+- `/api/reminder-icons.json`
+- `/assets/outside-demo.png` (AI-generated fictional camera scene)
 
-These fixtures are the reset/default state for each demo day.
+These fixtures seed a visitor's demo. Configuration and theme are owned by the
+dashboard's demo bootstrap, not this provider.
 
 ## Provider Module API
 
@@ -49,12 +50,12 @@ The provider stores mutable demo state in browser storage using this envelope:
 
 ```json
 {
-  "schemaVersion": 2,
+  "schemaVersion": 4,
   "resetKey": "2026-06-04",
   "state": {},
-  "theme": {},
   "tasks": [],
-  "config": {}
+  "system": {},
+  "sampleAnchorAt": "2026-06-04T12:00:00Z"
 }
 ```
 
@@ -111,9 +112,22 @@ The provider supports the dashboard browser routes needed by the static demo:
 - `POST /api/panel-heater/timer`
 - `POST /api/desktop/sleep`
 
-Unsupported routes return a realistic JSON error response. Voice preview,
-training mutations, profile mutations, and agent actions explicitly report
-that they are unavailable in the static demo.
+Additional current routes include health and demo identity, reminder icons and
+undo, CSV task import, the bedroom thermostat, status-orb settings, Phonoscope
+configuration and image libraries, House Party zone participation, desktop
+configuration and wallpapers, background textures, camera analysis zones and
+event review, companion status, and local memory/automation/authority mutations.
+
+Unsupported operations return explanatory JSON errors. Voice synthesis, model
+training, face capture, module installation and real external actions require a
+Nova installation. No route sends a device command or accesses household services.
+Uploaded demo images are limited to 1 MB each and stored as browser-local data URLs.
+
+The dashboard starts in Golden Brown. Config navigation preserves the Pages base
+path; its demo reset clears the fixture state and demo preferences, without
+invoking the household authentication service. Sample timestamps rebase together
+to preserve chronology. Polls refresh sensor timestamps and expire sleep timers;
+power reads recompute the current device estimates and refresh chart dates.
 
 ## Dummy Entity Catalog
 
