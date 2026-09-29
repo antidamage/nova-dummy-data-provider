@@ -65,3 +65,8 @@ https://<owner>.github.io/nova-dummy-data-provider/provider.mjs
 JSON fixtures live under `public/api`; the browser-side provider is
 `public/provider.mjs`. See [`SPEC.md`](SPEC.md) for the full route and
 persistence contract.
+
+## License
+
+Licensed under the GNU General Public License, version 3 only (GPL-3.0-only).
+See [LICENSE](LICENSE).
