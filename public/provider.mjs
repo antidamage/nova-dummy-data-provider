@@ -1,6 +1,12 @@
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 const DEFAULT_STORAGE_KEY = "nova.demo.provider.v1";
 const NZ_TIME_ZONE = "Pacific/Auckland";
+
+// The sample camera feed: public/camera/outside/seg_NNN.ts, played on a loop as
+// if it were being recorded now, so the DVR window, Live and the jog dial behave
+// as they do on a real recorder. Each segment's place comes from the clock alone.
+const CAMERA_SEGMENT_SECONDS = 2;
+const CAMERA_SEGMENT_COUNT = 300;
 
 const FIXTURES = {
   state: "state.json",
@@ -29,6 +35,51 @@ function jsonResponse(body, status = 200) {
 
 function errorResponse(message, status = 404) {
   return jsonResponse({ error: message }, status);
+}
+
+/** The newest finished segment's number at `nowMs`, counted from the epoch. */
+function cameraNewestSegment(nowMs) {
+  return Math.floor(nowMs / (CAMERA_SEGMENT_SECONDS * 1000)) - 1;
+}
+
+function cameraStatus(nowMs) {
+  const newest = cameraNewestSegment(nowMs);
+  const segmentMs = CAMERA_SEGMENT_SECONDS * 1000;
+  return {
+    source: "device",
+    recording: true,
+    ffmpegAvailable: true,
+    deviceConnected: true,
+    retentionSeconds: CAMERA_SEGMENT_COUNT * CAMERA_SEGMENT_SECONDS,
+    oldestSegment: new Date((newest - CAMERA_SEGMENT_COUNT + 1) * segmentMs).toISOString(),
+    newestSegment: new Date((newest + 1) * segmentMs).toISOString(),
+    lastError: null,
+  };
+}
+
+/**
+ * A rolling live playlist over the looped segments, the shape the real recorder
+ * writes. The loop point is a discontinuity because the segments' timestamps
+ * start again there.
+ */
+function cameraPlaylist(nowMs, baseUrl) {
+  const newest = cameraNewestSegment(nowMs);
+  const first = newest - CAMERA_SEGMENT_COUNT + 1;
+  const lines = [
+    "#EXTM3U",
+    "#EXT-X-VERSION:3",
+    `#EXT-X-TARGETDURATION:${CAMERA_SEGMENT_SECONDS}`,
+    `#EXT-X-MEDIA-SEQUENCE:${first}`,
+    `#EXT-X-DISCONTINUITY-SEQUENCE:${Math.floor(first / CAMERA_SEGMENT_COUNT)}`,
+  ];
+  for (let sequence = first; sequence <= newest; sequence += 1) {
+    const segment = sequence % CAMERA_SEGMENT_COUNT;
+    if (segment === 0 && sequence !== first) lines.push("#EXT-X-DISCONTINUITY");
+    lines.push(`#EXT-X-PROGRAM-DATE-TIME:${new Date(sequence * CAMERA_SEGMENT_SECONDS * 1000).toISOString()}`);
+    lines.push(`#EXTINF:${CAMERA_SEGMENT_SECONDS.toFixed(3)},`);
+    lines.push(new URL(`camera/outside/seg_${String(segment).padStart(3, "0")}.ts`, baseUrl).href);
+  }
+  return `${lines.join("\n")}\n`;
 }
 
 function normalizePath(input) {
@@ -140,7 +191,6 @@ function recomputeState(state, now = new Date()) {
     conservatory: "Conservatory",
     kitchen: "Kitchen",
     lounge: "Lounge",
-    office: "Office",
   };
   const climateEntities = entities.filter(
     (entity) => ["climate", "heating"].includes(entity.area_id) || entity.entity_id.includes("aircon"),
@@ -417,7 +467,7 @@ export function createNovaDummyProvider(options = {}) {
 
   async function stateResponse(envelope) {
     syncCurrentGymAttendance(envelope);
-    for (const [key, entityId] of [["aircon", "climate.c6780cad"], ["bedroomHeater", "switch.bedroom_heater"], ["panelHeater", "climate.tuya_mobile_panel_heater"]]) {
+    for (const [key, entityId] of [["aircon", "climate.demo_aircon"], ["bedroomHeater", "switch.bedroom_heater"], ["panelHeater", "climate.demo_panel_heater"]]) {
       const preference = envelope.state.preferences[key];
       if (preference?.offTimerEndsAt && Date.parse(preference.offTimerEndsAt) <= now().getTime()) {
         preference.offTimerEndsAt = null;
@@ -438,6 +488,35 @@ export function createNovaDummyProvider(options = {}) {
 
     if (method === "GET" && pathname === "/api/state") return stateResponse(envelope);
     if (pathname === "/api/healthz") return jsonResponse({ ok: true, demo: true });
+    if (method === "GET" && pathname === "/api/power/washing-machine") {
+      // One day of the graph, two washes in the middle of it; there is no older day to step back to.
+      const startMs = now().getTime() - 12 * 3_600_000;
+      const wash = (id, person, startHour, curve, kwh, costNzd) => ({
+        id, person, curve, kwh, costNzd,
+        startedAt: new Date(startMs + startHour * 3_600_000).toISOString(),
+        endedAt: new Date(startMs + (startHour + 1) * 3_600_000).toISOString(),
+        durationLabel: "1h 00m",
+        startLabel: new Intl.DateTimeFormat("en-NZ", { hour: "numeric", minute: "2-digit", timeZone: NZ_TIME_ZONE }).format(startMs + startHour * 3_600_000),
+        attribution: { at: new Date(startMs + (startHour + 1) * 3_600_000).toISOString(), source: "auto" },
+      });
+      return jsonResponse({
+        blocks: [startMs],
+        cycles: [wash("demo-cycle-1", "sam", 2, [90, 380, 210, 0], 0.31, 0.09), wash("demo-cycle-2", "alex", 7, [120, 420, 180, 0], 0.34, 0.1)],
+        window: {
+          startMs,
+          endMs: startMs + 24 * 3_600_000,
+          dateLabel: new Intl.DateTimeFormat("en-NZ", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: NZ_TIME_ZONE }).format(startMs),
+        },
+      });
+    }
+    if (pathname === "/api/camera/outside/status") return jsonResponse(cameraStatus(now().getTime()));
+    if (pathname === "/api/camera/outside/index.m3u8") {
+      const response = new Response(cameraPlaylist(now().getTime(), baseUrl), { headers: { "Content-Type": "application/vnd.apple.mpegurl" } });
+      // hls.js reloads a media playlist from the URL it was answered from, and a
+      // constructed Response has none.
+      Object.defineProperty(response, "url", { value: new URL(pathname, globalThis.location?.href ?? baseUrl).href });
+      return response;
+    }
     if (pathname === "/api/orb-info") {
       if (method === "POST") { envelope.state.preferences.orbInfo = { ...envelope.state.preferences.orbInfo, ...(await bodyJson(init)) }; save(envelope); }
       return jsonResponse({ orbInfo: envelope.state.preferences.orbInfo });

@@ -1,56 +1,48 @@
 {
   "tasks": [
     {
-      "id": "demo-water-plants",
-      "name": "Water the balcony plants",
-      "start": "2026-07-27T09:00:00.000Z",
-      "createdAt": "2026-07-27T00:00:00.000Z",
-      "repeat": { "kind": "days", "intervalDays": 2 },
-      "source": "local"
+      "id": "demo-reorder-supplies",
+      "name": "Re-order supplies",
+      "start": "2026-11-03T09:00:00.000Z",
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "repeat": {
+        "kind": "days",
+        "intervalDays": 90
+      },
+      "source": "local",
+      "readOnly": false
     },
     {
-      "id": "demo-standup",
-      "name": "Project stand-up",
-      "start": "2026-07-27T10:30:00.000Z",
-      "end": "2026-07-27T10:45:00.000Z",
-      "createdAt": "2026-07-27T00:00:00.000Z",
-      "source": "icloud-calendar",
-      "sourceCalendar": "Work",
-      "readOnly": true
+      "id": "demo-make-coffee",
+      "name": "Make coffee",
+      "start": "2026-11-03T09:00:00.000Z",
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "source": "local",
+      "readOnly": false
     },
     {
-      "id": "demo-air-filter",
-      "name": "Replace the air purifier filter",
-      "start": "2026-07-27T12:00:00.000Z",
-      "createdAt": "2026-07-27T00:00:00.000Z",
-      "source": "icloud-reminders",
-      "sourceCalendar": "Home",
-      "readOnly": true
+      "id": "demo-wash-car",
+      "name": "Wash the car",
+      "start": "2026-11-03T09:00:00.000Z",
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "repeat": {
+        "kind": "days",
+        "intervalDays": 7
+      },
+      "source": "local",
+      "readOnly": false
     },
     {
-      "id": "demo-groceries",
-      "name": "Pick up groceries",
-      "start": "2026-07-27T17:30:00.000Z",
-      "createdAt": "2026-07-27T00:00:00.000Z",
-      "source": "local"
-    },
-    {
-      "id": "demo-bin-night",
-      "name": "Put bins out",
-      "start": "2026-07-28T19:00:00.000Z",
-      "createdAt": "2026-07-27T00:00:00.000Z",
-      "repeat": { "kind": "days", "intervalDays": 7 },
-      "source": "icloud-reminders",
-      "sourceCalendar": "Home",
-      "readOnly": true
-    },
-    {
-      "id": "demo-morning-briefing",
-      "name": "Review Nova morning briefing",
-      "start": "2026-07-29T07:30:00.000Z",
-      "createdAt": "2026-07-27T00:00:00.000Z",
-      "repeat": { "kind": "morning-night" },
-      "source": "local"
+      "id": "demo-take-vitamins",
+      "name": "Take vitamins",
+      "start": "2026-11-03T09:00:00.000Z",
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "repeat": {
+        "kind": "days",
+        "intervalDays": 5
+      },
+      "source": "local",
+      "readOnly": false
     }
   ]
 }
