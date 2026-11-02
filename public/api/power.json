@@ -65,117 +65,212 @@
     "period": "peak",
     "sourceUrl": "https://www.powershop.co.nz/our-rates/"
   },
-  "currentWatts": 859.3,
+  "currentWatts": 201.9,
   "devices": [
     {
+      "confidence": "measured",
+      "entityId": "switch.floating_meter",
+      "id": "floating_meter",
+      "kwhTotal": 52.2,
+      "name": "Floating Meter",
+      "ratedWatts": 2400,
+      "source": "Metering plug, live reading",
+      "state": "on",
+      "watts": 74.3,
+      "zone": "Lounge"
+    },
+    {
+      "confidence": "manual",
+      "entityId": "light.neon_lights",
+      "id": "neon_lights",
+      "kwhTotal": 30.4,
+      "name": "Neon Lights",
+      "ratedWatts": 30,
+      "source": "User supplied",
+      "state": "on",
+      "watts": 30.3,
+      "zone": "Lounge"
+    },
+    {
       "confidence": "high",
-      "entityId": "climate.c6780cad",
+      "entityId": "light.tv_light",
+      "id": "tv_flood",
+      "kwhTotal": 29.5,
+      "name": "TV light",
+      "ratedWatts": 20,
+      "source": "Device specification",
+      "state": "on",
+      "watts": 17.38,
+      "zone": "Lounge"
+    },
+    {
+      "confidence": "high",
+      "entityId": "light.mirror_light",
+      "id": "mirror_flood",
+      "kwhTotal": 29.5,
+      "name": "Mirror light",
+      "ratedWatts": 20,
+      "source": "Device specification",
+      "state": "on",
+      "watts": 17.19,
+      "zone": "Lounge"
+    },
+    {
+      "confidence": "high",
+      "entityId": "climate.demo_aircon",
       "id": "aircon",
-      "kwhTotal": 399.234,
+      "kwhTotal": 809.3,
       "name": "Air Conditioner",
-      "notes": "Estimated compressor input.",
+      "notes": "5.2kW cooling and 5.6kW heating are output capacity; temp sensor is disconnected, so estimate treats compressor modes as on/off until repaired.",
       "ratedWatts": 1520,
-      "source": "Unit specification",
-      "state": "cool",
-      "watts": 690,
+      "source": "Device specification",
+      "state": "off",
+      "watts": 0,
       "zone": "Climate"
     },
     {
       "confidence": "high",
       "entityId": "light.conservatory_light",
       "id": "conservatory_light",
-      "kwhTotal": 10.715,
-      "name": "Conservatory Light",
+      "kwhTotal": 26.5,
+      "name": "Conservatory light",
       "ratedWatts": 15.5,
-      "source": "Manufacturer specification",
+      "source": "Device specification",
       "state": "on",
-      "watts": 15.5,
+      "watts": 13.98,
       "zone": "Conservatory"
     },
     {
       "confidence": "high",
       "entityId": "light.lounge_light",
       "id": "lounge_light",
-      "kwhTotal": 8.988,
-      "name": "Lounge Light",
+      "kwhTotal": 20.5,
+      "name": "Lounge light",
       "ratedWatts": 15.5,
-      "source": "Manufacturer specification",
+      "source": "Device specification",
       "state": "on",
-      "watts": 11.9,
+      "watts": 13.98,
       "zone": "Lounge"
     },
     {
-      "confidence": "manual",
-      "entityId": "light.tuya_mobile_neon_lights",
-      "id": "neon_lights",
-      "kwhTotal": 22.48,
-      "name": "Neon Lights",
-      "ratedWatts": 30,
-      "source": "Measured",
+      "confidence": "assumed",
+      "entityId": "light.hallway_light",
+      "id": "hallway_bulb",
+      "kwhTotal": 14.9,
+      "name": "Hallway light",
+      "ratedWatts": 10,
+      "source": "Estimated from device class",
       "state": "on",
-      "watts": 18.3,
+      "watts": 8.9,
       "zone": "Lounge"
     },
     {
       "confidence": "high",
-      "entityId": "climate.tuya_mobile_panel_heater",
+      "entityId": "light.hallway_2",
+      "id": "hallway_bulb",
+      "kwhTotal": 12.9,
+      "name": "Hallway 2",
+      "ratedWatts": 8.8,
+      "source": "Device specification",
+      "state": "on",
+      "watts": 8.23,
+      "zone": "Conservatory"
+    },
+    {
+      "confidence": "high",
+      "entityId": "light.kitchen_light_1",
+      "id": "kitchen_bulb",
+      "kwhTotal": 12.7,
+      "name": "Kitchen light 1",
+      "ratedWatts": 8.8,
+      "source": "Device specification",
+      "state": "on",
+      "watts": 8.23,
+      "zone": "Kitchen"
+    },
+    {
+      "confidence": "high",
+      "entityId": "light.wardrobe",
+      "id": "wardrobe_bulb",
+      "kwhTotal": 7.9,
+      "name": "Wardrobe",
+      "ratedWatts": 8.8,
+      "source": "Device specification",
+      "state": "on",
+      "watts": 8.23,
+      "zone": "Bedroom"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "switch.bedroom_heater",
+      "id": "bedroom_heater",
+      "kwhTotal": 218.2,
+      "name": "Bedroom Heater",
+      "ratedWatts": 2000,
+      "source": "Estimated from device class",
+      "state": "off",
+      "watts": 0,
+      "zone": "Bedroom"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "light.kitchen_light_2",
+      "id": "kitchen_bulb_a",
+      "kwhTotal": 7,
+      "name": "Kitchen light 2",
+      "ratedWatts": 10,
+      "source": "Estimated from device class",
+      "state": "off",
+      "watts": 0,
+      "zone": "Kitchen"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "light.outside_light",
+      "id": "outside_bulb",
+      "kwhTotal": 0.5,
+      "name": "Outside light",
+      "ratedWatts": 10,
+      "source": "Estimated from device class",
+      "state": "off",
+      "watts": 0,
+      "zone": "Outside"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "light.nook_light",
+      "id": "nook_bulb",
+      "kwhTotal": 14.6,
+      "name": "Nook light",
+      "ratedWatts": 10,
+      "source": "Estimated from device class",
+      "state": "off",
+      "watts": 0,
+      "zone": "Kitchen"
+    },
+    {
+      "confidence": "assumed",
+      "entityId": "climate.demo_panel_heater",
       "id": "panel_heater",
-      "kwhTotal": 182.36,
+      "kwhTotal": 336.8,
       "name": "Panel Heater",
       "ratedWatts": 2000,
-      "source": "Unit label",
-      "state": "heat",
-      "watts": 95,
+      "source": "Estimated from device class",
+      "state": "off",
+      "watts": 0,
       "zone": "Climate"
     },
     {
-      "confidence": "assumed",
-      "entityId": "light.kitchen_light_1",
-      "id": "kitchen_light",
-      "kwhTotal": 9.81,
-      "name": "Kitchen Main",
-      "ratedWatts": 12,
-      "source": "Bulb class estimate",
-      "state": "on",
-      "watts": 9.6,
-      "zone": "Kitchen"
-    },
-    {
-      "confidence": "assumed",
-      "entityId": "fan.office_ceiling_fan",
-      "id": "office_fan",
-      "kwhTotal": 31.44,
-      "name": "Office Fan",
-      "ratedWatts": 55,
-      "source": "Fan class estimate",
-      "state": "on",
-      "watts": 19,
-      "zone": "Office"
-    },
-    {
-      "confidence": "manual",
-      "entityId": "switch.kitchen_coffee_machine",
-      "id": "coffee_machine",
-      "kwhTotal": 16.2,
-      "name": "Coffee Machine",
-      "ratedWatts": 1450,
-      "source": "Unit label",
-      "state": "off",
-      "watts": 0,
-      "zone": "Kitchen"
-    },
-    {
-      "id": "bedroom_heater",
-      "name": "Bedroom Heater",
-      "entityId": "switch.bedroom_heater",
-      "zone": "Bedroom",
+      "confidence": "measured",
+      "entityId": "switch.washing_machine",
+      "id": "washing_machine",
+      "kwhTotal": 9.6,
+      "name": "Washing Machine",
       "ratedWatts": 2000,
-      "watts": 0,
-      "state": "off",
-      "kwhTotal": 28.7,
-      "confidence": "manual",
-      "source": "Demo device rating",
-      "notes": "Fictional switched heater; reacts to the demo thermostat."
+      "source": "Metering plug, live reading",
+      "state": "on",
+      "watts": 1.2,
+      "zone": "Kitchen"
     }
   ],
   "generatedAt": "2026-07-27T08:45:00.000Z",
@@ -604,5 +699,171 @@
   "totals": {
     "costNzd": 218.65,
     "kwh": 824.051
+  },
+  "floatingMeter": {
+    "activeCategoryId": "amp",
+    "ampControl": {
+      "autoOff": false,
+      "autoOn": true,
+      "categoryId": "amp"
+    },
+    "categories": [
+      {
+        "icon": "computers",
+        "id": "computers",
+        "label": "Computers",
+        "measuredHours": 19.2,
+        "members": [
+          "Voice Host",
+          "Office Desktop",
+          "Studio PC",
+          "Desk lamp"
+        ],
+        "suppressesBaseLoads": [
+          "nova_aio"
+        ],
+        "active": false,
+        "confidence": "assumed",
+        "watts": 200
+      },
+      {
+        "icon": "entertainment",
+        "id": "home_entertainment",
+        "label": "Home Entertainment",
+        "measuredHours": 109,
+        "members": [
+          "Network switch",
+          "WiFi extender",
+          "TV",
+          "Security camera",
+          "Apple TV",
+          "Nova kiosk"
+        ],
+        "suppressesBaseLoads": [],
+        "active": false,
+        "confidence": "high",
+        "watts": 187.5
+      },
+      {
+        "icon": "amp",
+        "id": "amp",
+        "label": "Amp",
+        "measuredHours": 1062.2,
+        "members": [
+          "Amp",
+          "Sub + amp"
+        ],
+        "suppressesBaseLoads": [],
+        "active": true,
+        "confidence": "measured",
+        "watts": 74.3
+      },
+      {
+        "icon": "kitchen",
+        "id": "kitchen",
+        "label": "Kitchen",
+        "measuredHours": 0,
+        "members": [
+          "Fridge 1",
+          "Fridge 2",
+          "Main WiFi AP"
+        ],
+        "suppressesBaseLoads": [
+          "fridges"
+        ],
+        "active": false,
+        "confidence": "assumed",
+        "watts": 100
+      }
+    ],
+    "watts": 74.3
+  },
+  "washingMachine": {
+    "primaryPersonId": "sam",
+    "monthKey": "2026-11",
+    "open": null,
+    "watts": null,
+    "people": [
+      {
+        "primary": false,
+        "id": "alex",
+        "label": "Alex",
+        "color": "#841900",
+        "arrival": [],
+        "departure": []
+      },
+      {
+        "primary": true,
+        "id": "sam",
+        "label": "Sam",
+        "color": "#017d5e",
+        "arrival": [],
+        "departure": []
+      }
+    ],
+    "cycles": [
+      {
+        "id": "demo-cycle-1",
+        "person": "sam",
+        "startedAt": "2026-11-01T02:00:00.000Z",
+        "endedAt": "2026-11-01T03:10:00.000Z",
+        "kwh": 0.31,
+        "costNzd": 0.09,
+        "completion": {
+          "at": "2026-11-01T03:10:00.000Z",
+          "person": null,
+          "discord": false
+        },
+        "attribution": {
+          "at": "2026-11-01T03:10:00.000Z",
+          "source": "auto"
+        }
+      },
+      {
+        "id": "demo-cycle-2",
+        "person": "alex",
+        "startedAt": "2026-11-02T06:00:00.000Z",
+        "endedAt": "2026-11-02T07:05:00.000Z",
+        "kwh": 0.34,
+        "costNzd": 0.1,
+        "completion": {
+          "at": "2026-11-02T07:05:00.000Z",
+          "person": null,
+          "discord": false
+        },
+        "attribution": {
+          "at": "2026-11-02T07:05:00.000Z",
+          "source": "auto"
+        }
+      }
+    ],
+    "totals": [
+      {
+        "person": "alex",
+        "cycles": 1,
+        "kwh": 0.34,
+        "costNzd": 0.1
+      },
+      {
+        "person": "sam",
+        "cycles": 1,
+        "kwh": 0.31,
+        "costNzd": 0.09
+      },
+      {
+        "person": null,
+        "cycles": 0,
+        "kwh": 0,
+        "costNzd": 0
+      }
+    ]
+  },
+  "estimation": {
+    "confidence": "low",
+    "halfLifeDays": 28,
+    "historyDays": 158,
+    "intervalDays": 157,
+    "lastActualDate": "2026-10-31",
+    "source": "demo"
   }
 }

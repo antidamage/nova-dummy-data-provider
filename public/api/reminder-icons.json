@@ -1,69 +1,56 @@
 {
   "entries": [
     {
-      "key": "water the balcony plants",
-      "displayName": "Water the balcony plants",
-      "glyph": {
-        "kind": "phosphor",
-        "id": "plant"
-      },
-      "source": "keyword",
-      "showInBar": true,
-      "showInBarLocked": false,
-      "order": 0,
-      "lastSeenAt": "2026-07-27T07:30:00.000Z"
-    },
-    {
-      "key": "pick up groceries",
-      "displayName": "Pick up groceries",
+      "key": "re order supplies",
+      "displayName": "Re-order supplies",
       "glyph": {
         "kind": "phosphor",
         "id": "shopping-cart"
       },
-      "source": "keyword",
+      "source": "user",
+      "showInBar": true,
+      "showInBarLocked": false,
+      "order": 0,
+      "lastSeenAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "key": "make coffee",
+      "displayName": "Make coffee",
+      "glyph": {
+        "kind": "phosphor",
+        "id": "coffee"
+      },
+      "source": "user",
       "showInBar": true,
       "showInBarLocked": false,
       "order": 1,
-      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+      "lastSeenAt": "2026-11-01T00:00:00.000Z"
     },
     {
-      "key": "put bins out",
-      "displayName": "Put bins out",
+      "key": "wash the car",
+      "displayName": "Wash the car",
       "glyph": {
         "kind": "phosphor",
-        "id": "trash"
+        "id": "shower"
       },
-      "source": "keyword",
+      "source": "user",
       "showInBar": true,
       "showInBarLocked": false,
       "order": 2,
-      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+      "lastSeenAt": "2026-11-01T00:00:00.000Z"
     },
     {
-      "key": "replace the air purifier filter",
-      "displayName": "Replace the air purifier filter",
+      "key": "take vitamins",
+      "displayName": "Take vitamins",
       "glyph": {
         "kind": "phosphor",
-        "id": "wrench"
+        "id": "pill"
       },
-      "source": "keyword",
+      "source": "user",
       "showInBar": true,
       "showInBarLocked": false,
       "order": 3,
-      "lastSeenAt": "2026-07-27T07:30:00.000Z"
-    },
-    {
-      "key": "review nova morning briefing",
-      "displayName": "Review Nova morning briefing",
-      "glyph": {
-        "kind": "phosphor",
-        "id": "sun-horizon"
-      },
-      "source": "keyword",
-      "showInBar": true,
-      "showInBarLocked": false,
-      "order": 4,
-      "lastSeenAt": "2026-07-27T07:30:00.000Z"
+      "lastSeenAt": "2026-11-01T00:00:00.000Z"
     }
   ]
 }

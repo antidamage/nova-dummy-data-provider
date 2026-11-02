@@ -27,7 +27,8 @@ theme take effect and persist.
 **Isolates visitors.** Demo state persists per-visitor in browser storage rather
 than server-side.
 
-The default dashboard theme is Golden Brown. The fictional household includes
+The household is fictional and is shaped like a real installation: the same rooms,
+controls and layout, with invented names, values and device identifiers. It includes
 a Johnny Silverhand conversation, seven visualiser module definitions, camera
 events with an AI-generated scene, memories, automations, and companion-device
 status. Lights, climate, timers, reminders, image libraries, camera review and
@@ -36,8 +37,14 @@ simulated device states. **Reset demo** in Config restores the sample household.
 
 The demo has no connected microphones, cameras, models or acting agent.
 Voice synthesis, model training, module installation and external services
-explain that a real Nova installation is required. Camera imagery and event
-analysis are fictional; reviewing or deleting an event only changes the demo.
+explain that a real Nova installation is required. Camera event analysis is
+fictional; reviewing or deleting an event only changes the demo.
+
+**Sample camera footage.** `public/camera/outside/` is ten minutes from the
+[MEVA dataset](https://mevadata.org/) by Kitware Inc. and IARPA, licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Camera G340, 2018-03-07,
+16:50 to 17:00; downscaled to 640x360 at 12 fps, denoised and re-encoded to about
+115 kbps.
 
 ## Install
 
@@ -65,3 +72,8 @@ https://<owner>.github.io/nova-dummy-data-provider/provider.mjs
 JSON fixtures live under `public/api`; the browser-side provider is
 `public/provider.mjs`. See [`SPEC.md`](SPEC.md) for the full route and
 persistence contract.
+
+## License
+
+Licensed under the GNU General Public License, version 3 only (GPL-3.0-only).
+See [LICENSE](LICENSE).

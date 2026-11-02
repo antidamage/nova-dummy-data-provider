@@ -6,6 +6,30 @@
 
 The provider must never contain Home Assistant tokens, live Nova URLs, personal data, or any other secret. It exists only to make the dashboard demo look and behave like a real installation.
 
+## Parity with a real installation
+
+The demo should read as the owner's wall display at 1080x1920 with its data replaced. Rooms, controls, slot order, theme and layout match the real installation. Everything that identifies the household does not:
+
+- Device, machine and account identifiers become neutral names (`climate.demo_aircon`, `switch.voice_mute`, "Wall Display"). Hardware makes, models and device ids are dropped, except the router's model name, which the dashboard's shared default config uses for its entity ids.
+- People and reminders are invented, not edited copies. Reminders keep only the icon set.
+- Sensor readings are plausible values. A device that happens to be offline on the real system is shown working, because a fault is not part of the look.
+- The "Interactive demo" warning stays, so a visitor is never told a fictional home is real.
+
+The mapping from real identifiers to these names is never committed here.
+
+## Sample camera feed
+
+`public/camera/outside/seg_000.ts` to `seg_299.ts`: ten minutes of CC BY 4.0 footage (README) cut into exact 2 s segments, 640x360, 12 fps, H.264, a keyframe at each segment start, about 115 kbps and 8.3 MB in all. They are committed directly under `public/` and have no copy under `src/`.
+
+`GET /api/camera/outside/index.m3u8` and `/status` are computed from the clock, with no stored state:
+
+- Segment number `n` is `floor(epochMs / 2000)`, and plays `seg_(n mod 300)`. Every visitor sees the same position.
+- The playlist is a sliding window of the newest 300 finished segments with `EXT-X-PROGRAM-DATE-TIME`, so the DVR window is ten minutes.
+- `EXT-X-DISCONTINUITY` marks each loop point, and `EXT-X-DISCONTINUITY-SEQUENCE` is `floor(first / 300)`.
+- `status` reports `recording: true` with the same window's oldest and newest times.
+
+Done means, in a Chromium browser on the deployed site: the panel plays and reads LIVE, scrubbing moves within the window, the jog changes the rate forward and runs in reverse, and Live returns to the edge.
+
 ## GitHub Pages Constraints
 
 GitHub Pages can serve files, but it cannot run server-side API routes or accept real POST handlers. For that reason:
@@ -28,7 +52,8 @@ The Pages site exposes these static files:
 - `/api/system.json`
 - `/api/version.json`
 - `/api/reminder-icons.json`
-- `/assets/outside-demo.png` (AI-generated fictional camera scene)
+- `/assets/outside-demo.png` (AI-generated fictional camera scene: event thumbnails, and the panel's still before the feed is ready)
+- `/camera/outside/seg_NNN.ts` (the sample camera feed)
 
 These fixtures seed a visitor's demo. Configuration and theme are owned by the
 dashboard's demo bootstrap, not this provider.
@@ -50,7 +75,7 @@ The provider stores mutable demo state in browser storage using this envelope:
 
 ```json
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "resetKey": "2026-06-04",
   "state": {},
   "tasks": [],
@@ -123,7 +148,7 @@ training, face capture, module installation and real external actions require a
 Nova installation. No route sends a device command or accesses household services.
 Uploaded demo images are limited to 1 MB each and stored as browser-local data URLs.
 
-The dashboard starts in Golden Brown. Config navigation preserves the Pages base
+The dashboard starts in the real installation's active theme. Config navigation preserves the Pages base
 path; its demo reset clears the fixture state and demo preferences, without
 invoking the household authentication service. Sample timestamps rebase together
 to preserve chronology. Polls refresh sensor timestamps and expire sleep timers;
@@ -133,7 +158,7 @@ power reads recompute the current device estimates and refresh chart dates.
 
 The default state includes:
 
-- Zones: Home, Lounge, Bedroom, Conservatory, Office, Kitchen, Climate,
+- Zones: Home, Lounge, Bedroom, Conservatory, Kitchen, Climate,
   Outside, and Network. Grid, World, and Tasks remain dashboard-owned special
   zones so the provider does not create duplicates.
 - The top-level dashboard Grid entry handles power; the dummy state does not include a Power sub-zone.
@@ -143,8 +168,7 @@ The default state includes:
 - Air conditioner with heat, fan, cool, fan modes, and target temperature.
 - Panel heater.
 - Fresh-air, quiet, and turbo switches.
-- Fan, cover, and humidifier domain examples.
-- Lounge and bedroom temperature/humidity sensors plus office air quality.
+- Lounge and bedroom temperature/humidity sensors.
 - Router status and speed sensors.
 - Weather and sun data.
 - Demo local and mirrored tasks.

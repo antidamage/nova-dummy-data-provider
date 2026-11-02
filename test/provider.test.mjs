@@ -28,14 +28,14 @@ test("heater, reminder undo, House Party and memories survive a provider reload"
     return response.json();
   };
   await write("/api/bedroom-heater", { mode: "auto", temperature: 21 });
-  await write("/api/tasks/demo-water-plants/complete", {});
-  await write("/api/tasks/demo-water-plants/uncomplete", {});
+  await write("/api/tasks/demo-reorder-supplies/complete", {});
+  await write("/api/tasks/demo-reorder-supplies/uncomplete", {});
   await write("/api/phonoscope/house-party/zones/lounge", { enabled: true }, "PUT");
   await write("/api/voice/memories", { action: "update", memoryId: "demo-memory-candlelight", update: { pinned: false } });
   const reloaded = await createNovaDummyProvider({ fixtures: data, storage: shared }).snapshot();
   assert.equal(reloaded.state.preferences.bedroomHeater.temperature, 21);
   assert.equal(reloaded.state.entities.find((entity) => entity.entity_id === "switch.bedroom_heater").state, "on");
-  assert.equal(reloaded.tasks.find((task) => task.id === "demo-water-plants").dismissedAt, undefined);
+  assert.equal(reloaded.tasks.find((task) => task.id === "demo-reorder-supplies").dismissedAt, undefined);
   assert.equal(reloaded.state.preferences.lighting.housePartyZones.lounge.enabled, true);
   assert.equal(reloaded.system.memories.find((memory) => memory.id === "demo-memory-candlelight").pinned, false);
 });
@@ -108,7 +108,7 @@ test("persists a visitor's demo state across NZ days (no daily reset)", async ()
     storage: sharedStorage,
   });
   const state = await (await second.handleRequest("/api/state")).json();
-  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_light").state, "on");
+  assert.equal(state.entities.find((entity) => entity.entity_id === "light.wardrobe").state, "on");
 });
 
 test("zone and entity writes update the dashboard state", async () => {
@@ -120,19 +120,19 @@ test("zone and entity writes update the dashboard state", async () => {
   });
   assert.equal(zoneWrite.status, 200);
   let state = await zoneWrite.json();
-  assert.equal(state.entities.find((entity) => entity.entity_id === "light.bedroom_light").state, "on");
+  assert.equal(state.entities.find((entity) => entity.entity_id === "light.wardrobe").state, "on");
 
   const entityWrite = await provider.handleRequest("/api/entity", {
     method: "POST",
     body: JSON.stringify({
-      entityId: "climate.c6780cad",
+      entityId: "climate.demo_aircon",
       domain: "climate",
       service: "set_temperature",
       data: { temperature: 19 },
     }),
   });
   state = await entityWrite.json();
-  assert.equal(state.entities.find((entity) => entity.entity_id === "climate.c6780cad").attributes.temperature, 19);
+  assert.equal(state.entities.find((entity) => entity.entity_id === "climate.demo_aircon").attributes.temperature, 19);
 });
 
 test("uses Home for the aggregate and does not generate duplicate special zones", async () => {
@@ -142,37 +142,34 @@ test("uses Home for the aggregate and does not generate duplicate special zones"
 
   assert.equal(state.zones[0].id, "everything");
   assert.equal(state.zones[0].name, "Home");
-  assert.ok(zoneNames.includes("Office"));
+  assert.deepEqual(state.zones.map((zone) => zone.id), ["everything", "bedroom", "conservatory", "kitchen", "lounge", "climate", "outside", "network"]);
   assert.ok(zoneNames.includes("Network"));
   assert.ok(!state.zones.some((zone) => zone.id === "power" || zone.name === "Power"));
   assert.ok(!state.zones.some((zone) => zone.id === "tasks" || zone.name === "Tasks"));
 });
 
-test("covers every dashboard entity domain with rich fixture data", async () => {
+test("mirrors the household's entity domains with fixture data", async () => {
   const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
   const state = await (await provider.handleRequest("/api/state")).json();
 
   assert.deepEqual(
     Object.fromEntries(Object.entries(state.totals).filter(([, count]) => count > 0)),
     {
-      light: 16,
-      switch: 9,
+      light: 12,
+      switch: 10,
       climate: 2,
-      fan: 1,
-      cover: 1,
-      humidifier: 1,
       sensor: 5,
     },
   );
   assert.equal(state.zones.find((zone) => zone.id === "lounge").environment.temperatureEntityId,
-    "sensor.tuya_mobile_lounge_sensor_temperature");
+    "sensor.lounge_temperature");
 });
 
 test("serves simulated voice, agent, computer, camera, layout, and update surfaces", async () => {
   const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
 
   const voice = await (await provider.handleRequest("/api/voice")).json();
-  assert.equal(voice.voice.agentName, "Johnny Silverhand");
+  assert.equal(voice.voice.agentName, "[\u25EF_\u25EF]");
   const options = await (await provider.handleRequest("/api/voice/options")).json();
   assert.equal(options.engine, "trained");
   assert.equal(options.engines.length, 3);
@@ -195,8 +192,8 @@ test("returns a current complete power dashboard", async () => {
   const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
   const power = await (await provider.handleRequest("/api/power")).json();
 
-  assert.equal(power.currentWatts, 859.3);
-  assert.equal(power.devices.length, 9);
+  assert.equal(power.currentWatts, power.devices.reduce((total, device) => total + device.watts, 0).toFixed(1) * 1);
+  assert.equal(power.devices.length, 17);
   assert.equal(power.accountUsageGraph.length, 12);
   assert.equal(power.backgroundEstimateGraph.length, 12);
 });
@@ -298,4 +295,38 @@ test("uses the current time for demo gym attendance", async () => {
   const state = await (await provider.handleRequest("/api/state")).json();
   assert.equal(state.preferences.watchface.gymLastResetAt, now.toISOString());
   assert.equal(state.preferences.watchface.daysSinceGym, 0);
+});
+
+test("serves a rolling camera feed over the looped segments", async () => {
+  const at = Date.parse("2026-11-03T00:13:01.000Z");
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage(), baseUrl: "https://demo.test/provider/", now: () => new Date(at) });
+  const status = await (await provider.handleRequest("/api/camera/outside/status?_=1")).json();
+  assert.equal(status.recording, true);
+  assert.equal(status.retentionSeconds, 600);
+  assert.equal(Date.parse(status.newestSegment) - Date.parse(status.oldestSegment), 600_000);
+  assert.equal(status.newestSegment, "2026-11-03T00:13:00.000Z");
+
+  const playlist = await (await provider.handleRequest("/api/camera/outside/index.m3u8?_=1")).text();
+  const segments = playlist.split("\n").filter((line) => line.endsWith(".ts"));
+  assert.equal(segments.length, 300);
+  assert.equal(new Set(segments).size, 300);
+  assert.ok(segments.every((url) => /^https:\/\/demo\.test\/provider\/camera\/outside\/seg_\d{3}\.ts$/.test(url)));
+  assert.equal((playlist.match(/#EXT-X-DISCONTINUITY\n/g) ?? []).length, 1);
+  const first = Number(playlist.match(/#EXT-X-MEDIA-SEQUENCE:(\d+)/)[1]);
+  assert.equal(Number(playlist.match(/#EXT-X-DISCONTINUITY-SEQUENCE:(\d+)/)[1]), Math.floor(first / 300));
+});
+
+test("the Grid's wash history answers with a day holding the people's washes", async () => {
+  const provider = createNovaDummyProvider({ fixtures: await fixtures(), storage: storage() });
+  const response = await provider.handleRequest("/api/power/washing-machine");
+  assert.equal(response.status, 200);
+  const history = await response.json();
+  assert.deepEqual(history.cycles.map((cycle) => cycle.person), ["sam", "alex"]);
+  assert.ok(history.cycles.every((cycle) => Date.parse(cycle.startedAt) >= history.window.startMs && cycle.curve.length > 0));
+});
+
+test("every camera segment the playlist can name exists", async () => {
+  const { readdir } = await import("node:fs/promises");
+  const files = await readdir(path.join(process.cwd(), "public", "camera", "outside"));
+  assert.equal(files.filter((file) => /^seg_\d{3}\.ts$/.test(file)).length, 300);
 });
