@@ -1,4 +1,21 @@
-const SCHEMA_VERSION = 5;
+import {
+  TICK_MS,
+  WASH_MS,
+  claimOrbTimerSound,
+  claimRunningWash,
+  dismissNotification,
+  dismissOrbTimer,
+  emptyOrbTimer,
+  newSimulation,
+  nextWashPerson,
+  resumeSimulation,
+  setOrbTimer,
+  setRunningWashNotify,
+  tick as simulationTick,
+  washSummary,
+} from "./simulation.mjs";
+
+const SCHEMA_VERSION = 6;
 const DEFAULT_STORAGE_KEY = "nova.demo.provider.v1";
 const NZ_TIME_ZONE = "Pacific/Auckland";
 
@@ -79,6 +96,29 @@ function cameraPlaylist(nowMs, baseUrl) {
     lines.push(`#EXTINF:${CAMERA_SEGMENT_SECONDS.toFixed(3)},`);
     lines.push(new URL(`camera/outside/seg_${String(segment).padStart(3, "0")}.ts`, baseUrl).href);
   }
+  return `${lines.join("\n")}\n`;
+}
+
+/** A saved range's fixed playlist: the same clock-to-segment rule as the live one. */
+function savedRangePlaylist(range, baseUrl) {
+  const segmentMs = CAMERA_SEGMENT_SECONDS * 1000;
+  const first = Math.floor(range.startMs / segmentMs);
+  const last = Math.max(first, Math.ceil(range.endMs / segmentMs) - 1);
+  const lines = [
+    "#EXTM3U",
+    "#EXT-X-VERSION:3",
+    "#EXT-X-PLAYLIST-TYPE:VOD",
+    `#EXT-X-TARGETDURATION:${CAMERA_SEGMENT_SECONDS}`,
+    `#EXT-X-MEDIA-SEQUENCE:${first}`,
+  ];
+  for (let sequence = first; sequence <= last; sequence += 1) {
+    const segment = sequence % CAMERA_SEGMENT_COUNT;
+    if (segment === 0 && sequence !== first) lines.push("#EXT-X-DISCONTINUITY");
+    lines.push(`#EXT-X-PROGRAM-DATE-TIME:${new Date(sequence * segmentMs).toISOString()}`);
+    lines.push(`#EXTINF:${CAMERA_SEGMENT_SECONDS.toFixed(3)},`);
+    lines.push(new URL(`camera/outside/seg_${String(segment).padStart(3, "0")}.ts`, baseUrl).href);
+  }
+  lines.push("#EXT-X-ENDLIST");
   return `${lines.join("\n")}\n`;
 }
 
@@ -300,7 +340,7 @@ function updateEntityForService(entity, service, data = {}) {
   return { ...entity, state, attributes };
 }
 
-function makeEnvelope(defaults, resetKey, now = new Date()) {
+function makeEnvelope(defaults, resetKey, now = new Date(), random = Math.random) {
   const watchface = withCurrentGymAttendance(defaults.watchface.watchface ?? {}, now);
   const state = recomputeState(clone(defaults.state), now);
   state.preferences = {
@@ -320,6 +360,8 @@ function makeEnvelope(defaults, resetKey, now = new Date()) {
     novaLoad: clone(defaults.novaLoad),
     system: refreshSampleDates(clone(defaults.system), now),
     version: clone(defaults.version),
+    orbTimer: emptyOrbTimer(),
+    simulation: newSimulation(now.getTime(), random),
   };
 }
 
@@ -404,6 +446,16 @@ export function createNovaDummyProvider(options = {}) {
   let envelopePromise = null;
   const listeners = new Set();
   const now = () => options.now?.() ?? new Date();
+  const random = options.random ?? Math.random;
+  const pageHidden = options.isHidden ?? (() => typeof document !== "undefined" && document.hidden === true);
+  const subscribers = new Set();
+  let tickInterval = null;
+
+  function publish(events) {
+    for (const [name, data] of events) {
+      for (const subscriber of subscribers) subscriber(name, clone(data));
+    }
+  }
 
   function syncCurrentGymAttendance(envelope) {
     envelope.watchface = withCurrentGymAttendance(envelope.watchface, now());
@@ -428,13 +480,14 @@ export function createNovaDummyProvider(options = {}) {
             parsed.system = refreshSampleDates(parsed.system, now(), anchor);
             parsed.sampleAnchorAt = now().toISOString();
           }
+          resumeSimulation(parsed.simulation, now().getTime(), random);
           return syncCurrentGymAttendance(parsed);
         }
       } catch {
         // discard malformed demo state
       }
     }
-    const next = makeEnvelope(defaults, nzResetKey(now()), now());
+    const next = makeEnvelope(defaults, nzResetKey(now()), now(), random);
     storage.setItem(storageKey, JSON.stringify(next));
     return next;
   }
@@ -465,8 +518,8 @@ export function createNovaDummyProvider(options = {}) {
     save(envelope);
   }
 
-  async function stateResponse(envelope) {
-    syncCurrentGymAttendance(envelope);
+  function applyOffTimers(envelope) {
+    let changed = false;
     for (const [key, entityId] of [["aircon", "climate.demo_aircon"], ["bedroomHeater", "switch.bedroom_heater"], ["panelHeater", "climate.demo_panel_heater"]]) {
       const preference = envelope.state.preferences[key];
       if (preference?.offTimerEndsAt && Date.parse(preference.offTimerEndsAt) <= now().getTime()) {
@@ -474,40 +527,255 @@ export function createNovaDummyProvider(options = {}) {
         if (key === "bedroomHeater") preference.mode = "off";
         if (key === "aircon") preference.autoMode = false;
         envelope.state.entities = envelope.state.entities.map((entity) => entity.entity_id === entityId ? updateEntityForService(entity, "turn_off") : entity);
+        changed = true;
       }
     }
+    return changed;
+  }
+
+  async function stateResponse(envelope) {
+    syncCurrentGymAttendance(envelope);
+    applyOffTimers(envelope);
     envelope.state = recomputeState(envelope.state, now());
     save(envelope);
     return jsonResponse(envelope.state);
+  }
+
+  async function runTick() {
+    const envelope = await current();
+    const { events, stateChanged } = simulationTick(envelope, now().getTime(), { defaults: await defaultsPromise, random, hidden: pageHidden() });
+    const offTimersChanged = applyOffTimers(envelope);
+    if (stateChanged || offTimersChanged) {
+      syncCurrentGymAttendance(envelope);
+      envelope.state = recomputeState(envelope.state, now());
+      events.push(["state", envelope.state]);
+    }
+    // A quiet tick writes nothing, so an idle tab does not overwrite another tab's changes.
+    if (events.length) save(envelope);
+    publish(events);
+  }
+
+  function washCycleLabels(cycle) {
+    const startMs = Date.parse(cycle.startedAt);
+    const minutes = Math.round((Date.parse(cycle.endedAt) - startMs) / 60_000);
+    return {
+      ...cycle,
+      durationLabel: `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, "0")}m`,
+      startLabel: new Intl.DateTimeFormat("en-NZ", { hour: "numeric", minute: "2-digit", timeZone: NZ_TIME_ZONE }).format(startMs),
+    };
+  }
+
+  /** The Grid's reading: fixture shape, plus everything the visitor and the simulation changed. */
+  async function powerBody(envelope) {
+    const defaults = await defaultsPromise;
+    const nowMs = now().getTime();
+    const seed = clone(defaults.power);
+    seed.floatingMeter = clone(envelope.power.floatingMeter);
+    seed.washingMachine.cycles = clone(envelope.power.washingMachine.cycles);
+    const power = refreshSampleDates(seed, now(), Date.parse(defaults.power.generatedAt));
+    const wash = washSummary(envelope, nowMs);
+    power.devices = power.devices.map((device, index) => {
+      const entity = envelope.state.entities.find((row) => row.entity_id === device.entityId);
+      const initial = defaults.state.entities.find((row) => row.entity_id === device.entityId);
+      if (!entity) return device;
+      if (device.entityId === "switch.washing_machine" && wash.watts !== null) return { ...device, state: entity.state, watts: wash.watts };
+      const scale = entity.domain === "light" ? (entity.attributes.brightness ?? 255) / Math.max(1, initial?.attributes?.brightness ?? 255) : 1;
+      const wobble = 1 + 0.03 * Math.sin(nowMs / 41_000 + index);
+      return { ...device, state: entity.state, watts: entityIsOn(entity) ? Math.round((device.watts || device.ratedWatts) * scale * wobble * 10) / 10 : 0 };
+    });
+    power.currentWatts = Math.round(power.devices.reduce((total, device) => total + device.watts, 0) * 10) / 10;
+    power.floatingMeter.categories = power.floatingMeter.categories.map((category) => ({ ...category, active: category.id === power.floatingMeter.activeCategoryId }));
+    const washing = power.washingMachine;
+    washing.cycles = [...envelope.simulation.closedWashes, ...washing.cycles];
+    washing.open = wash.open;
+    washing.watts = wash.watts;
+    if (wash.running) washing.running = wash.running;
+    washing.totals = [...washing.people.map((person) => person.id), null].map((person) => {
+      const mine = washing.cycles.filter((cycle) => (cycle.person ?? null) === person);
+      return {
+        person,
+        cycles: mine.length,
+        kwh: Math.round(mine.reduce((sum, cycle) => sum + cycle.kwh, 0) * 100) / 100,
+        costNzd: Math.round(mine.reduce((sum, cycle) => sum + cycle.costNzd, 0) * 100) / 100,
+      };
+    });
+    return power;
   }
 
   async function handleRequest(input, init = {}) {
     const method = String(init.method ?? "GET").toUpperCase();
     const { pathname, searchParams } = normalizePath(input);
     const envelope = await current();
+    // The visitor doing something holds ambient events back for a moment.
+    if (method !== "GET" && !["/api/events", "/api/orb-info/events", "/api/modules/events", "/api/kiosk/text-editing"].includes(pathname) && !/\/chimed$/.test(pathname)) {
+      envelope.simulation.lastVisitorAt = now().getTime();
+    }
 
     if (method === "GET" && pathname === "/api/state") return stateResponse(envelope);
     if (pathname === "/api/healthz") return jsonResponse({ ok: true, demo: true });
     if (method === "GET" && pathname === "/api/power/washing-machine") {
-      // One day of the graph, two washes in the middle of it; there is no older day to step back to.
-      const startMs = now().getTime() - 12 * 3_600_000;
-      const wash = (id, person, startHour, curve, kwh, costNzd) => ({
-        id, person, curve, kwh, costNzd,
-        startedAt: new Date(startMs + startHour * 3_600_000).toISOString(),
-        endedAt: new Date(startMs + (startHour + 1) * 3_600_000).toISOString(),
-        durationLabel: "1h 00m",
-        startLabel: new Intl.DateTimeFormat("en-NZ", { hour: "numeric", minute: "2-digit", timeZone: NZ_TIME_ZONE }).format(startMs + startHour * 3_600_000),
-        attribution: { at: new Date(startMs + (startHour + 1) * 3_600_000).toISOString(), source: "auto" },
-      });
+      // One day of the graph with the sample washes in it; there is no older day to step back to.
+      const nowMs = now().getTime();
+      const startMs = nowMs - 12 * 3_600_000;
+      const anchor = (hour) => new Date(startMs + hour * 3_600_000).toISOString();
+      const sample = (id, startHour, curve) => {
+        const cycle = envelope.power.washingMachine.cycles.find((row) => row.id === id);
+        return washCycleLabels({ ...cycle, curve, startedAt: anchor(startHour), endedAt: anchor(startHour + 1) });
+      };
+      const inWindow = envelope.simulation.closedWashes.filter((cycle) => Date.parse(cycle.endedAt) >= startMs).map(washCycleLabels);
+      const running = washSummary(envelope, nowMs).running;
+      const elapsed = running ? (nowMs - envelope.simulation.wash.startedAtMs) / WASH_MS : 0;
       return jsonResponse({
         blocks: [startMs],
-        cycles: [wash("demo-cycle-1", "sam", 2, [90, 380, 210, 0], 0.31, 0.09), wash("demo-cycle-2", "alex", 7, [120, 420, 180, 0], 0.34, 0.1)],
+        cycles: [
+          sample("demo-cycle-1", 2, [90, 380, 210, 0]),
+          sample("demo-cycle-2", 7, [120, 420, 180, 0]),
+          ...inWindow,
+          ...(running ? [washCycleLabels({ ...running, costNzd: 0, attribution: running.attribution ?? { at: anchor(12), source: "auto" }, startedAt: new Date(nowMs - elapsed * 3_600_000).toISOString(), endedAt: new Date(nowMs).toISOString() })] : []),
+        ],
         window: {
           startMs,
           endMs: startMs + 24 * 3_600_000,
           dateLabel: new Intl.DateTimeFormat("en-NZ", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: NZ_TIME_ZONE }).format(startMs),
         },
       });
+    }
+    if (method === "POST" && pathname === "/api/power/washing-machine") {
+      const body = await bodyJson(init);
+      const people = envelope.power.washingMachine.people;
+      if (body.notify !== undefined) {
+        if (typeof body.notify !== "boolean") return errorResponse("notify must be true or false", 400);
+        if (!setRunningWashNotify(envelope, body.notify)) return errorResponse("No active wash", 404);
+        save(envelope);
+        publish([["orb-timer", { timer: envelope.orbTimer.timer }]]);
+        return jsonResponse(await powerBody(envelope));
+      }
+      if (body.person !== undefined && body.person !== null && typeof body.person !== "string") return errorResponse("person must be a person id or null", 400);
+      if (typeof body.person === "string" && !people.some((person) => person.id === body.person)) return errorResponse("That person is not in this household", 400);
+      const cycleId = typeof body.cycleId === "string" ? body.cycleId : null;
+      if (body.active !== true && !cycleId) return errorResponse("cycleId is required", 400);
+      if (body.active === true) {
+        const wash = envelope.simulation.wash;
+        if (!wash) return errorResponse("No active wash", 404);
+        claimRunningWash(envelope, body.person === undefined ? nextWashPerson(people, wash.person) : body.person, now().getTime());
+        publish([["orb-timer", { timer: envelope.orbTimer.timer }]]);
+      } else {
+        const cycle = [...envelope.simulation.closedWashes, ...envelope.power.washingMachine.cycles].find((row) => row.id === cycleId);
+        if (!cycle) return errorResponse("Unknown wash cycle", 404);
+        cycle.person = body.person === undefined ? nextWashPerson(people, cycle.person ?? null) : body.person;
+        cycle.attribution = { at: now().toISOString(), source: "manual" };
+      }
+      save(envelope);
+      return jsonResponse(await powerBody(envelope));
+    }
+    if (method === "POST" && pathname === "/api/power/floating-meter") {
+      const body = await bodyJson(init);
+      const meter = envelope.power.floatingMeter;
+      if (!meter.categories.some((category) => category.id === body.categoryId)) return errorResponse("Unknown meter category", 400);
+      meter.activeCategoryId = body.categoryId;
+      save(envelope);
+      return jsonResponse(await powerBody(envelope));
+    }
+    if (method === "POST" && pathname === "/api/power/amp-automation") {
+      const body = await bodyJson(init);
+      const meter = envelope.power.floatingMeter;
+      meter.ampControl = { ...meter.ampControl, ...(typeof body.autoOn === "boolean" ? { autoOn: body.autoOn } : {}), ...(typeof body.autoOff === "boolean" ? { autoOff: body.autoOff } : {}) };
+      save(envelope);
+      return jsonResponse(await powerBody(envelope));
+    }
+    if (pathname === "/api/orb-timer") {
+      const nowMs = now().getTime();
+      if (method === "GET") {
+        const stored = envelope.orbTimer.timer;
+        if (stored?.autoComplete && stored.completedAt === null && stored.dismissedAt === null && nowMs >= stored.endsAt) {
+          envelope.orbTimer.timer = { ...stored, completedAt: stored.endsAt };
+          save(envelope);
+        }
+        return jsonResponse({ timer: envelope.orbTimer.timer });
+      }
+      if (method === "POST") {
+        const body = await bodyJson(init);
+        if (body.command === "dismiss" && typeof body.id === "string") {
+          const timer = dismissOrbTimer(envelope, body.id, nowMs);
+          save(envelope);
+          publish([["orb-timer", { timer }]]);
+          return jsonResponse({ timer });
+        }
+        if (body.command === "chime" && typeof body.id === "string" && Number.isInteger(body.slot)) {
+          const repeat = (envelope.state.preferences?.orbInfo?.entries ?? []).some((entry) => entry.moduleId === "timer");
+          const claimed = claimOrbTimerSound(envelope, body.id, body.slot, repeat, nowMs);
+          save(envelope);
+          return jsonResponse({ claimed });
+        }
+        const validLabel = typeof body.label === "string" && body.label && body.label.length <= 80;
+        const validIcon = typeof body.icon === "string" && body.icon && body.icon.length <= 200;
+        if (body.command !== "set" || typeof body.durationMs !== "number" || !validIcon || !validLabel) return errorResponse("Invalid timer command", 400);
+        try {
+          const timer = setOrbTimer(envelope, { durationMs: body.durationMs, icon: body.icon, label: body.label }, nowMs);
+          save(envelope);
+          publish([["orb-timer", { timer }]]);
+          return jsonResponse({ timer });
+        } catch (error) {
+          return errorResponse(error.message, 400);
+        }
+      }
+    }
+    if (pathname === "/api/orb-info/events") return jsonResponse({ outputs: {}, demo: true });
+    if (pathname === "/api/notifications") {
+      if (method === "GET") return jsonResponse({ notifications: envelope.simulation.notifications });
+      if (method === "DELETE") {
+        const id = searchParams.get("id");
+        if (!dismissNotification(envelope, id)) return errorResponse("Notification not found", 404);
+        save(envelope);
+        publish([["notification-dismiss", { id }]]);
+        return jsonResponse({ ok: true });
+      }
+    }
+    if (pathname === "/api/aircon/target" && method === "POST") {
+      const temperature = Number((await bodyJson(init)).temperature);
+      if (!Number.isFinite(temperature)) return errorResponse("Invalid temperature", 400);
+      envelope.state.preferences = mergePreferences(envelope.state.preferences, { aircon: { temperature } });
+      envelope.state.entities = envelope.state.entities.map((entity) => entity.entity_id === "climate.demo_aircon" ? { ...entity, attributes: { ...entity.attributes, temperature } } : entity);
+      save(envelope);
+      return jsonResponse({ aircon: envelope.state.preferences.aircon });
+    }
+    if (pathname === "/api/climate-range") {
+      if (method === "POST") {
+        const body = await bodyJson(init);
+        if (!Number.isFinite(body.min) || !Number.isFinite(body.max) || body.min >= body.max) return errorResponse("Invalid range", 400);
+        envelope.state.preferences.climateTargetRange = { min: body.min, max: body.max };
+        save(envelope);
+      }
+      return jsonResponse({ range: envelope.state.preferences.climateTargetRange ?? null });
+    }
+    if (pathname === "/api/camera/outside/saved") {
+      envelope.system.savedRanges ??= [];
+      if (method === "POST") {
+        const { startMs, endMs } = await bodyJson(init);
+        const status = cameraStatus(now().getTime());
+        if (!Number.isFinite(startMs) || !Number.isFinite(endMs) || endMs - startMs < 1000) return errorResponse("That range is too short to save.", 400);
+        if (startMs < Date.parse(status.oldestSegment) || endMs > Date.parse(status.newestSegment)) return errorResponse("That range is outside the recording.", 400);
+        const durationSeconds = (endMs - startMs) / 1000;
+        envelope.system.savedRanges.unshift({ id: `range_${now().getTime()}`, createdAt: now().toISOString(), startMs, endMs, durationSeconds, sizeBytes: Math.round(durationSeconds * 115_000 / 8), state: "ready" });
+        save(envelope);
+        return jsonResponse({ range: envelope.system.savedRanges[0] });
+      }
+      return jsonResponse({ ranges: envelope.system.savedRanges });
+    }
+    const savedRangeMatch = pathname.match(/^\/api\/camera\/outside\/saved\/(range_\d+)(\/index\.m3u8)?$/);
+    if (savedRangeMatch) {
+      const range = (envelope.system.savedRanges ?? []).find((row) => row.id === savedRangeMatch[1]);
+      if (!range) return errorResponse("Saved range not found", 404);
+      if (method === "DELETE") {
+        envelope.system.savedRanges = envelope.system.savedRanges.filter((row) => row.id !== range.id);
+        save(envelope);
+        return jsonResponse({ ok: true });
+      }
+      if (savedRangeMatch[2]) {
+        const response = new Response(savedRangePlaylist(range, baseUrl), { headers: { "Content-Type": "application/vnd.apple.mpegurl" } });
+        Object.defineProperty(response, "url", { value: new URL(pathname, globalThis.location?.href ?? baseUrl).href });
+        return response;
+      }
     }
     if (pathname === "/api/camera/outside/status") return jsonResponse(cameraStatus(now().getTime()));
     if (pathname === "/api/camera/outside/index.m3u8") {
@@ -943,20 +1211,15 @@ export function createNovaDummyProvider(options = {}) {
       save(envelope);
       return jsonResponse({ watchface: envelope.watchface });
     }
-    if (method === "GET" && pathname === "/api/power") {
-      const defaults = await defaultsPromise;
-      const power = refreshSampleDates(clone(defaults.power), now(), Date.parse(defaults.power.generatedAt));
-      power.devices = power.devices.map((device) => {
-        const entity = envelope.state.entities.find((row) => row.entity_id === device.entityId);
-        const initial = defaults.state.entities.find((row) => row.entity_id === device.entityId);
-        if (!entity) return device;
-        const scale = entity.domain === "light" ? (entity.attributes.brightness ?? 255) / Math.max(1, initial?.attributes?.brightness ?? 255) : 1;
-        return { ...device, state: entity.state, watts: entityIsOn(entity) ? Math.round((device.watts || device.ratedWatts) * scale * 10) / 10 : 0 };
-      });
-      power.currentWatts = Math.round(power.devices.reduce((total, device) => total + device.watts, 0) * 10) / 10;
-      return jsonResponse(power);
+    if (method === "GET" && pathname === "/api/power") return jsonResponse(await powerBody(envelope));
+    if (method === "GET" && pathname === "/api/router") {
+      // Moves within 40% to 160% of the fixture; computed from the clock.
+      const reading = (row, phase) => {
+        const value = Math.round(row.value * (1 + 0.6 * Math.sin(now().getTime() / 23_000 + phase)) * 10) / 10;
+        return { ...row, value, display: `${value >= 10 ? Math.round(value) : value} ${row.unit}` };
+      };
+      return jsonResponse({ ...envelope.router, download: reading(envelope.router.download, 0), upload: reading(envelope.router.upload, 1.7) });
     }
-    if (method === "GET" && pathname === "/api/router") return jsonResponse(envelope.router);
     if (method === "GET" && pathname === "/api/nova-load") {
       const t = Date.now() / 1000;
       const load = Math.max(0.08, Math.min(0.28, 0.15 + Math.sin(t / 3) * 0.03));
@@ -1007,13 +1270,31 @@ export function createNovaDummyProvider(options = {}) {
 
   return {
     handleRequest,
+    /** Advance the simulation once. subscribe() does this on its own clock. */
+    tick: runTick,
+    subscribe(listener) {
+      subscribers.add(listener);
+      tickInterval ??= setInterval(() => void runTick().catch(() => undefined), TICK_MS);
+      return () => {
+        subscribers.delete(listener);
+        if (subscribers.size === 0 && tickInterval !== null) {
+          clearInterval(tickInterval);
+          tickInterval = null;
+        }
+      };
+    },
+    /** What a page needs on connecting, before anything further is pushed. */
+    async eventSnapshot() {
+      const envelope = await current();
+      return clone([["notifications", { notifications: envelope.simulation.notifications }], ["orb-timer", { timer: envelope.orbTimer.timer }]]);
+    },
     onChange(listener) {
       listeners.add(listener);
       return () => listeners.delete(listener);
     },
     async reset() {
       const defaults = await defaultsPromise;
-      const next = makeEnvelope(defaults, nzResetKey(now()), now());
+      const next = makeEnvelope(defaults, nzResetKey(now()), now(), random);
       envelopePromise = Promise.resolve(next);
       save(next);
       return clone(next);

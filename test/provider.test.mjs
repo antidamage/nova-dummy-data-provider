@@ -273,7 +273,8 @@ test("power reacts to controls, timers expire, and reports have fresh dates", as
   assert.equal(baseline.generatedAt, clock.toISOString());
   const write = (path, body) => provider.handleRequest(path, { method: "POST", body: JSON.stringify(body) });
   await write("/api/bedroom-heater", { mode: "auto", temperature: 21, offTimerEndsAt: "2027-02-12T08:01:00Z" });
-  assert.equal((await (await provider.handleRequest("/api/power")).json()).currentWatts, baseline.currentWatts + 2000);
+  const heated = (await (await provider.handleRequest("/api/power")).json()).currentWatts;
+  assert.ok(Math.abs(heated - baseline.currentWatts - 2000) <= 60, `heater adds its 2 kW within the wobble, got ${heated - baseline.currentWatts}`);
   clock = new Date("2027-02-12T08:02:00Z");
   const state = await (await provider.handleRequest("/api/state")).json();
   assert.equal(state.preferences.bedroomHeater.mode, "off");

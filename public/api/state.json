@@ -1232,6 +1232,11 @@
       "updatedAt": "2026-11-03T00:00:00+00:00"
     },
     "orbInfo": {
+      "entries": [
+        { "id": "timer", "moduleId": "timer" },
+        { "id": "washing", "moduleId": "washing" },
+        { "id": "gym", "moduleId": "gym" }
+      ],
       "moduleId": "gym",
       "modules": {}
     },

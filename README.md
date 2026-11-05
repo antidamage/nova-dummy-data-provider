@@ -24,6 +24,13 @@ household-person data — enough for nearly every dashboard surface to render.
 API calls in the browser, so demo actions such as switching a light or changing a
 theme take effect and persist.
 
+**Runs a simulated house.** The household timer counts in real time and finishes,
+chimes and dismisses as it does on a real installation. Rooms move towards whatever
+is heating or cooling them, power and network readings change, and now and then a
+wash runs, a reminder falls due or a notification appears. Physical processes are
+deliberately sped up so a visit shows them: rooms change about 0.1 °C every 5 s, and
+a wash takes three minutes on the clock and is recorded as about an hour.
+
 **Isolates visitors.** Demo state persists per-visitor in browser storage rather
 than server-side.
 
