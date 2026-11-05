@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import test from "node:test";
+import test, { after } from "node:test";
 import { createNovaDummyProvider } from "../src/provider/provider.mjs";
+
+const stops = [];
+after(() => { for (const stop of stops) stop(); });
 
 const NAMES = { state: "state", tasks: "tasks", watchface: "watchface", power: "power", router: "router", novaLoad: "nova-load", system: "system", version: "version" };
 
@@ -25,8 +28,9 @@ async function harness({ hidden = true, shared = storage(), data } = {}) {
   const provider = make();
   await provider.snapshot(); // The simulation's clock starts here, as it does at a page load.
   const events = [];
-  provider.subscribe((name, payload) => events.push([name, payload]));
-  // subscribe() starts the real interval; the tests drive tick() themselves.
+  // subscribe() starts the real interval; the tests drive tick() themselves, and
+  // stop it at the end so `node --test` can exit.
+  stops.push(provider.subscribe((name, payload) => events.push([name, payload])));
   const post = async (url, body, method = "POST") => {
     const response = await provider.handleRequest(url, { method, body: JSON.stringify(body) });
     return { status: response.status, body: await response.json() };
